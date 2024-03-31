@@ -377,13 +377,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
     local popcorn_bag = SMODS.Joker:new(
 		"Popcorn Bag", --name
 		"popcorn_bag", --slug
 		{extra = {a_mult = 0, a_mult_add = 4}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 1, y = 15}, --spritePos
 		jokers_def.popcorn_bag, --loc_txt
 		1, --rarity
 		5, --cost
@@ -392,13 +392,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local the_solo = SMODS.Joker:new(
 		"The Solo", --name
 		"the_solo", --slug
 		{extra = {x_mult = 4, type = 'High Card'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 5, y = 4}, --spritePos
 		jokers_def.the_solo, --loc_txt
 		3, --rarity
 		8, --cost
@@ -407,13 +407,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local the_mysterium = SMODS.Joker:new(
 		"The Mysterium", --name
 		"the_mysterium", --slug
 		{extra = {x_mult = 3}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 6, y = 4}, --spritePos
 		jokers_def.the_mysterium, --loc_txt
 		3, --rarity
 		8, --cost
@@ -422,13 +422,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local the_spectrum = SMODS.Joker:new(
 		"The Spectrum", --name
 		"the_spectrum", --slug
 		{extra = {x_mult = 2, type = 'Flush'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 9, y = 4}, --spritePos
 		jokers_def.the_spectrum, --loc_txt
 		3, --rarity
 		8, --cost
@@ -437,13 +437,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local collatz = SMODS.Joker:new(
 		"Collatz", --name
 		"collatz", --slug
 		{extra = {x_mult = 3, x_mult_reduction = 0.5, current_chips = 0}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 1, y = 5}, --spritePos
 		jokers_def.collatz, --loc_txt
 		2, --rarity
 		9, --cost
@@ -452,13 +452,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local triangle_joker = SMODS.Joker:new(
 		"Triangle Joker", --name
 		"triangle_joker", --slug
 		{extra = {mult_add = 2, mult_total = 3}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 9, y = 11}, --spritePos
 		jokers_def.triangle_joker, --loc_txt
 		1, --rarity
 		5, --cost
@@ -467,7 +467,7 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local croupier = SMODS.Joker:new(
 		"Croupier", --name
@@ -482,7 +482,7 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local chameleon_joker = SMODS.Joker:new(
 		"Chameleon Joker", --name
@@ -497,13 +497,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local taliaferro = SMODS.Joker:new(
 		"Taliaferro", --name
 		"taliaferro", --slug
 		{extra = {chips = 80, odds = 4}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 7, y = 6}, --spritePos
 		jokers_def.taliaferro, --loc_txt
 		1, --rarity
 		5, --cost
@@ -512,7 +512,7 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local royal_gala = SMODS.Joker:new(
 		"Royal Gala", --name
@@ -527,7 +527,7 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local sedimentation = SMODS.Joker:new(
 		"Sedimentation", --name
@@ -542,13 +542,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local ban_list = SMODS.Joker:new(
 		"Blacklist", --name
 		"ban_list", --slug
 		{extra = {dollars = 2, banlist_poker_hand_1 = 'High Card', banlist_poker_hand_2 = 'Pair'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 11}, --spritePos
 		jokers_def.ban_list, --loc_txt
 		1, --rarity
 		5, --cost
@@ -557,13 +557,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local virus = SMODS.Joker:new(
 		"Virus", --name
 		"virus", --slug
 		{extra = {duped_cards = 2, joker_triggered = false}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 5, y = 10}, --spritePos
 		jokers_def.virus, --loc_txt
 		3, --rarity
 		10, --cost
@@ -572,13 +572,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local inverse_midas = SMODS.Joker:new(
 		"Beyond The Mask", --name
 		"inverse_midas", --slug
 		{extra = {dollars = 1, dollars_add = 1}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 0, y = 13}, --spritePos
 		jokers_def.inverse_midas, --loc_txt
 		2, --rarity
 		8, --cost
@@ -587,13 +587,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local patient_joker = SMODS.Joker:new(
 		"Patient Joker", --name
 		"patient_joker", --slug
 		{extra = {chips = 30, suit = 'Spades'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 8, y = 1}, --spritePos
 		jokers_def.patient_joker, --loc_txt
 		1, --rarity
 		5, --cost
@@ -602,13 +602,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local chastful_joker = SMODS.Joker:new(
 		"Chastful Joker", --name
 		"chastful_joker", --slug
 		{extra = {chips = 30, suit = 'Hearts'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 7, y = 1}, --spritePos
 		jokers_def.chastful_joker, --loc_txt
 		1, --rarity
 		5, --cost
@@ -617,13 +617,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local abstemious_joker = SMODS.Joker:new(
 		"Abstemious Joker", --name
 		"abstemious_joker", --slug
 		{extra = {chips = 30, suit = 'Clubs'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 9, y = 1}, --spritePos
 		jokers_def.abstemious_joker, --loc_txt
 		1, --rarity
 		5, --cost
@@ -632,13 +632,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local generous_joker = SMODS.Joker:new(
 		"Generous Joker", --name
 		"generous_joker", --slug
 		{extra = {chips = 30, suit = 'Diamonds'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 6, y = 1}, --spritePos
 		jokers_def.generous_joker, --loc_txt
 		1, --rarity
 		5, --cost
@@ -647,13 +647,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local fuel_tank = SMODS.Joker:new(
 		"Fuel Tank", --name
 		"fuel_tank", --slug
 		{extra = {money = 8, money_loss = 2}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 8, y = 12}, --spritePos
 		jokers_def.fuel_tank, --loc_txt
 		2, --rarity
 		8, --cost
@@ -662,13 +662,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local mint_condition = SMODS.Joker:new(
 		"Mint Condition", --name
 		"mint_condition", --slug
 		{extra = {Xmult = 1.5}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 6, y = 14}, --spritePos
 		jokers_def.mint_condition, --loc_txt
 		3, --rarity
 		8, --cost
@@ -677,13 +677,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local frowny_face = SMODS.Joker:new(
 		"Frowny Face", --name
 		"frowny_face", --slug
 		{extra = {mult = 4}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 6, y = 15}, --spritePos
 		jokers_def.frowny_face, --loc_txt
 		1, --rarity
 		5, --cost
@@ -692,13 +692,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local scared_face = SMODS.Joker:new(
 		"Scared Face", --name
 		"scared_face", --slug
 		{extra = {chips = 30}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 2, y = 3}, --spritePos
 		jokers_def.scared_face, --loc_txt
 		1, --rarity
 		5, --cost
@@ -707,13 +707,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local mystery_soda = SMODS.Joker:new(
 		"Mystery Soda", --name
 		"mystery_soda", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 8, y = 14}, --spritePos
 		jokers_def.mystery_soda, --loc_txt
 		2, --rarity
 		5, --cost
@@ -722,13 +722,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local dawn = SMODS.Joker:new(
 		"Dawn", --name
 		"dawn", --slug
 		{extra = 1}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 7}, --spritePos
 		jokers_def.dawn, --loc_txt
 		2, --rarity
 		6, --cost
@@ -737,13 +737,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local slot_machine = SMODS.Joker:new(
 		"Slot Machine", --name
 		"slot_machine", --slug
 		{extra = 1}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 0, y = 12}, --spritePos
 		jokers_def.slot_machine, --loc_txt
 		3, --rarity
 		8, --cost
@@ -752,13 +752,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local roscharch_test = SMODS.Joker:new(
 		"Roscharch Test", --name
 		"roscharch_test", --slug
 		{extra = {chips = 25, mult = 5}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 8, y = 15}, --spritePos
 		jokers_def.roscharch_test, --loc_txt
 		1, --rarity
 		5, --cost
@@ -767,13 +767,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local woo_all_1s = SMODS.Joker:new(
 		"Woo! All 1s", --name
 		"woo_all_1s", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 5, y = 6}, --spritePos
 		jokers_def.woo_all_1s, --loc_txt
 		2, --rarity
 		6, --cost
@@ -782,13 +782,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local crime_scene = SMODS.Joker:new(
 		"Crime Scene", --name
 		"crime_scene", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 6, y = 5}, --spritePos
 		jokers_def.crime_scene, --loc_txt
 		2, --rarity
 		6, --cost
@@ -797,13 +797,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local occultist = SMODS.Joker:new(
 		"Occultist", --name
 		"occultist", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 8, y = 10}, --spritePos
 		jokers_def.occultist, --loc_txt
 		2, --rarity
 		8, --cost
@@ -812,7 +812,7 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local shrine = SMODS.Joker:new(
 		"Shrine", --name
@@ -827,13 +827,13 @@ function SMODS.INIT.ReverseBalatro()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local evil_eye = SMODS.Joker:new(
 		"Evil Eye", --name
 		"evil_eye", --slug
 		{extra = {money = 2, spectral_sold = 0, spectral_type_sold = {}}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 8, y = 7}, --spritePos
 		jokers_def.evil_eye, --loc_txt
 		2, --rarity
 		6, --cost
@@ -842,13 +842,13 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local fine_wine = SMODS.Joker:new(
 		"Fine Wine", --name
 		"fine_wine", --slug
 		{extra = {discards = 2, odds = 5}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 13}, --spritePos
 		jokers_def.fine_wine, --loc_txt
 		2, --rarity
 		6, --cost
@@ -857,7 +857,7 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local monochrome = SMODS.Joker:new(
 		"Monochrome", --name
@@ -872,7 +872,7 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 	local proletaire = SMODS.Joker:new(
 		"Prolétaire", --name
@@ -887,7 +887,7 @@ function SMODS.INIT.ReverseBalatro()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		nil --atlas
+		"ReverseBalatro_Jokers" --atlas
 	)
 
 	--Voucher config
@@ -946,71 +946,46 @@ function SMODS.INIT.ReverseBalatro()
 	)
 
 	--Joker Register/Atlas
+	SMODS.Sprite:new("ReverseBalatro_Jokers", SMODS.findModByID("ReverseBalatro").path, "ReverseBalatro_Jokers.png", 71, 95, "asset_atli"):register()
 	jester:register()
-	SMODS.Sprite:new("j_jester", SMODS.findModByID("ReverseBalatro").path, "j_jester.png", 71, 95, "asset_atli"):register()
 	popcorn_bag:register()
-	SMODS.Sprite:new("j_popcorn_bag", SMODS.findModByID("ReverseBalatro").path, "j_popcorn_bag.png", 71, 95, "asset_atli"):register()
 	G.localization.misc.dictionary.k_explode = "Exploded!" --Used for Popcorn Bag
 	collatz:register()
-	SMODS.Sprite:new("j_collatz", SMODS.findModByID("ReverseBalatro").path, "j_collatz.png", 71, 95, "asset_atli"):register()
 	the_solo:register()
-	SMODS.Sprite:new("j_the_solo", SMODS.findModByID("ReverseBalatro").path, "j_the_solo.png", 71, 95, "asset_atli"):register()
 	the_mysterium:register()
-	SMODS.Sprite:new("j_the_mysterium", SMODS.findModByID("ReverseBalatro").path, "j_the_mysterium.png", 71, 95, "asset_atli"):register()
 	the_spectrum:register()
 	triangle_joker:register()
 	croupier:register()
-	SMODS.Sprite:new("j_croupier", SMODS.findModByID("ReverseBalatro").path, "j_croupier.png", 71, 95, "asset_atli"):register()
 	chameleon_joker:register()
-	SMODS.Sprite:new("j_chameleon_joker", SMODS.findModByID("ReverseBalatro").path, "j_chameleon_joker.png", 71, 95, "asset_atli"):register()
 	G.localization.misc.dictionary.k_na = "N/A"
 	taliaferro:register()
-	SMODS.Sprite:new("j_taliaferro", SMODS.findModByID("ReverseBalatro").path, "j_taliaferro.png", 71, 95, "asset_atli"):register()
 	royal_gala:register()
-	SMODS.Sprite:new("j_royal_gala", SMODS.findModByID("ReverseBalatro").path, "j_royal_gala.png", 71, 95, "asset_atli"):register()
 	sedimentation:register()
-	SMODS.Sprite:new("j_sedimentation", SMODS.findModByID("ReverseBalatro").path, "j_sedimentation.png", 71, 95, "asset_atli"):register()
 	ban_list:register()
-	SMODS.Sprite:new("j_ban_list", SMODS.findModByID("ReverseBalatro").path, "j_ban_list.png", 71, 95, "asset_atli"):register()
 	virus:register()
 	G.localization.misc.dictionary.k_infect = "Infected!" --Used for Virus
 	G.localization.misc.dictionary.k_destroy = "Destoyed!" --Used for Virus
-	SMODS.Sprite:new("j_virus", SMODS.findModByID("ReverseBalatro").path, "j_virus.png", 71, 95, "asset_atli"):register()
 	inverse_midas:register()
-	SMODS.Sprite:new("j_inverse_midas", SMODS.findModByID("ReverseBalatro").path, "j_inverse_midas.png", 71, 95, "asset_atli"):register()
 	patient_joker:register()
 	chastful_joker:register()
 	abstemious_joker:register()
 	generous_joker:register()
-	SMODS.Sprite:new("j_patient_joker", SMODS.findModByID("ReverseBalatro").path, "j_patient_joker.png", 71, 95, "asset_atli"):register()
-	SMODS.Sprite:new("j_chastful_joker", SMODS.findModByID("ReverseBalatro").path, "j_chastful_joker.png", 71, 95, "asset_atli"):register()
-	SMODS.Sprite:new("j_abstemious_joker", SMODS.findModByID("ReverseBalatro").path, "j_abstemious_joker.png", 71, 95, "asset_atli"):register()
-	SMODS.Sprite:new("j_generous_joker", SMODS.findModByID("ReverseBalatro").path, "j_generous_joker.png", 71, 95, "asset_atli"):register()
 	fuel_tank:register()
 	G.localization.misc.dictionary.k_leak = "Leaked!" --Used for Fuel Tank
 	G.localization.misc.dictionary.k_empty = "Empty!" --Used for Fuel Tank
 	mint_condition:register()
 	frowny_face:register()
-	SMODS.Sprite:new("j_frowny_face", SMODS.findModByID("ReverseBalatro").path, "j_frowny_face.png", 71, 95, "asset_atli"):register()
 	scared_face:register()
-	SMODS.Sprite:new("j_scared_face", SMODS.findModByID("ReverseBalatro").path, "j_scared_face.png", 71, 95, "asset_atli"):register()
 	mystery_soda:register()
 	dawn:register()
-	SMODS.Sprite:new("j_dawn", SMODS.findModByID("ReverseBalatro").path, "j_dawn.png", 71, 95, "asset_atli"):register()
 	slot_machine:register()
-	SMODS.Sprite:new("j_slot_machine", SMODS.findModByID("ReverseBalatro").path, "j_slot_machine.png", 71, 95, "asset_atli"):register()
 	roscharch_test:register()
-	SMODS.Sprite:new("j_roscharch_test", SMODS.findModByID("ReverseBalatro").path, "j_roscharch_test.png", 71, 95, "asset_atli"):register()
 	woo_all_1s:register()
-	SMODS.Sprite:new("j_woo_all_1s", SMODS.findModByID("ReverseBalatro").path, "j_woo_all_1s.png", 71, 95, "asset_atli"):register()
 	crime_scene:register()
-	SMODS.Sprite:new("j_crime_scene", SMODS.findModByID("ReverseBalatro").path, "j_crime_scene.png", 71, 95, "asset_atli"):register()
 	occultist:register()
 	shrine:register()
 	evil_eye:register()
-	SMODS.Sprite:new("j_evil_eye", SMODS.findModByID("ReverseBalatro").path, "j_evil_eye.png", 71, 95, "asset_atli"):register()
 	fine_wine:register()
-	SMODS.Sprite:new("j_fine_wine", SMODS.findModByID("ReverseBalatro").path, "j_fine_wine.png", 71, 95, "asset_atli"):register()
 	monochrome:register()
 	proletaire:register()
 
@@ -1214,40 +1189,42 @@ function SMODS.INIT.ReverseBalatro()
 		end
 	end
 	SMODS.Jokers.j_royal_gala.calculate = function(self, context) --Royal Gala Logic
-		if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-			if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound('tarot1')
-						self.T.r = -0.2
-						self:juice_up(0.3, 0.4)
-						self.states.drag.is = true
-						self.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-							func = function()
-									G.jokers:remove_card(self)
-									self:remove()
-									self = nil
-								return true; end})) 
-						return true
-					end
-				}))
-				--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
+		if self.ability.name == 'Royal Gala' then
+			if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
+				if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							play_sound('tarot1')
+							self.T.r = -0.2
+							self:juice_up(0.3, 0.4)
+							self.states.drag.is = true
+							self.children.center.pinch.x = true
+							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+								func = function()
+										G.jokers:remove_card(self)
+										self:remove()
+										self = nil
+									return true; end})) 
+							return true
+						end
+					}))
+					--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
+					return {
+						message = localize('k_extinct_ex')
+					}
+				else
+					return {
+						message = localize('k_safe_ex')
+					}
+				end
+			end
+			if SMODS.end_calculate_context(context) then
 				return {
-					message = localize('k_extinct_ex')
-				}
-			else
-				return {
-					message = localize('k_safe_ex')
+					message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+					chip_mod = self.ability.extra.chips, 
+					colour = G.C.CHIPS
 				}
 			end
-		end
-		if SMODS.end_calculate_context(context) then
-			return {
-				message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
-				chip_mod = self.ability.extra.chips, 
-				colour = G.C.CHIPS
-			}
 		end
 	end
 	SMODS.Jokers.j_sedimentation.calculate = function(self, context) --Sedimentation Logic
@@ -1912,7 +1889,7 @@ function SMODS.INIT.ReverseBalatro()
 		if self.added_to_deck then 
 			if self.ability.name == 'Crime Scene' then
 				G.GAME.pool_flags['crime_scene_pool_disable'] = nil
-				for k, v in (G.P_CENTERS) do
+				for k, v in pairs(G.P_CENTERS) do
 					if v[k].no_pool_flag == 'crime_scene_pool_disable' then
 						v[k].no_pool_flag = nil
 					end
@@ -2134,161 +2111,160 @@ function SMODS.INIT.ReverseBalatro()
 	end
 
 	--Joker loc_def
-	function SMODS.Jokers.j_jester:loc_def()
-		if self.ability.name == 'Jester' then
-			return {self.ability.extra.chips}
+	function SMODS.Jokers.j_jester.loc_def(center)
+		if center.ability.name == 'Jester' then
+			return {center.ability.extra.chips}
 		end
 	end
-	function SMODS.Jokers.j_popcorn_bag:loc_def()
-		if self.ability.name == 'Popcorn Bag' then
-			return {self.ability.extra.a_mult, card.ability.extra.a_mult_add}
+	function SMODS.Jokers.j_popcorn_bag.loc_def(center)
+		if center.ability.name == 'Popcorn Bag' then
+			return {center.ability.extra.a_mult, center.ability.extra.a_mult_add}
 		end
 	end
-	function SMODS.Jokers.j_collatz:loc_def()
-		if self.ability.name == 'Collatz' then
-			return {self.ability.extra.x_mult, self.ability.extra.x_mult_reduction}
+	function SMODS.Jokers.j_collatz.loc_def(center)
+		if center.ability.name == 'Collatz' then
+			return {center.ability.extra.x_mult, center.ability.extra.x_mult_reduction}
 		end
 	end
-	function SMODS.Jokers.j_the_mysterium:loc_def()
-		if self.ability.name == 'The Mysterium' then
-			return {self.ability.extra.x_mult}
+	function SMODS.Jokers.j_the_mysterium.loc_def(center)
+		if center.ability.name == 'The Mysterium' then
+			return {center.ability.extra.x_mult}
 		end
 	end
-	function SMODS.Jokers.j_the_spectrum:loc_def()
-		if self.ability.name == 'The Spectrum' then
-			return {self.ability.extra.x_mult, localize(self.ability.extra.type, 'poker_hands')}
+	function SMODS.Jokers.j_the_spectrum.loc_def(center)
+		if center.ability.name == 'The Spectrum' then
+			return {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands')}
 		end
 	end
-	function SMODS.Jokers.j_triangle_joker:loc_def()
-		if self.ability.name == 'Triangle Joker' then
-			return {self.ability.extra.mult_add, self.ability.extra.mult_total}
+	function SMODS.Jokers.j_triangle_joker.loc_def(center)
+		if center.ability.name == 'Triangle Joker' then
+			return {center.ability.extra.mult_add, center.ability.extra.mult_total}
 		end
 	end
-	function SMODS.Jokers.j_the_solo:loc_def()
-		if self.ability.name == 'The Solo' then
-			return {self.ability.extra.x_mult, localize(self.ability.extra.type, 'poker_hands')}
+	function SMODS.Jokers.j_the_solo.loc_def(center)
+		if center.ability.name == 'The Solo' then
+			return {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands')}
 		end
 	end
-	function SMODS.Jokers.j_chameleon_joker:loc_def()
-		if self.ability.name == 'Chameleon Joker' then
-			if self.ability.copied_joker ~= nil then
-				return {localize{type = 'name_text', set = self.ability.copied_joker.config.center.set, key = self.ability.copied_joker.config.center.key, nodes = {}}}
+	function SMODS.Jokers.j_chameleon_joker.loc_def(center)
+		if center.ability.name == 'Chameleon Joker' then
+			if center.ability.copied_joker ~= nil then
+				return {localize{type = 'name_text', set = center.ability.copied_joker.config.center.set, key = center.ability.copied_joker.config.center.key, nodes = {}}}
 			else
 				return {localize('k_na')}
 			end
 		end
 	end
-	function SMODS.Jokers.j_taliaferro:loc_def()
-		if self.ability.name == 'Taliaferro' then
-			return {self.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}
+	function SMODS.Jokers.j_taliaferro.loc_def(center)
+		if center.ability.name == 'Taliaferro' then
+			return {center.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
 		end
 	end
-	function SMODS.Jokers.j_royal_gala:loc_def()
-		if self.ability.name == 'Royal Gala' then
-			return {self.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}
+	function SMODS.Jokers.j_royal_gala.loc_def(center)
+		if center.ability.name == 'Royal Gala' then
+			return {center.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
 		end
 	end
-	function SMODS.Jokers.j_sedimentation:loc_def()
-		if self.ability.name == 'Sedimentation' then
-			return {self.ability.extra.mult_per_card, math.max(0,self.ability.extra.mult_per_card*(G.playing_cards and (#G.playing_cards - G.GAME.starting_deck_size) or 0)), G.GAME.starting_deck_size}
+	function SMODS.Jokers.j_sedimentation.loc_def(center)
+		if center.ability.name == 'Sedimentation' then
+			return {center.ability.extra.mult_per_card, math.max(0,center.ability.extra.mult_per_card*(G.playing_cards and (#G.playing_cards - G.GAME.starting_deck_size) or 0)), G.GAME.starting_deck_size}
 		end
 	end
-	function SMODS.Jokers.j_ban_list:loc_def()
-		if self.ability.name == 'Blacklist' then
-			return {self.ability.extra.dollars, localize(self.ability.extra.banlist_poker_hand_1, 'poker_hands'), localize(self.ability.extra.banlist_poker_hand_2, 'poker_hands')}
+	function SMODS.Jokers.j_ban_list.loc_def(center)
+		if center.ability.name == 'Blacklist' then
+			return {center.ability.extra.dollars, localize(center.ability.extra.banlist_poker_hand_1, 'poker_hands'), localize(center.ability.extra.banlist_poker_hand_2, 'poker_hands')}
 		end
 	end
-	function SMODS.Jokers.j_virus:loc_def()
-		if self.ability.name == 'Virus' then
-			return {self.ability.extra.duped_cards}
+	function SMODS.Jokers.j_virus.loc_def(center)
+		if center.ability.name == 'Virus' then
+			return {center.ability.extra.duped_cards}
 		end
 	end
-	function SMODS.Jokers.j_inverse_midas:loc_def()
-		if self.ability.name == 'Beyond The Mask' then
-			return {self.ability.extra.dollars, self.ability.extra.dollars_add}
+	function SMODS.Jokers.j_inverse_midas.loc_def(center)
+		if center.ability.name == 'Beyond The Mask' then
+			return {center.ability.extra.dollars, center.ability.extra.dollars_add}
 		end
 	end
-	function SMODS.Jokers.j_patient_joker:loc_def()
-		if self.ability.name == 'Patient Joker' then
-			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_patient_joker.loc_def(center)
+		if center.ability.name == 'Patient Joker' then
+			return {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_chastful_joker:loc_def()
-		if self.ability.name == 'Chastful Joker' then
-			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_chastful_joker.loc_def(center)
+		if center.ability.name == 'Chastful Joker' then
+			return {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_abstemious_joker:loc_def()
-		if self.ability.name == 'Abstemious Joker' then
-			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_abstemious_joker.loc_def(center)
+		if center.ability.name == 'Abstemious Joker' then
+			return {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_generous_joker:loc_def()
-		if self.ability.name == 'Generous Joker' then
-			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_generous_joker.loc_def(center)
+		if center.ability.name == 'Generous Joker' then
+			return {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_fuel_tank:loc_def()
-		if self.ability.name == 'Fuel Tank' then
-			return {self.ability.extra.money, self.ability.extra.money_loss}
+	function SMODS.Jokers.j_fuel_tank.loc_def(center)
+		if center.ability.name == 'Fuel Tank' then
+			return {center.ability.extra.money, center.ability.extra.money_loss}
 		end
 	end
-	function SMODS.Jokers.j_mint_condition:loc_def()
-		if self.ability.name == 'Mint Condition' then
-			return {self.ability.extra.Xmult}
+	function SMODS.Jokers.j_mint_condition.loc_def(center)
+		if center.ability.name == 'Mint Condition' then
+			return {center.ability.extra.Xmult}
 		end
 	end
-	function SMODS.Jokers.j_frowny_face:loc_def()
-		if self.ability.name == 'Frowny Face' then
-			return {self.ability.extra.mult}
+	function SMODS.Jokers.j_frowny_face.loc_def(center)
+		if center.ability.name == 'Frowny Face' then
+			return {center.ability.extra.mult}
 		end
 	end
-	function SMODS.Jokers.j_scared_face:loc_def()
-		if self.ability.name == 'Scared Face' then
-			return {self.ability.extra.chips}
+	function SMODS.Jokers.j_scared_face.loc_def(center)
+		if center.ability.name == 'Scared Face' then
+			return {center.ability.extra.chips}
 		end
 	end
-	function SMODS.Jokers.j_dawn:loc_def()
-		if self.ability.name == 'Dawn' then
-			return {self.ability.extra+1}
+	function SMODS.Jokers.j_dawn.loc_def(center)
+		if center.ability.name == 'Dawn' then
+			return {center.ability.extra+1}
 		end
 	end
-	function SMODS.Jokers.j_roscharch_test:loc_def()
-		if self.ability.name == 'Roscharch Test' then
-			return {self.ability.extra.chips, self.ability.extra.mult}
+	function SMODS.Jokers.j_roscharch_test.loc_def(center)
+		if center.ability.name == 'Roscharch Test' then
+			return {center.ability.extra.chips, center.ability.extra.mult}
 		end
 	end
-	function SMODS.Jokers.j_shrine:loc_def()
-		if self.ability.name == 'Shrine' then
-			return {self.ability.extra.xmult_add, self.ability.extra.xmult}
+	function SMODS.Jokers.j_shrine.loc_def(center)
+		if center.ability.name == 'Shrine' then
+			return {center.ability.extra.xmult_add, center.ability.extra.xmult}
 		end
 	end
-	function SMODS.Jokers.j_evil_eye:loc_def()
-		if self.ability.name == 'Evil Eye' then
-			return {self.ability.extra.money, self.ability.extra.money*self.ability.extra.spectral_sold}
+	function SMODS.Jokers.j_evil_eye.loc_def(center)
+		if center.ability.name == 'Evil Eye' then
+			return {center.ability.extra.money, center.ability.extra.money*center.ability.extra.spectral_sold}
 		end
 	end
-	function SMODS.Jokers.j_fine_wine:loc_def()
-		if self.ability.name == 'Fine Wine' then
-			return {self.ability.extra.discards, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}
+	function SMODS.Jokers.j_fine_wine.loc_def(center)
+		if center.ability.name == 'Fine Wine' then
+			return {center.ability.extra.discards, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
 		end
 	end
-	function SMODS.Jokers.j_monochrome:loc_def()
-		if self.ability.name == 'Monochrome' then
-			return {localize(self.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[self.ability.extra.suit]}}
+	function SMODS.Jokers.j_monochrome.loc_def(center)
+		if center.ability.name == 'Monochrome' then
+			return {localize(center.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[center.ability.extra.suit]}}
 		end
 	end
-	function SMODS.Jokers.j_proletaire:loc_def()
-		if self.ability.name == 'Prolétaire' then 
-			if self.ability.extra.boss_blind_applied ~= nil then
-				return {localize{type = 'name_text', set = 'Blind', key = self.ability.extra.boss_blind_applied.key, nodes = {}}}
+	function SMODS.Jokers.j_proletaire.loc_def(center)
+		if center.ability.name == 'Prolétaire' then 
+			if center.ability.extra.boss_blind_applied ~= nil then
+				return {localize{type = 'name_text', set = 'Blind', key = center.ability.extra.boss_blind_applied.key, nodes = {}}}
 			else
 				return {localize('k_na')}
 			end
 		end
 	end
 end
-
 
 ----------------------------------------------
 ------------MOD CODE END----------------------
