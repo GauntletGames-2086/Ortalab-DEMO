@@ -1028,286 +1028,392 @@ function SMODS.INIT.ReverseBalatro()
 	init_localization()
 
 	--Joker calculate logic
-	SMODS.Jokers.j_jester.calculate = function(self, card, context) --Jester Logic
-		if card.ability.name == 'Jester' then
+	SMODS.Jokers.j_jester.calculate = function(self, context) --Jester Logic
+		if SMODS.end_calculate_context(context) then
+			return {
+				message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+				chip_mod = self.ability.extra.chips, 
+				colour = G.C.CHIPS
+			}
+		end
+	end
+	SMODS.Jokers.j_popcorn_bag.calculate = function(self, context) --Popcorn Bag Logic
+		if not context.blueprint then
+			if context.end_of_round and not context.individual and not context.repetition then
+				if self.ability.extra.a_mult + self.ability.extra.a_mult_add > 20 then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							play_sound('tarot1')
+							self.T.r = -0.2
+							self:juice_up(0.3, 0.4)
+							self.states.drag.is = true
+							self.children.center.pinch.x = true
+							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+								func = function()
+										G.jokers:remove_card(self)
+										self:remove()
+										self = nil
+									return true; end})) 
+							return true
+						end
+					})) 
+					return {
+						message = localize('k_explode'),
+						colour = G.C.RED
+					}
+				else
+					self.ability.extra.a_mult = self.ability.extra.a_mult + self.ability.extra.a_mult_add
+					return {
+						card = self,
+						message = localize{type='variable',key='a_mult',vars={self.ability.extra.a_mult_add}}
+					}
+				end
+			end
+		end
+		if SMODS.end_calculate_context(context) then
+			if self.ability.extra.a_mult > 0 then
+				return {
+					message = localize{type='variable',key='a_mult',vars={self.ability.extra.a_mult}},
+					mult_mod = self.ability.extra.a_mult
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_the_solo.calculate = function(self, context) --The Solo Logic
+		if SMODS.end_calculate_context(context) then
+			if context.scoring_name == 'High Card' then
+				return {
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
+					Xmult_mod = self.ability.extra.x_mult
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_the_mysterium.calculate = function(self, context) --The Mysterium Logic
+		if SMODS.end_calculate_context(context) then
+			if (context.scoring_name == 'Flush Five' or 
+			context.scoring_name == 'Flush House' or 
+			context.scoring_name == 'Five of a Kind') then
+				return {
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
+					Xmult_mod = self.ability.extra.x_mult
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_the_spectrum.calculate = function(self, context) --The Spectrum Logic
+		if SMODS.end_calculate_context(context) then
+			if (context.scoring_name ~= 'Flush Five' or 
+			context.scoring_name ~= 'Flush House' or 
+			context.scoring_name ~= 'Straight Flush' or 
+			context.scoring_name ~= 'Flush') then
+				return {
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
+					Xmult_mod = self.ability.extra.x_mult
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_collatz.calculate = function(self, context) --Collatz Logic
+		if SMODS.end_calculate_context(context) then
+			if self.ability.extra.current_chips % 2 == 0 then
+				return {
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult_reduction}},
+					Xmult_mod = self.ability.extra.x_mult_reduction
+				}
+			else
+				return {
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
+					Xmult_mod = self.ability.extra.x_mult
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_triangle_joker.calculate = function(self, context) --Triangle Joker Logic
+		if context.cardarea == G.jokers and context.before and #context.full_hand == 3 and not context.blueprint then
+			self.ability.extra.mult_total = self.ability.extra.mult_total + self.ability.extra.mult_add
+			return {
+				message = localize('k_upgrade_ex'),
+				colour = G.C.MULT,
+				card = self
+			}
+		end
+		if SMODS.end_calculate_context(context) then
+			return {
+				message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_total}},
+				mult_mod = self.ability.extra.mult_total
+			}
+		end
+	end
+	SMODS.Jokers.j_chameleon_joker.calculate = function(self, context) --Chameleon Joker Logic
+		local chosen_joker = self.ability.copied_joker
+		if chosen_joker ~= nil then
+			local other_joker = chosen_joker
+			if other_joker and other_joker ~= self then
+				context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
+				context.blueprint_card = context.blueprint_card or self
+				if context.blueprint > #G.jokers.cards + 1 then return end
+				local other_joker_ret = other_joker:calculate_joker(context)
+				if other_joker_ret then 
+					other_joker_ret.card = context.blueprint_card or self
+					other_joker_ret.colour = G.C.RED
+					return other_joker_ret
+				end
+			end
+		end
+		if context.setting_blind and not context.getting_sliced then
+			local jokers = {}
+			for i=1, #G.jokers.cards do 
+				if G.jokers.cards[i] ~= self and G.jokers.cards[i].config.center.blueprint_compat == true then
+					jokers[#jokers+1] = G.jokers.cards[i]
+				end
+			end
+			if #jokers > 0 then
+				local chosen_joker = jokers[math.random(1, #jokers)]
+				self.ability.copied_joker = chosen_joker
+			else
+				self.ability.copied_joker = nil
+			end	
+		end
+	end
+	SMODS.Jokers.j_taliaferro.calculate = function(self, context) --Taliaferro Logic NOTE: MUST ADD POOL FLAGS
+		if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
+			if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound('tarot1')
+						self.T.r = -0.2
+						self:juice_up(0.3, 0.4)
+						self.states.drag.is = true
+						self.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+							func = function()
+									G.jokers:remove_card(self)
+									self:remove()
+									self = nil
+								return true; end})) 
+						return true
+					end
+				}))
+				--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
+				return {
+					message = localize('k_extinct_ex')
+				}
+			else
+				return {
+					message = localize('k_safe_ex')
+				}
+			end
+		end
+		if SMODS.end_calculate_context(context) then
+			return {
+				message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+				chip_mod = self.ability.extra.chips, 
+				colour = G.C.CHIPS
+			}
+		end
+	end
+	SMODS.Jokers.j_royal_gala.calculate = function(self, context) --Royal Gala Logic
+		if self.ability.name == 'Royal Gala' then
+			if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
+				if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							play_sound('tarot1')
+							self.T.r = -0.2
+							self:juice_up(0.3, 0.4)
+							self.states.drag.is = true
+							self.children.center.pinch.x = true
+							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+								func = function()
+										G.jokers:remove_card(self)
+										self:remove()
+										self = nil
+									return true; end})) 
+							return true
+						end
+					}))
+					--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
+					return {
+						message = localize('k_extinct_ex')
+					}
+				else
+					return {
+						message = localize('k_safe_ex')
+					}
+				end
+			end
 			if SMODS.end_calculate_context(context) then
 				return {
-					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-					chip_mod = card.ability.extra.chips, 
+					message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+					chip_mod = self.ability.extra.chips, 
 					colour = G.C.CHIPS
 				}
 			end
 		end
 	end
-	SMODS.Jokers.j_popcorn_bag.calculate = function(self, card, context) --Popcorn Bag Logic
-		if card.ability.name == 'Popcorn Bag' then
-			if not context.blueprint then
-				if context.end_of_round and not context.individual and not context.repetition then
-					if card.ability.extra.a_mult + card.ability.extra.a_mult_add > 20 then
+	SMODS.Jokers.j_sedimentation.calculate = function(self, context) --Sedimentation Logic
+		if SMODS.end_calculate_context(context) then
+			if (#G.playing_cards - G.GAME.starting_deck_size) > 0 then
+				return {
+					message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_per_card*(#G.playing_cards - G.GAME.starting_deck_size)}},
+					mult_mod = self.ability.extra.mult_per_card*(#G.playing_cards - G.GAME.starting_deck_size), 
+					colour = G.C.MULT
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_ban_list.calculate = function(self, context) --Blacklist Logic
+		if not context.other_joker and not context.repetition and not context.individual and not context.end_of_round and not context.discard and not context.pre_discard then
+			if context.cardarea == G.jokers and context.before then
+				if context.scoring_name ~= self.ability.extra.banlist_poker_hand_1 and context.scoring_name ~= self.ability.extra.banlist_poker_hand_2 then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local _poker_hands = {}
+							for k, v in pairs(G.GAME.hands) do
+								if v.visible and k ~= self.ability.extra.banlist_poker_hand_1 and k ~= self.ability.extra.banlist_poker_hand_2 then _poker_hands[#_poker_hands+1] = k end
+							end
+							self.ability.extra.banlist_poker_hand_1 = _poker_hands[math.random(1,#_poker_hands)]
+							_poker_hands[self.ability.extra.banlist_poker_hand_1] = nil
+							self.ability.extra.banlist_poker_hand_2 = _poker_hands[math.random(1,#_poker_hands)]
+							return true
+						end
+					}))
+					ease_dollars(self.ability.extra.dollars)
+					G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + self.ability.extra.dollars
+					G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+					return {
+						message = localize('$')..self.ability.extra.dollars,
+						dollars = self.ability.extra.dollars,
+						colour = G.C.MONEY
+					}
+				end
+			end
+		end
+	end
+	SMODS.Jokers.j_virus.calculate = function(self, context) --Virus Logic
+		if context.first_hand_drawn and not context.blueprint then
+			local eval = function() return G.GAME.current_round.hands_played == 0 end
+			juice_card_until(card, eval, true)
+		end
+		if not context.other_joker and not context.repetition and not context.individual and not context.end_of_round and not context.discard and not context.pre_discard then
+			if context.cardarea == G.jokers then
+				if context.before and G.GAME.current_round.hands_played == 0 then
+					if #context.full_hand == 1 then
+						local card_to_dupe = context.full_hand[1]
+						local hand = {}
+						for i=1, #G.hand.cards do
+							if not (G.hand.cards[i]:get_id() == card_to_dupe  and G.hand.cards[i].ability.name == card_to_dupe.ability.name and G.hand.cards[i].edition == card_to_dupe.edition) then hand[i] = G.hand.cards[i] end
+						end
+						self.ability.extra.joker_triggered = true
+						for i=1, self.ability.extra.duped_cards do
+							local infected_card = hand[math.random(1,#hand)]
+							while infected_card == card_to_dupe do
+								infected_card = hand[math.random(1,#hand)]
+							end
+							G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+								copy_card(card_to_dupe, infected_card)
+								return true end }))
+						end
+						return {
+							message = localize('k_infect'),
+							colour = G.C.CHIPS,
+							delay = 1, 
+							card = self
+						}
+					end
+				elseif context.after and not context.blueprint and context.full_hand[1] ~= nil and card.ability.extra.joker_triggered == true then
+					self.ability.extra.joker_triggered = false
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.2,
+						func = function()
+							local card_to_delete = context.full_hand[1]
+							if card_to_delete.ability.name == 'Glass Card' then 
+								card_to_delete:shatter()
+							else
+								card_to_delete:start_dissolve()
+							end
+							return true 
+					end }))
+				end
+			end
+		end
+	end
+	SMODS.Jokers.j_inverse_midas.calculate = function(self, context) --Beyond The Mask Logic
+		if context.discard and not context.blueprint and not context.other_card.debuff and
+		context.other_card.ability.name == 'Gold Card' then
+			self.ability.extra.dollars = self.ability.extra.dollars + self.ability.extra.dollars_add
+			return {
+				message = localize('k_upgrade_ex'),
+				colour = G.C.MONEY,
+				delay = 0.45, 
+				remove = true,
+				card = self
+			}
+		end
+	end
+	SMODS.Jokers.j_patient_joker.calculate = function(self, context) --Patient Joker Logic
+		if context.individual and context.cardarea == G.play and context.other_card:is_suit("Spades") then
+			return {
+				chips = self.ability.extra.chips,
+				card = self
+			}
+		end
+	end
+	SMODS.Jokers.j_chastful_joker.calculate = function(self, context) --Chastful Joker Logic
+		if context.individual and context.cardarea == G.play and context.other_card:is_suit("Hearts") then
+			return {
+				chips = self.ability.extra.chips,
+				card = self
+			}
+		end
+	end
+	SMODS.Jokers.j_abstemious_joker.calculate = function(self, context) --Abstemonius Joker Logic
+		if context.individual and context.cardarea == G.play and context.other_card:is_suit("Clubs") then
+			return {
+				chips = self.ability.extra.chips,
+				card = self
+			}
+		end
+	end
+	SMODS.Jokers.j_generous_joker.calculate = function(self, context) --Generous Joker Logic
+		if context.individual and context.cardarea == G.play and context.other_card:is_suit("Diamonds") then
+			return {
+				chips = self.ability.extra.chips,
+				card = self
+			}
+		end
+	end
+	SMODS.Jokers.j_fuel_tank.calculate = function(self, context) --Fuel Tank Logic
+		if not context.blueprint then
+			if context.end_of_round and not context.individual and not context.repetition then
+				if G.GAME.blind.boss then
+					if self.ability.extra.money - self.ability.extra.money_loss <= 0 then
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								play_sound('tarot1')
-								card.T.r = -0.2
-								card:juice_up(0.3, 0.4)
-								card.states.drag.is = true
-								card.children.center.pinch.x = true
+								self.T.r = -0.2
+								self:juice_up(0.3, 0.4)
+								self.states.drag.is = true
+								self.children.center.pinch.x = true
 								G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
 									func = function()
-											G.jokers:remove_card(card)
-											card:remove()
-											card = nil
+											G.jokers:remove_card(self)
+											self:remove()
+											self = nil
 										return true; end})) 
 								return true
 							end
 						})) 
 						return {
-							message = localize('k_explode'),
+							message = localize('k_empty'),
 							colour = G.C.RED
 						}
 					else
-						card.ability.extra.a_mult = card.ability.extra.a_mult + card.ability.extra.a_mult_add
+						self.ability.extra.money = self.ability.extra.money - self.ability.extra.money_loss
 						return {
-							card = card,
-							message = localize{type='variable',key='a_mult',vars={card.ability.extra.a_mult_add}}
-						}
-					end
-				end
-			end
-			if SMODS.end_calculate_context(context) then
-				if card.ability.extra.a_mult > 0 then
-					return {
-						message = localize{type='variable',key='a_mult',vars={card.ability.extra.a_mult}},
-						mult_mod = card.ability.extra.a_mult
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_the_solo.calculate = function(self, card, context) --The Solo Logic
-		if card.ability.name == 'The Solo' then
-			if SMODS.end_calculate_context(context) then
-				if context.scoring_name == 'High Card' then
-					return {
-						message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
-						Xmult_mod = card.ability.extra.x_mult
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_the_mysterium.calculate = function(self, card, context) --The Mysterium Logic
-		if card.ability.name == 'The Mysterium' then
-			if SMODS.end_calculate_context(context) then
-				if (context.scoring_name == 'Flush Five' or 
-				context.scoring_name == 'Flush House' or 
-				context.scoring_name == 'Five of a Kind') then
-					return {
-						message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
-						Xmult_mod = card.ability.extra.x_mult
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_the_spectrum.calculate = function(self, card, context) --The Spectrum Logic
-		if card.ability.name == 'The Spectrum' then
-			if SMODS.end_calculate_context(context) then
-				if (context.scoring_name ~= 'Flush Five' or 
-				context.scoring_name ~= 'Flush House' or 
-				context.scoring_name ~= 'Straight Flush' or 
-				context.scoring_name ~= 'Flush') then
-					return {
-						message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
-						Xmult_mod = card.ability.extra.x_mult
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_collatz.calculate = function(self, card, context) --Collatz Logic
-		if card.ability.name == 'Collatz' then
-			if SMODS.end_calculate_context(context) then
-				if card.ability.extra.current_chips % 2 == 0 then
-					return {
-						message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult_reduction}},
-						Xmult_mod = card.ability.extra.x_mult_reduction
-					}
-				else
-					return {
-						message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
-						Xmult_mod = card.ability.extra.x_mult
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_triangle_joker.calculate = function(self, card, context) --Triangle Joker Logic
-		if card.ability.name == 'Triangle Joker' then
-			if context.cardarea == G.jokers and context.before and #context.full_hand == 3 and not context.blueprint then
-				card.ability.extra.mult_total = card.ability.extra.mult_total + card.ability.extra.mult_add
-				return {
-					message = localize('k_upgrade_ex'),
-					colour = G.C.MULT,
-					card = card
-				}
-			end
-			if SMODS.end_calculate_context(context) then
-				return {
-					message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult_total}},
-					mult_mod = card.ability.extra.mult_total
-				}
-			end
-		end
-	end
-	SMODS.Jokers.j_chameleon_joker.calculate = function(self, card, context) --Chameleon Joker Logic
-		if card.ability.name == 'Chameleon Joker' then
-			local chosen_joker = card.ability.copied_joker
-			if chosen_joker ~= nil then
-				local other_joker = chosen_joker
-				if other_joker and other_joker ~= card then
-					context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-					context.blueprint_card = context.blueprint_card or card
-					if context.blueprint > #G.jokers.cards + 1 then return end
-					local other_joker_ret = other_joker:calculate_joker(context)
-					if other_joker_ret then 
-						other_joker_ret.card = context.blueprint_card or card
-						other_joker_ret.colour = G.C.RED
-						return other_joker_ret
-					end
-				end
-			end
-			if context.setting_blind and not context.getting_sliced then
-				local jokers = {}
-				for i=1, #G.jokers.cards do 
-					if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.blueprint_compat == true then
-						jokers[#jokers+1] = G.jokers.cards[i]
-					end
-				end
-				if #jokers > 0 then
-					local chosen_joker = jokers[math.random(1, #jokers)]
-					card.ability.copied_joker = chosen_joker
-				else
-					card.ability.copied_joker = nil
-				end	
-			end
-		end
-	end
-	SMODS.Jokers.j_taliaferro.calculate = function(self, card, context) --Taliaferro Logic NOTE: MUST ADD POOL FLAGS
-		if card.ability.name == 'Taliaferro' then
-			if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-				--if pseudorandom(card.ability.name == 'Cavendish' and 'cavendish' or 'gros_michel') < G.GAME.probabilities.normal/card.ability.extra.odds then 
-				if math.random(G.GAME.probabilities.normal,card.ability.extra.odds) == G.GAME.probabilities.normal then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							play_sound('tarot1')
-							card.T.r = -0.2
-							card:juice_up(0.3, 0.4)
-							card.states.drag.is = true
-							card.children.center.pinch.x = true
-							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-								func = function()
-										G.jokers:remove_card(card)
-										card:remove()
-										card = nil
-									return true; end})) 
-							return true
-						end
-					}))
-					--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
-					return {
-						message = localize('k_extinct_ex')
-					}
-				else
-					return {
-						message = localize('k_safe_ex')
-					}
-				end
-			end
-			if SMODS.end_calculate_context(context) then
-				return {
-					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-					chip_mod = card.ability.extra.chips, 
-					colour = G.C.CHIPS
-				}
-			end
-		end
-	end
-	SMODS.Jokers.j_royal_gala.calculate = function(self, card, context) --Royal Gala Logic
-		if card.ability.name == 'Royal Gala' then
-			if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-				--if pseudorandom(card.ability.name == 'Cavendish' and 'cavendish' or 'gros_michel') < G.GAME.probabilities.normal/card.ability.extra.odds then 
-				if math.random(G.GAME.probabilities.normal,card.ability.extra.odds) == G.GAME.probabilities.normal then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							play_sound('tarot1')
-							card.T.r = -0.2
-							card:juice_up(0.3, 0.4)
-							card.states.drag.is = true
-							card.children.center.pinch.x = true
-							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-								func = function()
-										G.jokers:remove_card(card)
-										card:remove()
-										card = nil
-									return true; end})) 
-							return true
-						end
-					}))
-					--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
-					return {
-						message = localize('k_extinct_ex')
-					}
-				else
-					return {
-						message = localize('k_safe_ex')
-					}
-				end
-			end
-			if SMODS.end_calculate_context(context) then
-				return {
-					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-					chip_mod = card.ability.extra.chips, 
-					colour = G.C.CHIPS
-				}
-			end
-		end
-	end
-	SMODS.Jokers.j_sedimentation.calculate = function(self, card, context) --Sedimentation Logic
-		if card.ability.name == 'Sedimentation' then
-			if SMODS.end_calculate_context(context) then
-				if (#G.playing_cards - G.GAME.starting_deck_size) > 0 then
-					return {
-						message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_per_card*(#G.playing_cards - G.GAME.starting_deck_size)}},
-						mult_mod = self.ability.extra.mult_per_card*(#G.playing_cards - G.GAME.starting_deck_size), 
-						colour = G.C.MULT
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_ban_list.calculate = function(self, card, context) --Blacklist Logic
-		if card.ability.name == 'Blacklist' then
-			if not context.other_joker and not context.repetition and not context.individual and not context.end_of_round and not context.discard and not context.pre_discard then
-				if context.cardarea == G.jokers and context.before then
-					if context.scoring_name ~= card.ability.extra.banlist_poker_hand_1 and context.scoring_name ~= card.ability.extra.banlist_poker_hand_2 then
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								local _poker_hands = {}
-								for k, v in pairs(G.GAME.hands) do
-									if v.visible and k ~= card.ability.extra.banlist_poker_hand_1 and k ~= card.ability.extra.banlist_poker_hand_2 then _poker_hands[#_poker_hands+1] = k end
-								end
-								card.ability.extra.banlist_poker_hand_1 = _poker_hands[math.random(1,#_poker_hands)]
-								_poker_hands[card.ability.extra.banlist_poker_hand_1] = nil
-								card.ability.extra.banlist_poker_hand_2 = _poker_hands[math.random(1,#_poker_hands)]
-								return true
-							end
-						}))
-						ease_dollars(card.ability.extra.dollars)
-						G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
-						G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
-						return {
-							message = localize('$')..card.ability.extra.dollars,
-							dollars = card.ability.extra.dollars,
+							message = localize('k_leak'),
 							colour = G.C.MONEY
 						}
 					end
@@ -1315,424 +1421,258 @@ function SMODS.INIT.ReverseBalatro()
 			end
 		end
 	end
-	SMODS.Jokers.j_virus.calculate = function(self, card, context) --Virus Logic
-		if card.ability.name == 'Virus' then
-			if context.first_hand_drawn and not context.blueprint then
-				local eval = function() return G.GAME.current_round.hands_played == 0 end
-				juice_card_until(card, eval, true)
-			end
-			if not context.other_joker and not context.repetition and not context.individual and not context.end_of_round and not context.discard and not context.pre_discard then
-				if context.cardarea == G.jokers then
-					if context.before and G.GAME.current_round.hands_played == 0 then
-						if #context.full_hand == 1 then
-							local card_to_dupe = context.full_hand[1]
-							local hand = {}
-							for i=1, #G.hand.cards do
-								if not (G.hand.cards[i]:get_id() == card_to_dupe  and G.hand.cards[i].ability.name == card_to_dupe.ability.name and G.hand.cards[i].edition == card_to_dupe.edition) then hand[i] = G.hand.cards[i] end
-							end
-							card.ability.extra.joker_triggered = true
-							for i=1, card.ability.extra.duped_cards do
-								local infected_card = hand[math.random(1,#hand)]
-								while infected_card == card_to_dupe do
-									infected_card = hand[math.random(1,#hand)]
-								end
-								G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-									copy_card(card_to_dupe, infected_card)
-									return true end }))
-							end
-							return {
-								message = localize('k_infect'),
-								colour = G.C.CHIPS,
-								delay = 1, 
-								card = card
-							}
-						end
-					elseif context.after and not context.blueprint and context.full_hand[1] ~= nil and card.ability.extra.joker_triggered == true then
-						card.ability.extra.joker_triggered = false
-						G.E_MANAGER:add_event(Event({
-							trigger = 'after',
-							delay = 0.2,
-							func = function()
-								local card_to_delete = context.full_hand[1]
-								if card_to_delete.ability.name == 'Glass Card' then 
-									card_to_delete:shatter()
-								else
-									card_to_delete:start_dissolve()
-								end
-								return true 
-						end }))
+	SMODS.Jokers.j_mint_condition.calculate = function(self, context) --Mint Condition Logic
+		if context.other_joker and not context.repetition and not context.indiviual then
+			local money_bonus_check = context.other_joker:calculate_dollar_bonus()
+			if (money_bonus_check or context.other_joker.ability.name == 'To the Moon') and context.other_joker ~= self then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
 					end
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_inverse_midas.calculate = function(self, card, context) --Beyond The Mask Logic
-		if card.ability.name == 'Beyond The Mask' then
-			if context.discard and not context.blueprint and not context.other_card.debuff and
-			context.other_card.ability.name == 'Gold Card' then
-				card.ability.extra.dollars = card.ability.extra.dollars + card.ability.extra.dollars_add
+				})) 
 				return {
-					message = localize('k_upgrade_ex'),
-					colour = G.C.MONEY,
-					delay = 0.45, 
-					remove = true,
-					card = card
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.Xmult}},
+					Xmult_mod = self.ability.extra.Xmult
 				}
 			end
 		end
 	end
-	SMODS.Jokers.j_patient_joker.calculate = function(self, card, context) --Patient Joker Logic
-		if card.ability.name == 'Patient Joker' then
-			if context.individual and context.cardarea == G.play and context.other_card:is_suit("Spades") then
-				return {
-					chips = card.ability.extra.chips,
-					card = card
-				}
-			end
+	SMODS.Jokers.j_frowny_face.calculate = function(self, context) --Frowny Face Logic
+		if context.individual and context.cardarea == G.play and not (context.other_card:get_id() == 11 or context.other_card:get_id() == 12 or context.other_card:get_id() == 13) then
+			return {
+				mult = self.ability.extra.mult,
+				card = self
+			}
 		end
 	end
-	SMODS.Jokers.j_chastful_joker.calculate = function(self, card, context) --Chastful Joker Logic
-		if card.ability.name == 'Chastful Joker' then
-			if context.individual and context.cardarea == G.play and context.other_card:is_suit("Hearts") then
-				return {
-					chips = card.ability.extra.chips,
-					card = card
-				}
-			end
+	SMODS.Jokers.j_scared_face.calculate = function(self, context) --Scared Face Logic
+		if context.individual and context.cardarea == G.play and not (context.other_card:get_id() == 11 or context.other_card:get_id() == 12 or context.other_card:get_id() == 13) then
+			return {
+				chips = self.ability.extra.chips,
+				card = self
+			}
 		end
 	end
-	SMODS.Jokers.j_abstemious_joker.calculate = function(self, card, context) --Abstemonius Joker Logic
-		if card.ability.name == 'Abstemonius Joker' then
-			if context.individual and context.cardarea == G.play and context.other_card:is_suit("Clubs") then
-				return {
-					chips = card.ability.extra.chips,
-					card = card
-				}
+	SMODS.Jokers.j_mystery_soda.calculate = function(self, context) --Mystery Soda Logic
+		if context.selling_self then
+			local available_tags = {}
+			for k, v in pairs(G.P_TAGS) do
+				if k ~= 'tag_orbital' or k ~= 'tag_standard' then table.insert(available_tags,k) end
 			end
+			local tag_1 = available_tags[math.random(1,#available_tags)]
+			local tag_2 = available_tags[math.random(1,#available_tags)]
+			G.E_MANAGER:add_event(Event({
+				func = (function()
+					add_tag(Tag(tag_1))
+					add_tag(Tag(tag_2))
+					play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
+					play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+					return true
+				end)
+			}))
 		end
 	end
-	SMODS.Jokers.j_generous_joker.calculate = function(self, card, context) --Generous Joker Logic
-		if card.ability.name == 'Generous Joker' then
-			if context.individual and context.cardarea == G.play and context.other_card:is_suit("Diamonds") then
-				return {
-					chips = card.ability.extra.chips,
-					card = card
-				}
-			end
-		end
-	end
-	SMODS.Jokers.j_fuel_tank.calculate = function(self, card, context) --Fuel Tank Logic
-		if card.ability.name == 'Fuel Tank' then
+	SMODS.Jokers.j_dawn.calculate = function(self, context) --Dawn Logic
+		if context.first_hand_drawn then
 			if not context.blueprint then
-				if context.end_of_round and not context.individual and not context.repetition then
-					if G.GAME.blind.boss then
-						if card.ability.extra.money - card.ability.extra.money_loss <= 0 then
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									play_sound('tarot1')
-									card.T.r = -0.2
-									card:juice_up(0.3, 0.4)
-									card.states.drag.is = true
-									card.children.center.pinch.x = true
-									G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-										func = function()
-												G.jokers:remove_card(card)
-												card:remove()
-												card = nil
-											return true; end})) 
-									return true
-								end
-							})) 
-							return {
-								message = localize('k_empty'),
-								colour = G.C.RED
-							}
-						else
-							card.ability.extra.money = card.ability.extra.money - card.ability.extra.money_loss
-							return {
-								message = localize('k_leak'),
-								colour = G.C.MONEY
-							}
-						end
-					end
-				end
+				local eval = function() return G.GAME.current_round.hands_played == 0 end
+				juice_card_until(self, eval, true)
+			end
+		end
+		if context.repetition and context.cardarea == G.play then
+			if G.GAME.current_round.hands_played == 0 then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = self.ability.extra,
+					card = self
+				}
 			end
 		end
 	end
-	SMODS.Jokers.j_mint_condition.calculate = function(self, card, context) --Mint Condition Logic
-		if card.ability.name == 'Mint Condition' then
-			if context.other_joker and not context.repetition and not context.indiviual then
-				local money_bonus_check = context.other_joker:calculate_dollar_bonus()
-				if (money_bonus_check or context.other_joker.ability.name == 'To the Moon') and context.other_joker ~= self then
+	SMODS.Jokers.j_slot_machine.calculate = function(self, context) --Slot Machine Logic
+		if SMODS.end_calculate_context(context) then
+			local total_lucky_7s = 0
+			for i = 1, #context.scoring_hand do
+				if context.scoring_hand[i].ability.name == "Lucky Card" and context.scoring_hand[i]:get_id() == 7 then
+					total_lucky_7s = total_lucky_7s + 1
+				end
+			end
+			if total_lucky_7s >= 3 then
+				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+				G.E_MANAGER:add_event(Event({
+					trigger = 'before',
+					delay = 0.0,
+					func = (function()
+							local self = create_card('Spectral',G.consumeables, nil, nil, nil, nil, nil, 'sea')
+							self:add_to_deck()
+							G.consumeables:emplace(self)
+							G.GAME.consumeable_buffer = 0
+						return true
+					end)}))
+				return {
+					message = localize('k_plus_spectral'),
+					colour = G.C.SECONDARY_SET.Spectral,
+					card = self
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_roscharch_test.calculate = function(self, context) --Roscharch Logic
+		if context.individual and context.cardarea == G.play and (context.other_card:get_id() == 5 or context.other_card:get_id() == 2) then
+			if math.random(1,2) == 1 then
+				return {
+					mult = self.ability.extra.mult,
+					card = self
+				}
+			else
+				return {
+					chips = self.ability.extra.chips,
+					card = self
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_shrine.calculate = function(self, context) --Shrine Logic
+		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Spectral' then
+			self.ability.extra.xmult = self.ability.extra.xmult + self.ability.extra.xmult_add
+				G.E_MANAGER:add_event(Event({
+					func = function() card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}}}); return true
+					end}))
+		end
+		if SMODS.end_calculate_context(context) then
+			sendDebugMessage('end calculate context reached with Popcorn Bag')
+			return {
+				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.xmult}},
+				Xmult_mod = self.ability.extra.xmult
+			}
+		end
+	end
+	SMODS.Jokers.j_fine_wine.calculate = function(self, context) --Fine Wine Logic
+		if not context.blueprint then
+			if context.setting_blind and not context.getting_sliced then
+				self.ability.extra.discards = self.ability.extra.discards + 1
+				ease_discard(self.ability.extra.discards)
+				card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			end
+			if context.end_of_round and not context.individual and not context.repetition then
+				if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
+							play_sound('tarot1')
+							self.T.r = -0.2
+							self:juice_up(0.3, 0.4)
+							self.states.drag.is = true
+							self.children.center.pinch.x = true
+							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+								func = function()
+										G.jokers:remove_card(self)
+										self:remove()
+										self = nil
+									return true; end})) 
 							return true
 						end
-					})) 
+					}))
 					return {
-						message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
-						Xmult_mod = card.ability.extra.Xmult
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_frowny_face.calculate = function(self, card, context) --Frowny Face Logic
-		if card.ability.name == 'Frowny Face' then
-			if context.individual and context.cardarea == G.play and not (context.other_card:get_id() == 11 or context.other_card:get_id() == 12 or context.other_card:get_id() == 13) then
-				return {
-					mult = card.ability.extra.mult,
-					card = card
-				}
-			end
-		end
-	end
-	SMODS.Jokers.j_scared_face.calculate = function(self, card, context) --Scared Face Logic
-		if card.ability.name == 'Scared Face' then
-			if context.individual and context.cardarea == G.play and not (context.other_card:get_id() == 11 or context.other_card:get_id() == 12 or context.other_card:get_id() == 13) then
-				return {
-					chips = card.ability.extra.chips,
-					card = card
-				}
-			end
-		end
-	end
-	SMODS.Jokers.j_mystery_soda.calculate = function(self, card, context) --Mystery Soda Logic
-		if card.ability.name == 'Mystery Soda' then
-			if context.selling_self then
-				local available_tags = {}
-				for k, v in pairs(G.P_TAGS) do
-					if k ~= 'tag_orbital' or k ~= 'tag_standard' then table.insert(available_tags,k) end
-				end
-				local tag_1 = available_tags[math.random(1,#available_tags)]
-				local tag_2 = available_tags[math.random(1,#available_tags)]
-				G.E_MANAGER:add_event(Event({
-					func = (function()
-						add_tag(Tag(tag_1))
-						add_tag(Tag(tag_2))
-						play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-						play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
-						return true
-					end)
-				}))
-			end
-		end
-	end
-	SMODS.Jokers.j_dawn.calculate = function(self, card, context) --Dawn Logic
-		if card.ability.name == 'Dawn' then
-			if context.first_hand_drawn then
-				if not context.blueprint then
-					local eval = function() return G.GAME.current_round.hands_played == 0 end
-					juice_card_until(card, eval, true)
-				end
-			end
-			if context.repetition and context.cardarea == G.play then
-				if G.GAME.current_round.hands_played == 0 then
-					return {
-						message = localize('k_again_ex'),
-						repetitions = card.ability.extra,
-						card = card
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_slot_machine.calculate = function(self, card, context) --Slot Machine Logic
-		if card.ability.name == 'Slot Machine' then
-			if SMODS.end_calculate_context(context) then
-				local total_lucky_7s = 0
-				for i = 1, #context.scoring_hand do
-					if context.scoring_hand[i].ability.name == "Lucky Card" and context.scoring_hand[i]:get_id() == 7 then
-						total_lucky_7s = total_lucky_7s + 1
-					end
-				end
-				if total_lucky_7s >= 3 then
-					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
-					G.E_MANAGER:add_event(Event({
-						trigger = 'before',
-						delay = 0.0,
-						func = (function()
-								local card = create_card('Spectral',G.consumeables, nil, nil, nil, nil, nil, 'sea')
-								card:add_to_deck()
-								G.consumeables:emplace(card)
-								G.GAME.consumeable_buffer = 0
-							return true
-						end)}))
-					return {
-						message = localize('k_plus_spectral'),
-						colour = G.C.SECONDARY_SET.Spectral,
-						card = card
-					}
-				end
-			end
-		end
-	end
-	SMODS.Jokers.j_roscharch_test.calculate = function(self, card, context) --Roscharch Logic
-		if card.ability.name == 'Roscharch Test' then
-			if context.individual and context.cardarea == G.play and (context.other_card:get_id() == 5 or context.other_card:get_id() == 2) then
-				if math.random(1,2) == 1 then
-					return {
-						mult = card.ability.extra.mult,
-						card = card
+						message = localize('k_drank_ex')
 					}
 				else
 					return {
-						chips = card.ability.extra.chips,
-						card = card
+						message = localize('k_safe_ex')
 					}
 				end
 			end
 		end
 	end
-	SMODS.Jokers.j_shrine.calculate = function(self, card, context) --Shrine Logic
-		if card.ability.name == 'Shrine' then
-			if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Spectral' then
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_add
-					G.E_MANAGER:add_event(Event({
-						func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}}}); return true
-						end}))
-			end
-			if SMODS.end_calculate_context(context) then
-				sendDebugMessage('end calculate context reached with Popcorn Bag')
-				return {
-					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
-					Xmult_mod = card.ability.extra.xmult
-				}
-			end
+	SMODS.Jokers.j_monochrome.calculate = function(self, context) --Monochrome Logic
+		if not context.blueprint and context.setting_blind and not context.getting_sliced then
+			local suits = {'Spades', 'Clubs', 'Hearts', 'Diamonds'}
+			self.ability.extra.suit = suits[math.random(1,4)]
+			G.GAME.current_round.monochrome.suit = self.ability.extra.suit
 		end
 	end
-	SMODS.Jokers.j_fine_wine.calculate = function(self, card, context) --Fine Wine Logic
-		if card.ability.name == 'Fine Wine' then
-			if not context.blueprint then
-				if context.setting_blind and not context.getting_sliced then
-					card.ability.extra.discards = card.ability.extra.discards + 1
-					ease_discard(card.ability.extra.discards)
-					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
-				end
-				if context.end_of_round and not context.individual and not context.repetition then
-					if math.random(G.GAME.probabilities.normal,card.ability.extra.odds) == G.GAME.probabilities.normal then
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								play_sound('tarot1')
-								card.T.r = -0.2
-								card:juice_up(0.3, 0.4)
-								card.states.drag.is = true
-								card.children.center.pinch.x = true
-								G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-									func = function()
-											G.jokers:remove_card(card)
-											card:remove()
-											card = nil
-										return true; end})) 
-								return true
-							end
-						}))
-						return {
-							message = localize('k_drank_ex')
-						}
-					else
-						return {
-							message = localize('k_safe_ex')
-						}
+	SMODS.Jokers.j_proletaire.calculate = function(self, context) --Prolétaire Logic
+		if not context.blueprint then
+			if context.setting_blind and not context.getting_sliced then
+				local all_blind_configs = {}
+				self.ability.extra.boss_blind_applied = nil
+				local banned_blinds = {}
+				for i=1, #G.jokers.cards do
+					if G.jokers.cards[i].ability.name == 'Prolétaire' then
+						banned_blinds[i] = G.jokers.cards[i].ability.boss_blind_applied
 					end
 				end
-			end
-		end
-	end
-	SMODS.Jokers.j_monochrome.calculate = function(self, card, context) --Monochrome Logic
-		if card.ability.name == 'Monochrome' then
-			if not context.blueprint and context.setting_blind and not context.getting_sliced then
-				local suits = {'Spades', 'Clubs', 'Hearts', 'Diamonds'}
-				card.ability.extra.suit = suits[math.random(1,4)]
-				G.GAME.current_round.monochrome.suit = card.ability.extra.suit
-			end
-		end
-	end
-	SMODS.Jokers.j_proletaire.calculate = function(self, card, context) --Prolétaire Logic
-		if card.ability.name == 'Prolétaire' then
-			if not context.blueprint then
-				if context.setting_blind and not context.getting_sliced then
-					local all_blind_configs = {}
-					card.ability.extra.boss_blind_applied = nil
-					local banned_blinds = {}
-					for i=1, #G.jokers.cards do
-						if G.jokers.cards[i].ability.name == 'Prolétaire' then
-							banned_blinds[i] = G.jokers.cards[i].ability.boss_blind_applied
-						end
-					end
-					for k, v in pairs(G.P_BLINDS) do
-						if v ~= G.P_BLINDS.bl_small and v ~= G.P_BLINDS.bl_big then
-							if v ~= G.P_BLINDS.bl_final_leaf and v ~= G.P_BLINDS.bl_final_acorn and v ~= G.P_BLINDS.bl_final_bell and v ~= G.P_BLINDS.bl_final_heart and v ~= G.P_BLINDS.bl_final_vessel then
-								if banned_blinds[v] == nil and v ~= G.GAME.blind then 
-									table.insert(all_blind_configs,G.P_BLINDS[k]) 
-								end
+				for k, v in pairs(G.P_BLINDS) do
+					if v ~= G.P_BLINDS.bl_small and v ~= G.P_BLINDS.bl_big then
+						if v ~= G.P_BLINDS.bl_final_leaf and v ~= G.P_BLINDS.bl_final_acorn and v ~= G.P_BLINDS.bl_final_bell and v ~= G.P_BLINDS.bl_final_heart and v ~= G.P_BLINDS.bl_final_vessel then
+							if banned_blinds[v] == nil and v ~= G.GAME.blind then 
+								table.insert(all_blind_configs,G.P_BLINDS[k]) 
 							end
 						end
 					end
-					local boss_blind = all_blind_configs[math.random(1,#all_blind_configs)]
-					card.ability.extra.boss_blind_applied = boss_blind
-					G.GAME.blind.dollars = G.GAME.blind.dollars*3
+				end
+				local boss_blind = all_blind_configs[math.random(1,#all_blind_configs)]
+				self.ability.extra.boss_blind_applied = boss_blind
+				G.GAME.blind.dollars = G.GAME.blind.dollars*3
 
-					--Setting Blind effects
-					if card.ability.extra.boss_blind_applied.name == 'The Eye' then
-						card.ability.extra.boss_blind_applied.hands = {
-							["Flush Five"] = false,
-							["Flush House"] = false,
-							["Five of a Kind"] = false,
-							["Straight Flush"] = false,
-							["Four of a Kind"] = false,
-							["Full House"] = false,
-							["Flush"] = false,
-							["Straight"] = false,
-							["Three of a Kind"] = false,
-							["Two Pair"] = false,
-							["Pair"] = false,
-							["High Card"] = false,
-						}
-					end
-					if card.ability.extra.boss_blind_applied.name == 'The Mouth' then
-						card.ability.extra.boss_blind_applied.only_hand = false
-					end
-					if card.ability.extra.boss_blind_applied.name == 'The Fish' then 
-						card.ability.extra.boss_blind_applied.prepped = nil
-					end
-					if card.ability.extra.boss_blind_applied.name == 'The Water' then 
-						card.ability.extra.boss_blind_applied.discards_sub = G.GAME.current_round.discards_left
-						ease_discard(-card.ability.extra.boss_blind_applied.discards_sub)
-					end
-					if card.ability.extra.boss_blind_applied.name == 'The Needle' then 
-						card.ability.extra.boss_blind_applied.hands_sub = G.GAME.round_resets.hands - 1
-						ease_hands_played(-card.ability.extra.boss_blind_applied.hands_sub)
-					end
-					if card.ability.extra.boss_blind_applied.name == 'The Manacle' then
-						G.hand:change_size(-1)
-					end
-					if card.ability.extra.boss_blind_applied.name == 'The Wall' then
-						G.GAME.blind.chips = G.GAME.blind.chips*2
-						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-					end
+				--Setting Blind effects
+				if self.ability.extra.boss_blind_applied.name == 'The Eye' then
+					self.ability.extra.boss_blind_applied.hands = {
+						["Flush Five"] = false,
+						["Flush House"] = false,
+						["Five of a Kind"] = false,
+						["Straight Flush"] = false,
+						["Four of a Kind"] = false,
+						["Full House"] = false,
+						["Flush"] = false,
+						["Straight"] = false,
+						["Three of a Kind"] = false,
+						["Two Pair"] = false,
+						["Pair"] = false,
+						["High Card"] = false,
+					}
+				end
+				if self.ability.extra.boss_blind_applied.name == 'The Mouth' then
+					self.ability.extra.boss_blind_applied.only_hand = false
+				end
+				if self.ability.extra.boss_blind_applied.name == 'The Fish' then 
+					self.ability.extra.boss_blind_applied.prepped = nil
+				end
+				if self.ability.extra.boss_blind_applied.name == 'The Water' then 
+					self.ability.extra.boss_blind_applied.discards_sub = G.GAME.current_round.discards_left
+					ease_discard(-self.ability.extra.boss_blind_applied.discards_sub)
+				end
+				if self.ability.extra.boss_blind_applied.name == 'The Needle' then 
+					self.ability.extra.boss_blind_applied.hands_sub = G.GAME.round_resets.hands - 1
+					ease_hands_played(-self.ability.extra.boss_blind_applied.hands_sub)
+				end
+				if self.ability.extra.boss_blind_applied.name == 'The Manacle' then
+					G.hand:change_size(-1)
+				end
+				if self.ability.extra.boss_blind_applied.name == 'The Wall' then
+					G.GAME.blind.chips = G.GAME.blind.chips*2
+					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+				end
 
-					--Debuff Cards
-					for _, v in ipairs(G.playing_cards) do
-						if card.ability.extra.boss_blind_applied.debuff.suit and v:is_suit(card.ability.extra.boss_blind_applied.debuff.suit, true) then
-							v:set_debuff(true)
-						elseif card.ability.extra.boss_blind_applied.debuff.is_face == 'face' and v:is_face(true) then
-							v:set_debuff(true)
-						elseif card.ability.extra.boss_blind_applied.name == 'The Pillar' and v.ability.played_this_ante then
-							v:set_debuff(true)
-						elseif card.ability.extra.boss_blind_applied.debuff.value and card.ability.extra.boss_blind_applied.debuff.value == v.base.value then
-							v:set_debuff(true)
-						elseif card.ability.extra.boss_blind_applied.debuff.nominal and card.ability.extra.boss_blind_applied.debuff.nominal == v.base.nominal then
-							v:set_debuff(true)
-						end
+				--Debuff Cards
+				for _, v in ipairs(G.playing_cards) do
+					if self.ability.extra.boss_blind_applied.debuff.suit and v:is_suit(self.ability.extra.boss_blind_applied.debuff.suit, true) then
+						v:set_debuff(true)
+					elseif self.ability.extra.boss_blind_applied.debuff.is_face == 'face' and v:is_face(true) then
+						v:set_debuff(true)
+					elseif self.ability.extra.boss_blind_applied.name == 'The Pillar' and v.ability.played_this_ante then
+						v:set_debuff(true)
+					elseif self.ability.extra.boss_blind_applied.debuff.value and self.ability.extra.boss_blind_applied.debuff.value == v.base.value then
+						v:set_debuff(true)
+					elseif self.ability.extra.boss_blind_applied.debuff.nominal and self.ability.extra.boss_blind_applied.debuff.nominal == v.base.nominal then
+						v:set_debuff(true)
 					end
 				end
 			end
-			if context.end_of_round and not context.individual and not context.repetition then
-				if card.ability.extra.boss_blind_applied.name == 'The Manacle' then
-					G.hand:change_size(1)
-				end
+		end
+		if context.end_of_round and not context.individual and not context.repetition then
+			if self.ability.extra.boss_blind_applied.name == 'The Manacle' then
+				G.hand:change_size(1)
 			end
 		end
 	end
@@ -2196,154 +2136,154 @@ function SMODS.INIT.ReverseBalatro()
 	end
 
 	--Joker loc_def
-	function SMODS.Jokers.j_jester:loc_def(card)
-		if card.ability.name == 'Jester' then
-			return {card.ability.extra.chips}
+	function SMODS.Jokers.j_jester:loc_def()
+		if self.ability.name == 'Jester' then
+			return {self.ability.extra.chips}
 		end
 	end
-	function SMODS.Jokers.j_popcorn_bag:loc_def(card)
-		if card.ability.name == 'Popcorn Bag' then
-			return {card.ability.extra.a_mult, card.ability.extra.a_mult_add}
+	function SMODS.Jokers.j_popcorn_bag:loc_def()
+		if self.ability.name == 'Popcorn Bag' then
+			return {self.ability.extra.a_mult, card.ability.extra.a_mult_add}
 		end
 	end
-	function SMODS.Jokers.j_collatz:loc_def(card)
-		if card.ability.name == 'Collatz' then
-			return {card.ability.extra.x_mult, card.ability.extra.x_mult_reduction}
+	function SMODS.Jokers.j_collatz:loc_def()
+		if self.ability.name == 'Collatz' then
+			return {self.ability.extra.x_mult, self.ability.extra.x_mult_reduction}
 		end
 	end
-	function SMODS.Jokers.j_the_mysterium:loc_def(card)
-		if card.ability.name == 'The Mysterium' then
-			return {card.ability.extra.x_mult}
+	function SMODS.Jokers.j_the_mysterium:loc_def()
+		if self.ability.name == 'The Mysterium' then
+			return {self.ability.extra.x_mult}
 		end
 	end
-	function SMODS.Jokers.j_the_spectrum:loc_def(card)
-		if card.ability.name == 'The Spectrum' then
-			return {card.ability.extra.x_mult, localize(card.ability.extra.type, 'poker_hands')}
+	function SMODS.Jokers.j_the_spectrum:loc_def()
+		if self.ability.name == 'The Spectrum' then
+			return {self.ability.extra.x_mult, localize(self.ability.extra.type, 'poker_hands')}
 		end
 	end
-	function SMODS.Jokers.j_triangle_joker:loc_def(card)
-		if card.ability.name == 'Triangle Joker' then
-			return {card.ability.extra.mult_add, card.ability.extra.mult_total}
+	function SMODS.Jokers.j_triangle_joker:loc_def()
+		if self.ability.name == 'Triangle Joker' then
+			return {self.ability.extra.mult_add, self.ability.extra.mult_total}
 		end
 	end
-	function SMODS.Jokers.j_the_solo:loc_def(card)
-		if card.ability.name == 'The Solo' then
-			return {card.ability.extra.x_mult, localize(card.ability.extra.type, 'poker_hands')}
+	function SMODS.Jokers.j_the_solo:loc_def()
+		if self.ability.name == 'The Solo' then
+			return {self.ability.extra.x_mult, localize(self.ability.extra.type, 'poker_hands')}
 		end
 	end
-	function SMODS.Jokers.j_chameleon_joker:loc_def(card)
-		if card.ability.name == 'Chameleon Joker' then
-			if card.ability.copied_joker ~= nil then
-				return {localize{type = 'name_text', set = card.ability.copied_joker.config.center.set, key = card.ability.copied_joker.config.center.key, nodes = {}}}
+	function SMODS.Jokers.j_chameleon_joker:loc_def()
+		if self.ability.name == 'Chameleon Joker' then
+			if self.ability.copied_joker ~= nil then
+				return {localize{type = 'name_text', set = self.ability.copied_joker.config.center.set, key = self.ability.copied_joker.config.center.key, nodes = {}}}
 			else
 				return {localize('k_na')}
 			end
 		end
 	end
-	function SMODS.Jokers.j_taliaferro:loc_def(card)
-		if card.ability.name == 'Taliaferro' then
-			return {card.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds}
+	function SMODS.Jokers.j_taliaferro:loc_def()
+		if self.ability.name == 'Taliaferro' then
+			return {self.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}
 		end
 	end
-	function SMODS.Jokers.j_royal_gala:loc_def(card)
-		if card.ability.name == 'Royal Gala' then
-			return {card.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds}
+	function SMODS.Jokers.j_royal_gala:loc_def()
+		if self.ability.name == 'Royal Gala' then
+			return {self.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}
 		end
 	end
-	function SMODS.Jokers.j_sedimentation:loc_def(card)
-		if card.ability.name == 'Sedimentation' then
-			return {card.ability.extra.mult_per_card, math.max(0,card.ability.extra.mult_per_card*(G.playing_cards and (#G.playing_cards - G.GAME.starting_deck_size) or 0)), G.GAME.starting_deck_size}
+	function SMODS.Jokers.j_sedimentation:loc_def()
+		if self.ability.name == 'Sedimentation' then
+			return {self.ability.extra.mult_per_card, math.max(0,self.ability.extra.mult_per_card*(G.playing_cards and (#G.playing_cards - G.GAME.starting_deck_size) or 0)), G.GAME.starting_deck_size}
 		end
 	end
-	function SMODS.Jokers.j_ban_list:loc_def(card)
-		if card.ability.name == 'Blacklist' then
-			return {card.ability.extra.dollars, localize(card.ability.extra.banlist_poker_hand_1, 'poker_hands'), localize(card.ability.extra.banlist_poker_hand_2, 'poker_hands')}
+	function SMODS.Jokers.j_ban_list:loc_def()
+		if self.ability.name == 'Blacklist' then
+			return {self.ability.extra.dollars, localize(self.ability.extra.banlist_poker_hand_1, 'poker_hands'), localize(self.ability.extra.banlist_poker_hand_2, 'poker_hands')}
 		end
 	end
-	function SMODS.Jokers.j_virus:loc_def(card)
-		if card.ability.name == 'Virus' then
-			return {card.ability.extra.duped_cards}
+	function SMODS.Jokers.j_virus:loc_def()
+		if self.ability.name == 'Virus' then
+			return {self.ability.extra.duped_cards}
 		end
 	end
-	function SMODS.Jokers.j_inverse_midas:loc_def(card)
-		if card.ability.name == 'Beyond The Mask' then
-			return {card.ability.extra.dollars, card.ability.extra.dollars_add}
+	function SMODS.Jokers.j_inverse_midas:loc_def()
+		if self.ability.name == 'Beyond The Mask' then
+			return {self.ability.extra.dollars, self.ability.extra.dollars_add}
 		end
 	end
-	function SMODS.Jokers.j_patient_joker:loc_def(card)
-		if card.ability.name == 'Patient Joker' then
-			return {card.ability.extra.chips, localize(card.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_patient_joker:loc_def()
+		if self.ability.name == 'Patient Joker' then
+			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_chastful_joker:loc_def(card)
-		if card.ability.name == 'Chastful Joker' then
-			return {card.ability.extra.chips, localize(card.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_chastful_joker:loc_def()
+		if self.ability.name == 'Chastful Joker' then
+			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_abstemious_joker:loc_def(card)
-		if card.ability.name == 'Abstemious Joker' then
-			return {card.ability.extra.chips, localize(card.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_abstemious_joker:loc_def()
+		if self.ability.name == 'Abstemious Joker' then
+			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_generous_joker:loc_def(card)
-		if card.ability.name == 'Generous Joker' then
-			return {card.ability.extra.chips, localize(card.ability.extra.suit, 'suits_singular')}
+	function SMODS.Jokers.j_generous_joker:loc_def()
+		if self.ability.name == 'Generous Joker' then
+			return {self.ability.extra.chips, localize(self.ability.extra.suit, 'suits_singular')}
 		end
 	end
-	function SMODS.Jokers.j_fuel_tank:loc_def(card)
-		if card.ability.name == 'Fuel Tank' then
-			return {card.ability.extra.money, card.ability.extra.money_loss}
+	function SMODS.Jokers.j_fuel_tank:loc_def()
+		if self.ability.name == 'Fuel Tank' then
+			return {self.ability.extra.money, self.ability.extra.money_loss}
 		end
 	end
-	function SMODS.Jokers.j_mint_condition:loc_def(card)
-		if card.ability.name == 'Mint Condition' then
-			return {card.ability.extra.Xmult}
+	function SMODS.Jokers.j_mint_condition:loc_def()
+		if self.ability.name == 'Mint Condition' then
+			return {self.ability.extra.Xmult}
 		end
 	end
-	function SMODS.Jokers.j_frowny_face:loc_def(card)
-		if card.ability.name == 'Frowny Face' then
-			return {card.ability.extra.mult}
+	function SMODS.Jokers.j_frowny_face:loc_def()
+		if self.ability.name == 'Frowny Face' then
+			return {self.ability.extra.mult}
 		end
 	end
-	function SMODS.Jokers.j_scared_face:loc_def(card)
-		if card.ability.name == 'Scared Face' then
-			return {card.ability.extra.chips}
+	function SMODS.Jokers.j_scared_face:loc_def()
+		if self.ability.name == 'Scared Face' then
+			return {self.ability.extra.chips}
 		end
 	end
-	function SMODS.Jokers.j_dawn:loc_def(card)
-		if card.ability.name == 'Dawn' then
-			return {card.ability.extra+1}
+	function SMODS.Jokers.j_dawn:loc_def()
+		if self.ability.name == 'Dawn' then
+			return {self.ability.extra+1}
 		end
 	end
-	function SMODS.Jokers.j_roscharch_test:loc_def(card)
-		if card.ability.name == 'Roscharch Test' then
-			return {card.ability.extra.chips, card.ability.extra.mult}
+	function SMODS.Jokers.j_roscharch_test:loc_def()
+		if self.ability.name == 'Roscharch Test' then
+			return {self.ability.extra.chips, self.ability.extra.mult}
 		end
 	end
-	function SMODS.Jokers.j_shrine:loc_def(card)
-		if card.ability.name == 'Shrine' then
-			return {card.ability.extra.xmult_add, card.ability.extra.xmult}
+	function SMODS.Jokers.j_shrine:loc_def()
+		if self.ability.name == 'Shrine' then
+			return {self.ability.extra.xmult_add, self.ability.extra.xmult}
 		end
 	end
-	function SMODS.Jokers.j_evil_eye:loc_def(card)
-		if card.ability.name == 'Evil Eye' then
-			return {card.ability.extra.money, card.ability.extra.money*card.ability.extra.spectral_sold}
+	function SMODS.Jokers.j_evil_eye:loc_def()
+		if self.ability.name == 'Evil Eye' then
+			return {self.ability.extra.money, self.ability.extra.money*self.ability.extra.spectral_sold}
 		end
 	end
-	function SMODS.Jokers.j_fine_wine:loc_def(card)
-		if card.ability.name == 'Fine Wine' then
-			return {card.ability.extra.discards, ''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds}
+	function SMODS.Jokers.j_fine_wine:loc_def()
+		if self.ability.name == 'Fine Wine' then
+			return {self.ability.extra.discards, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}
 		end
 	end
-	function SMODS.Jokers.j_monochrome:loc_def(card)
-		if card.ability.name == 'Monochrome' then
-			return {localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit]}}
+	function SMODS.Jokers.j_monochrome:loc_def()
+		if self.ability.name == 'Monochrome' then
+			return {localize(self.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[self.ability.extra.suit]}}
 		end
 	end
-	function SMODS.Jokers.j_proletaire:loc_def(card)
-		if card.ability.name == 'Prolétaire' then 
-			if card.ability.extra.boss_blind_applied ~= nil then
-				return {localize{type = 'name_text', set = 'Blind', key = card.ability.extra.boss_blind_applied.key, nodes = {}}}
+	function SMODS.Jokers.j_proletaire:loc_def()
+		if self.ability.name == 'Prolétaire' then 
+			if self.ability.extra.boss_blind_applied ~= nil then
+				return {localize{type = 'name_text', set = 'Blind', key = self.ability.extra.boss_blind_applied.key, nodes = {}}}
 			else
 				return {localize('k_na')}
 			end
