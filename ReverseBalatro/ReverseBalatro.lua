@@ -1214,42 +1214,40 @@ function SMODS.INIT.ReverseBalatro()
 		end
 	end
 	SMODS.Jokers.j_royal_gala.calculate = function(self, context) --Royal Gala Logic
-		if self.ability.name == 'Royal Gala' then
-			if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-				if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							play_sound('tarot1')
-							self.T.r = -0.2
-							self:juice_up(0.3, 0.4)
-							self.states.drag.is = true
-							self.children.center.pinch.x = true
-							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-								func = function()
-										G.jokers:remove_card(self)
-										self:remove()
-										self = nil
-									return true; end})) 
-							return true
-						end
-					}))
-					--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
-					return {
-						message = localize('k_extinct_ex')
-					}
-				else
-					return {
-						message = localize('k_safe_ex')
-					}
-				end
-			end
-			if SMODS.end_calculate_context(context) then
+		if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
+			if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound('tarot1')
+						self.T.r = -0.2
+						self:juice_up(0.3, 0.4)
+						self.states.drag.is = true
+						self.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+							func = function()
+									G.jokers:remove_card(self)
+									self:remove()
+									self = nil
+								return true; end})) 
+						return true
+					end
+				}))
+				--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
 				return {
-					message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
-					chip_mod = self.ability.extra.chips, 
-					colour = G.C.CHIPS
+					message = localize('k_extinct_ex')
+				}
+			else
+				return {
+					message = localize('k_safe_ex')
 				}
 			end
+		end
+		if SMODS.end_calculate_context(context) then
+			return {
+				message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+				chip_mod = self.ability.extra.chips, 
+				colour = G.C.CHIPS
+			}
 		end
 	end
 	SMODS.Jokers.j_sedimentation.calculate = function(self, context) --Sedimentation Logic
