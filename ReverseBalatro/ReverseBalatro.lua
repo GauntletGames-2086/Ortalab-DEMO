@@ -6,7 +6,6 @@
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
-
 function SMODS.INIT.ReverseBalatro()
     local jokers_def = {
 		jester = { -- Jester
@@ -93,7 +92,6 @@ function SMODS.INIT.ReverseBalatro()
 				"{C:green}#2# in #3#{} chance this",
 				"card is destroyed",
 				"at end of round",
-				"POOL LOGIC NOT ADDED",
 				"{C:inactive}(Artist: Flare, Grassy){}"
 			}
 		},
@@ -104,7 +102,6 @@ function SMODS.INIT.ReverseBalatro()
 				"{C:green}#2# in #3#{} chance this",
 				"card is destroyed",
 				"at end of round",
-				"POOL LOGIC NOT ADDED",
 				"{C:inactive}(Artist: ){}"
 			}
 		},
@@ -271,7 +268,6 @@ function SMODS.INIT.ReverseBalatro()
 			["text"] = {
 				"All {C:spectral}Spectral{} card and {C:spectral}Spectral Packs{}",
 				"in the shop are free",
-				"ADD SHOP SPECTRAL VOUCHER LOGIC",
 				"{C:inactive}(Artist: ){}"
 			}
 		},
@@ -280,7 +276,6 @@ function SMODS.INIT.ReverseBalatro()
 			["text"] = {
 				"{X:mult,C:white}X#1#{} Mult per",
 				"{C:spectral}Spectral{} card used",
-				"ADD SHOP SPECTRAL VOUCHER LOGIC",
 				"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 				"{C:inactive}(Artist: ){}"
 			}
@@ -290,7 +285,6 @@ function SMODS.INIT.ReverseBalatro()
 			["text"] = {
 				"Earn {C:money}$#1#{} at end of round",
 				"per each unique {C:spectral}Spectral{} card {C:attention}sold",
-				"ADD SHOP SPECTRAL VOUCHER LOGIC",
 				"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
 				"{C:inactive}(Artist: ){}"
 			}
@@ -1170,7 +1164,7 @@ function SMODS.INIT.ReverseBalatro()
 						return true
 					end
 				}))
-				--NOTE: MUST ADD POOL FLAGS FOR TALIAFERRO
+				G.GAME.pool_flags.taliaferro_extinct = true
 				return {
 					message = localize('k_extinct_ex')
 				}
@@ -1512,11 +1506,10 @@ function SMODS.INIT.ReverseBalatro()
 		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Spectral' then
 			self.ability.extra.xmult = self.ability.extra.xmult + self.ability.extra.xmult_add
 				G.E_MANAGER:add_event(Event({
-					func = function() card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}}}); return true
+					func = function() card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.extra.xmult}}}); return true
 					end}))
 		end
-		if SMODS.end_calculate_context(context) then
-			sendDebugMessage('end calculate context reached with Popcorn Bag')
+		if SMODS.end_calculate_context(context) and self.ability.extra.xmult > 1 then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.xmult}},
 				Xmult_mod = self.ability.extra.xmult
@@ -1890,8 +1883,8 @@ function SMODS.INIT.ReverseBalatro()
 			if self.ability.name == 'Crime Scene' then
 				G.GAME.pool_flags['crime_scene_pool_disable'] = nil
 				for k, v in pairs(G.P_CENTERS) do
-					if v[k].no_pool_flag == 'crime_scene_pool_disable' then
-						v[k].no_pool_flag = nil
+					if v.no_pool_flag and (v.no_pool_flag == 'crime_scene_pool_disable') then
+						v.no_pool_flag = nil
 					end
 				end
 			end
@@ -2077,37 +2070,57 @@ function SMODS.INIT.ReverseBalatro()
 		calculate_reroll_cost(true)
 		return true end}))
 	end
+	
+	local BackApply_to_run_ref = Back.apply_to_run
+	function Back.apply_to_run(arg)
+		
+		BackApply_to_run_ref(arg)
+
+		-- Adds Pool Flags
+		G.P_CENTERS['j_taliaferro']['no_pool_flag'] = 'taliaferro_extinct'
+		G.P_CENTERS['j_royal_gala']['yes_pool_flag'] = 'taliaferro_extinct'
+		G.P_CENTERS['j_occultist']['yes_pool_flag'] = 'shady_trading_redeemed'
+		G.P_CENTERS['j_shrine']['yes_pool_flag'] = 'shady_trading_redeemed'
+		G.P_CENTERS['j_evil_eye']['yes_pool_flag'] = 'shady_trading_redeemed'
+
+		-- Redeems 'Shady Trading' Voucher when playing Ghost Deck
+		if arg.effect.config.spectral_rate then
+			G.E_MANAGER:add_event(Event({
+				func = function() 
+					G.GAME.used_vouchers['v_shady_trading'] = true
+					G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
+					G.GAME.pool_flags.shady_trading_redeemed = true
+					return true 
+				end 
+			}))
+		end
+	end
 
 	--Voucher redeem logic
-	function SMODS.Vouchers.v_shady_trading:redeem(center)
-		if center.name == 'Shady Trading' then
+	function SMODS.Vouchers.v_shady_trading.redeem(center)
+		if G.GAME.spectral_rate < 2 then
 			G.GAME.spectral_rate = 2
 		end
+		G.GAME.pool_flags.shady_trading_redeemed = true
 	end
-	function SMODS.Vouchers.v_illegal_imports:redeem(center)
-		if center.name == 'Illegal Imports' then
-			G.GAME.spectral_rate = 4
-		end
+	function SMODS.Vouchers.v_illegal_imports.redeem(center)
+		G.GAME.spectral_rate = 4
 	end
-	function SMODS.Vouchers.v_window_shopping:redeem(center)
-		if center.name == 'Window Shopping' then
-			G.E_MANAGER:add_event(Event({func = function()
-				G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
-				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
-				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
-				calculate_reroll_cost(true)
-				return true end }))
-		end
+	function SMODS.Vouchers.v_window_shopping.redeem(center)
+		G.E_MANAGER:add_event(Event({func = function()
+			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
+			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
+			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
+			calculate_reroll_cost(true)
+			return true end }))
 	end
-	function SMODS.Vouchers.v_infinite_scroll:redeem(center)
-		if center.name == 'Infinite Scroll' then
-			G.E_MANAGER:add_event(Event({func = function()
-				G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
-				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
-				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
-				calculate_reroll_cost(true)
-				return true end }))
-		end
+	function SMODS.Vouchers.v_infinite_scroll.redeem(center)
+		G.E_MANAGER:add_event(Event({func = function()
+			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
+			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
+			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
+			calculate_reroll_cost(true)
+			return true end }))
 	end
 
 	--Joker loc_def
