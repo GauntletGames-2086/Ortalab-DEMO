@@ -130,7 +130,7 @@ function SMODS.INIT.ReverseBalatro()
 				"{C:green}#2# in #3#{} chance this",
 				"card is destroyed",
 				"at end of round",
-				"{C:inactive}(Artist: Flare, Grassy){}"
+				"{C:inactive}(Artists: Flare, Grassy){}"
 			}
 		},
 		royal_gala = { -- Royal Gala
@@ -140,7 +140,8 @@ function SMODS.INIT.ReverseBalatro()
 				"{C:green}#2# in #3#{} chance this",
 				"card is destroyed",
 				"at end of round",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artists: ItsFlowwey, Grassy){}",
+				"{C:inactive}(in_salad, Flare){}"
 			}
 		},
 		sedimentation = { -- Sedimentation
@@ -183,7 +184,7 @@ function SMODS.INIT.ReverseBalatro()
 			}
 		},
 		fuel_tank = { -- Fuel Tank
-			["name"] = "Fuel Tank",
+			["name"] = "Afterburner",
 			["text"] = {
 				"Earn {C:money}$#1#{} at end of round.",
 				"Loses {C:red}-$#2#{} when",
@@ -202,7 +203,7 @@ function SMODS.INIT.ReverseBalatro()
 		frowny_face = { -- Frowny Face
 			["name"] = "Frowny Face",
 			["text"] = {
-				"Played cards that are not {C:attention}face{} cards",
+				"Played numbered cards",
 				"give {C:mult}+#1#{} Mult when scored",
 				"{C:inactive}(Artist: GoldenDiscoPig){}"
 			}
@@ -210,7 +211,7 @@ function SMODS.INIT.ReverseBalatro()
 		scared_face = { -- Scared Face
 			["name"] = "Scared Face",
 			["text"] = {
-				"Played cards that are not {C:attention}face{} cards",
+				"Played numbered cards",
 				"give {C:chips}+#1#{} Chips when scored",
 				"{C:inactive}(Artist: GoldenDiscoPig){}"
 			}
@@ -318,6 +319,51 @@ function SMODS.INIT.ReverseBalatro()
 				"effect when blind is selected",
 				"{C:inactive}(Currently: {C:attention}#1#{})",
 				"{C:inactive}(Artist: ){}"
+			}
+		},
+		art_gallery = { -- Art Gallery
+			["name"] = "Art Gallery",
+			["text"] = {
+				"{C:chips}+#1#{} Chips for",
+				"each {C:attention}Joker{} and",
+				"{C:tarot}Consumable{} card",
+				"{C:inactive}(Currently {C:chips}+#2#{C:inactive}){}",
+				"{C:inactive}(Artist: Flare){}"
+			}
+		},
+		instant_gratification = { -- Instant Gratification
+			["name"] = "Instant Gratification",
+			["text"] = {
+				"{C:money}+1${} when you",
+				"use a {C:red}discard{}",
+				"{C:inactive}(Artist: Flare){}"
+			}
+		},
+		coupon = { -- Coupon
+			["name"] = "Coupon",
+			["text"] = {
+				"{C:red}-#1#{} Chips",
+				"All cards in the shop",
+				"are {C:money}#2#%{} off",
+				"{C:inactive}(Artist: Flare){}"
+			}
+		},
+		graffiti = { -- Graffiti
+			["name"] = "Graffiti",
+			["text"] = {
+				"{C:mult}+#1#{} Mult",
+				"per hand remaining",
+				"{C:inactive}(Currently {C:mult}+#2#{} Mult){}",
+				"{C:inactive}(Artist: Flare){}"
+			}
+		},
+		mathmagician = { -- Mathmagician
+			["name"] = "Mathmagician",
+			["text"] = {
+				"Creates a random {C:tarot}Tarot{}",
+				"card if discarded hand",
+				"contains {C:attention}4 numbered cards{}",
+				"{C:inactive}(Artist: Flare){}"
 			}
 		}
 	}
@@ -588,7 +634,7 @@ function SMODS.INIT.ReverseBalatro()
 		"Royal Gala", --name
 		"royal_gala", --slug
 		{extra = {chips = 300, odds = 1000}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 5,y = 11}, --spritePos
 		jokers_def.royal_gala, --loc_txt
 		1, --rarity
 		5, --cost
@@ -665,7 +711,7 @@ function SMODS.INIT.ReverseBalatro()
 		nil --soul_pos
 	)
 	local fuel_tank = SMODS.Joker:new(
-		"Fuel Tank", --name
+		"Afterburner", --name
 		"fuel_tank", --slug
 		{extra = {money = 8, money_loss = 2}}, --config
 		{x = 8, y = 12}, --spritePos
@@ -920,6 +966,86 @@ function SMODS.INIT.ReverseBalatro()
 		"ReverseBalatro_Jokers", --atlas
 		nil --soul_pos
 	)
+	local art_gallery = SMODS.Joker:new(
+		"Art Gallery", --name
+		"art_gallery", --slug
+		{extra = {chips_add = 20}}, --config
+		{x = 3,y = 3}, --spritePos
+		jokers_def.art_gallery, --loc_txt
+		1, --rarity
+		5, --cost
+		true, --unlocked
+		true, --discovered
+		true, --blueprint_compat
+		true, --eternal_compat
+		'', --effect
+		"ReverseBalatro_Jokers", --atlas
+		nil --soul_pos
+	)
+	local instant_gratification = SMODS.Joker:new(
+		"Instant Gratification", --name
+		"instant_gratification", --slug
+		{extra = 1}, --config
+		{x = 4,y = 3}, --spritePos
+		jokers_def.instant_gratification, --loc_txt
+		1, --rarity
+		5, --cost
+		true, --unlocked
+		true, --discovered
+		true, --blueprint_compat
+		true, --eternal_compat
+		'', --effect
+		"ReverseBalatro_Jokers", --atlas
+		nil --soul_pos
+	)
+	local coupon = SMODS.Joker:new(
+		"Coupon", --name
+		"coupon", --slug
+		{extra = {minus_chips = 20, money_off = 20, already_triggered = false}}, --config
+		{x = 3,y = 13}, --spritePos
+		jokers_def.coupon, --loc_txt
+		1, --rarity
+		5, --cost
+		true, --unlocked
+		true, --discovered
+		false, --blueprint_compat
+		true, --eternal_compat
+		'', --effect
+		"ReverseBalatro_Jokers", --atlas
+		nil --soul_pos
+	)
+	local graffiti = SMODS.Joker:new(
+		"Graffiti", --name
+		"graffiti", --slug
+		{extra = {mult_add = 8}}, --config
+		{x = 1,y = 2}, --spritePos
+		jokers_def.graffiti, --loc_txt
+		1, --rarity
+		5, --cost
+		true, --unlocked
+		true, --discovered
+		true, --blueprint_compat
+		true, --eternal_compat
+		'', --effect
+		"ReverseBalatro_Jokers", --atlas
+		nil --soul_pos
+	)
+	local mathmagician = SMODS.Joker:new( 
+		"Mathmagician", --name
+		"mathmagician", --slug
+		{}, --config
+		{x = 1,y = 11}, --spritePos
+		jokers_def.mathmagician, --loc_txt
+		1, --rarity
+		6, --cost
+		true, --unlocked
+		true, --discovered
+		true, --blueprint_compat
+		true, --eternal_compat
+		'', --effect
+		"ReverseBalatro_Jokers", --atlas
+		nil --soul_pos
+	)
 
 	--Voucher config
 	--SMODS.Voucher:new(name, slug, config, pos, loc_txt, cost, unlocked, discovered, available, requires, atlas)
@@ -927,53 +1053,53 @@ function SMODS.INIT.ReverseBalatro()
 		"Shady Trading", --name
 		"shady_trading", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 2}, --spritePos
 		voucher_def.shady_trading, --loc_txt
 		10, --cost
 		true, --unlocked
 		true, --discovered
 		true, --available
 		{}, --requires
-		nil --atlas
+		"ReverseBalatro_Vouchers" --atlas
 	)
 	local illegal_imports = SMODS.Voucher:new(
 		"Illegal Imports", --name
 		"illegal_imports", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 3}, --spritePos
 		voucher_def.illegal_imports, --loc_txt
 		10, --cost
 		true, --unlocked
 		true, --discovered
 		false, --available
 		{'v_shady_trading'}, --requires
-		nil --atlas
+		"ReverseBalatro_Vouchers" --atlas
 	)
 	local window_shopping = SMODS.Voucher:new(
 		"Window Shopping", --name
 		"window_shopping", --slug
 		{free_rerolls = 1}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 0, y = 2}, --spritePos
 		voucher_def.window_shopping, --loc_txt
 		10, --cost
 		true, --unlocked
 		true, --discovered
 		true, --available
 		{}, --requires
-		nil --atlas
+		"ReverseBalatro_Vouchers" --atlas
 	)
 	local infinite_scroll = SMODS.Voucher:new(
 		"Infinite Scroll", --name
 		"infinite_scroll", --slug
 		{free_rerolls = 2}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 0, y = 3}, --spritePos
 		voucher_def.infinite_scroll, --loc_txt
 		10, --cost
 		true, --unlocked
 		true, --discovered
 		false, --available
 		{'v_window_shopping'}, --requires
-		nil --atlas
+		"ReverseBalatro_Vouchers" --atlas
 	)
 
 	--Joker Register/Atlas
@@ -1019,16 +1145,18 @@ function SMODS.INIT.ReverseBalatro()
 	fine_wine:register()
 	monochrome:register()
 	proletaire:register()
+	art_gallery:register()
+	instant_gratification:register()
+	coupon:register()
+	graffiti:register()
+	mathmagician:register()
 
 	--Voucher register
+	SMODS.Sprite:new("ReverseBalatro_Vouchers", SMODS.findModByID("ReverseBalatro").path, "ReverseBalatro_Vouchers.png", 71, 95, "asset_atli"):register()
 	shady_trading:register()
-	SMODS.Sprite:new("v_shady_trading", SMODS.findModByID("ReverseBalatro").path, "v_shady_trading.png", 71, 95, "asset_atli"):register()
 	illegal_imports:register()
-	SMODS.Sprite:new("v_illegal_imports", SMODS.findModByID("ReverseBalatro").path, "v_illegal_imports.png", 71, 95, "asset_atli"):register()
 	window_shopping:register()
-	SMODS.Sprite:new("v_window_shopping", SMODS.findModByID("ReverseBalatro").path, "v_window_shopping.png", 71, 95, "asset_atli"):register()
 	infinite_scroll:register()
-	SMODS.Sprite:new("v_infinite_scroll", SMODS.findModByID("ReverseBalatro").path, "v_infinite_scroll.png", 71, 95, "asset_atli"):register()
 
 	init_localization()
 
@@ -1058,7 +1186,7 @@ function SMODS.INIT.ReverseBalatro()
 										G.jokers:remove_card(self)
 										self:remove()
 										self = nil
-									return true; end})) 
+									return true; end}))
 							return true
 						end
 					})) 
@@ -1595,6 +1723,22 @@ function SMODS.INIT.ReverseBalatro()
 			G.GAME.current_round.monochrome.suit = self.ability.extra.suit
 		end
 	end
+	SMODS.Jokers.j_art_gallery.calculate = function(self, context) --Jester Logic
+		if SMODS.end_calculate_context(context) then
+			local total_cards = 0
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.set == 'Joker' then total_cards = total_cards + 1 end
+			end
+			for i = 1, #G.consumeables.cards do
+				if G.consumeables.cards[i] then total_cards = total_cards + 1 end
+			end
+			return {
+				message = localize{type='variable',key='a_chips',vars={total_cards*self.ability.extra.chips_add}},
+				chip_mod = total_cards*self.ability.extra.chips_add, 
+				colour = G.C.CHIPS
+			}
+		end
+	end
 	SMODS.Jokers.j_proletaire.calculate = function(self, context) --Prolétaire Logic
 		if not context.blueprint then
 			if context.setting_blind and not context.getting_sliced then
@@ -1677,6 +1821,60 @@ function SMODS.INIT.ReverseBalatro()
 		if context.end_of_round and not context.individual and not context.repetition then
 			if self.ability.extra.boss_blind_applied.name == 'The Manacle' then
 				G.hand:change_size(1)
+			end
+		end
+	end
+	SMODS.Jokers.j_instant_gratification.calculate = function(self, context) --Instant Gratification logic
+		if context.discard and context.other_card == context.full_hand[#context.full_hand] then
+			ease_dollars(self.ability.extra)
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					ease_dollars(self.ability.extra)
+					card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('$')..self.ability.extra,colour = G.C.MONEY, delay = 0.45})
+					return true
+				end}))
+			return
+		end
+	end
+	SMODS.Jokers.j_coupon.calculate = function(self, context) --Coupon Logic
+		if SMODS.end_calculate_context(context) then
+			return {
+				message = localize{type='variable',key='a_chips',vars={-self.ability.extra.minus_chips}},
+				chip_mod = -self.ability.extra.minus_chips, 
+				colour = G.C.RED
+			}
+		end
+	end
+	SMODS.Jokers.j_graffiti.calculate = function (self, context) --Graffiti logic
+		if SMODS.end_calculate_context(context) then
+			if self.ability.extra.mult_add*G.GAME.current_round.hands_left > 0 then
+				return {
+					message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_add*G.GAME.current_round.hands_left}},
+					mult_mod = self.ability.extra.mult_add*G.GAME.current_round.hands_left
+				}
+			end
+		end
+	end
+	SMODS.Jokers.j_mathmagician.calculate = function (self, context) --Graffiti logic
+		if context.discard and context.other_card == context.full_hand[#context.full_hand] then
+			numbered_cards = 0
+			for k, v in ipairs(context.full_hand) do
+				if not v:is_face() then numbered_cards = numbered_cards + 1 end
+			end
+			if numbered_cards >= 4 and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+				G.E_MANAGER:add_event(Event({
+                    func = (function()
+                        G.E_MANAGER:add_event(Event({
+                            func = function() 
+                                local card = create_card('Tarot',G.consumeables, nil, nil, nil, nil, nil, 'car')
+                                card:add_to_deck()
+                                G.consumeables:emplace(card)
+                                G.GAME.consumeable_buffer = 0
+                                return true
+                            end}))   
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                        return true
+                    end)}))
 			end
 		end
 	end
@@ -1928,6 +2126,14 @@ function SMODS.INIT.ReverseBalatro()
 		if self.ability.name == 'Crime Scene' then
 			G.GAME.pool_flags['crime_scene_pool_disable'] = true
 		end
+		if self.ability.name == 'Coupon' then
+			G.GAME.discount_percent = G.GAME.discount_percent + 20
+			G.E_MANAGER:add_event(Event({func = function()
+				for k, v in pairs(G.I.CARD) do
+					if v.set_cost then v:set_cost() end
+				end
+				return true end }))
+		end
 		if self.ability.name == 'Monochrome' then
 			if not G.GAME.current_round.monochrome then
 				G.GAME.current_round["monochrome"] = {suit = 'Spades'}
@@ -1968,6 +2174,14 @@ function SMODS.INIT.ReverseBalatro()
 						v.no_pool_flag = nil
 					end
 				end
+			end
+			if self.ability.name == 'Coupon' then
+				G.GAME.discount_percent = G.GAME.discount_percent - 20
+				G.E_MANAGER:add_event(Event({func = function()
+					for k, v in pairs(G.I.CARD) do
+						if v.set_cost then v:set_cost() end
+					end
+					return true end }))
 			end
 			if self.ability.name == 'Woo! All 1s' then
 				self.added_to_deck = false
@@ -2022,7 +2236,7 @@ function SMODS.INIT.ReverseBalatro()
 			if self.ability.name == "Beyond The Mask" then
 				return self.ability.extra.dollars
 			end
-			if self.ability.name == "Fuel Tank" then
+			if self.ability.name == "Afterburner" then
 				return self.ability.extra.money
 			end
 			if self.ability.name == "Evil Eye" then
@@ -2064,6 +2278,9 @@ function SMODS.INIT.ReverseBalatro()
 					v.ability.extra.current_chips = curr_chips
 				end
 			end
+		end
+		if _chips < 0 then
+			_chips = 0
 		end
 		return mod_chips_ref(_chips)
 	end
@@ -2152,10 +2369,25 @@ function SMODS.INIT.ReverseBalatro()
 		return true end}))
 	end
 
+	local CardApply_to_run_ref = Card.apply_to_run
+	function Card.apply_to_run(self, center)
+		CardApply_to_run_ref(self, center)
+		center_table = {
+			name = center and center.name or self and self.ability.name,
+			extra = center and center.config.extra or self and self.ability.extra
+		}
+		if (center_table.name == 'Clearance Sale' or center_table.name == 'Liquidation') and nex(find_joker('Coupon')) then
+			for k, v in pairs(G.jokers.cards) do
+				if v.ability.name == 'Coupon' then
+					G.GAME.discount_percent = G.GAME.discount_percent + 20
+				end
+			end
+		end
+	end
+
 	local BackApply_to_run_ref = Back.apply_to_run
-	function Back.apply_to_run(arg)
-		
-		BackApply_to_run_ref(arg)
+	function Back.apply_to_run(arg_56_0)
+		BackApply_to_run_ref(arg_56_0)
 
 		-- Adds Pool Flags
 		G.P_CENTERS['j_taliaferro']['no_pool_flag'] = 'taliaferro_extinct'
@@ -2165,7 +2397,7 @@ function SMODS.INIT.ReverseBalatro()
 		G.P_CENTERS['j_evil_eye']['yes_pool_flag'] = 'shady_trading_redeemed'
 
 		-- Redeems 'Shady Trading' Voucher when playing Ghost Deck
-		if arg.effect.config.spectral_rate then
+		if arg_56_0.effect.config.spectral_rate then
 			G.E_MANAGER:add_event(Event({
 				func = function() 
 					G.GAME.used_vouchers['v_shady_trading'] = true
@@ -2179,29 +2411,39 @@ function SMODS.INIT.ReverseBalatro()
 
 	--Voucher redeem logic
 	function SMODS.Vouchers.v_shady_trading.redeem(center)
-		if G.GAME.spectral_rate < 2 then
-			G.GAME.spectral_rate = 2
+		if center.name == 'Shady Trading' then
+			if G.GAME.spectral_rate < 2 then
+				G.GAME.spectral_rate = 2
+			end
+			G.GAME.pool_flags.shady_trading_redeemed = true
 		end
-		G.GAME.pool_flags.shady_trading_redeemed = true
 	end
 	function SMODS.Vouchers.v_illegal_imports.redeem(center)
-		G.GAME.spectral_rate = 4
+		if center.name == 'Illegal Imports' then
+			G.GAME.spectral_rate = 4
+		end
 	end
 	function SMODS.Vouchers.v_window_shopping.redeem(center)
-		G.E_MANAGER:add_event(Event({func = function()
-			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
-			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
-			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
-			calculate_reroll_cost(true)
-			return true end }))
+		if center.name == 'Window Shopping' then
+			G.E_MANAGER:add_event(Event({func = function()
+				G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
+				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
+				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
+				calculate_reroll_cost(true)
+				return true 
+			end }))
+		end
 	end
 	function SMODS.Vouchers.v_infinite_scroll.redeem(center)
-		G.E_MANAGER:add_event(Event({func = function()
-			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
-			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
-			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
-			calculate_reroll_cost(true)
-			return true end }))
+		if center.name == 'Infinite Scroll' then
+			G.E_MANAGER:add_event(Event({func = function()
+				G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
+				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
+				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
+				calculate_reroll_cost(true)
+				return true 
+			end }))
+		end
 	end
 
 	--Joker loc_def and Joker tooltips
@@ -2303,7 +2545,7 @@ function SMODS.INIT.ReverseBalatro()
 		end
 	end
 	function SMODS.Jokers.j_fuel_tank.loc_def(center)
-		if center.ability.name == 'Fuel Tank' then
+		if center.ability.name == 'Afterburner' then
 			return {center.ability.extra.money, center.ability.extra.money_loss}
 		end
 	end
@@ -2352,6 +2594,22 @@ function SMODS.INIT.ReverseBalatro()
 			return {localize(center.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[center.ability.extra.suit]}}
 		end
 	end
+	function SMODS.Jokers.j_art_gallery.loc_def(center)
+		if center.ability.name == 'Art Gallery' then
+			local total_cards = 0
+			if G.jokers then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].ability.set == 'Joker' then total_cards = total_cards + 1 end
+				end
+			end
+			if G.consumeables then
+				for i = 1, #G.consumeables.cards do
+					if G.consumeables.cards[i] then total_cards = total_cards + 1 end
+				end
+			end
+			return {center.ability.extra.chips_add, total_cards*center.ability.extra.chips_add}
+		end
+	end
 	function SMODS.Jokers.j_proletaire.loc_def(center)
 		if center.ability.name == 'Prolétaire' then 
 			if center.ability.extra.boss_blind_applied ~= nil then
@@ -2359,6 +2617,16 @@ function SMODS.INIT.ReverseBalatro()
 			else
 				return {localize('k_na')}
 			end
+		end
+	end
+	function SMODS.Jokers.j_coupon.loc_def(center)
+		if center.ability.name == 'Coupon' then
+			return {center.ability.extra.minus_chips, center.ability.extra.money_off}
+		end
+	end
+	function SMODS.Jokers.j_graffiti.loc_def(center)
+		if center.ability.name == 'Graffiti' then
+			return {center.ability.extra.mult_add, center.ability.extra.mult_add*G.GAME.current_round.hands_left}
 		end
 	end
 end
