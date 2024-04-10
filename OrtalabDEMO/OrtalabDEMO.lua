@@ -3,13 +3,13 @@
 --- MOD_ID: OrtalabDEMO
 --- MOD_AUTHOR: [Crimson Heart, Balatro Discord]
 --- MOD_DESCRIPTION: Every action has an opposite reaction. In another world, in the nation of "Virtue", a simple indie developer created Ortalab, which so happened to be the opposite of our world's Balatro. This mod is intended to port everything from that parallel world to Balatro. Within this demo, it includes [Insert here]
---- DISPLAY_NAME: Ortalab DEMO (0.8.0)
+--- DISPLAY_NAME: Ortalab DEMO
 --- BADGE_COLOUR: 990000
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
-function SMODS.INIT.OrtalabDEMO()
+function SMODS.INIT.Ortalab()
     local jokers_def = {
 		jester = { -- Jester
 			["name"] = "Jester",
@@ -420,7 +420,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local generous_joker = SMODS.Joker:new(
@@ -436,7 +436,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local chastful_joker = SMODS.Joker:new(
@@ -452,7 +452,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local patient_joker = SMODS.Joker:new(
@@ -468,7 +468,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local abstemious_joker = SMODS.Joker:new(
@@ -484,7 +484,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
     local popcorn_bag = SMODS.Joker:new(
@@ -500,7 +500,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local the_solo = SMODS.Joker:new(
@@ -516,7 +516,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local the_mysterium = SMODS.Joker:new(
@@ -532,7 +532,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local the_spectrum = SMODS.Joker:new(
@@ -548,7 +548,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local collatz = SMODS.Joker:new(
@@ -564,7 +564,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local triangle_joker = SMODS.Joker:new(
@@ -580,7 +580,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local croupier = SMODS.Joker:new(
@@ -596,7 +596,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local chameleon_joker = SMODS.Joker:new(
@@ -612,7 +612,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local taliaferro = SMODS.Joker:new(
@@ -628,7 +628,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local royal_gala = SMODS.Joker:new(
@@ -644,7 +644,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local sedimentation = SMODS.Joker:new(
@@ -660,7 +660,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local ban_list = SMODS.Joker:new(
@@ -676,7 +676,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local virus = SMODS.Joker:new(
@@ -692,7 +692,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local inverse_midas = SMODS.Joker:new(
@@ -708,7 +708,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local fuel_tank = SMODS.Joker:new(
@@ -724,7 +724,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local mint_condition = SMODS.Joker:new(
@@ -740,7 +740,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local frowny_face = SMODS.Joker:new(
@@ -756,7 +756,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local scared_face = SMODS.Joker:new(
@@ -772,7 +772,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local mystery_soda = SMODS.Joker:new(
@@ -788,7 +788,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local dawn = SMODS.Joker:new(
@@ -804,7 +804,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local slot_machine = SMODS.Joker:new(
@@ -820,7 +820,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local roscharch_test = SMODS.Joker:new(
@@ -836,7 +836,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local woo_all_1s = SMODS.Joker:new(
@@ -852,7 +852,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local crime_scene = SMODS.Joker:new(
@@ -868,7 +868,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local occultist = SMODS.Joker:new(
@@ -884,7 +884,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local shrine = SMODS.Joker:new(
@@ -900,7 +900,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local evil_eye = SMODS.Joker:new(
@@ -916,7 +916,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local fine_wine = SMODS.Joker:new(
@@ -932,7 +932,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local monochrome = SMODS.Joker:new(
@@ -948,7 +948,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local proletaire = SMODS.Joker:new(
@@ -964,7 +964,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local art_gallery = SMODS.Joker:new(
@@ -980,7 +980,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local instant_gratification = SMODS.Joker:new(
@@ -996,7 +996,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local coupon = SMODS.Joker:new(
@@ -1012,7 +1012,7 @@ function SMODS.INIT.OrtalabDEMO()
 		false, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local graffiti = SMODS.Joker:new(
@@ -1028,7 +1028,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 	local mathmagician = SMODS.Joker:new( 
@@ -1044,7 +1044,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --blueprint_compat
 		true, --eternal_compat
 		'', --effect
-		"ReverseBalatro_Jokers", --atlas
+		"Ortalab_Jokers", --atlas
 		nil --soul_pos
 	)
 
@@ -1061,7 +1061,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --discovered
 		true, --available
 		{}, --requires
-		"ReverseBalatro_Vouchers" --atlas
+		"Ortalab_Vouchers" --atlas
 	)
 	local illegal_imports = SMODS.Voucher:new(
 		"Illegal Imports", --name
@@ -1074,7 +1074,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --discovered
 		false, --available
 		{'v_shady_trading'}, --requires
-		"ReverseBalatro_Vouchers" --atlas
+		"Ortalab_Vouchers" --atlas
 	)
 	local window_shopping = SMODS.Voucher:new(
 		"Window Shopping", --name
@@ -1087,7 +1087,7 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --discovered
 		true, --available
 		{}, --requires
-		"ReverseBalatro_Vouchers" --atlas
+		"Ortalab_Vouchers" --atlas
 	)
 	local infinite_scroll = SMODS.Voucher:new(
 		"Infinite Scroll", --name
@@ -1100,11 +1100,11 @@ function SMODS.INIT.OrtalabDEMO()
 		true, --discovered
 		false, --available
 		{'v_window_shopping'}, --requires
-		"ReverseBalatro_Vouchers" --atlas
+		"Ortalab_Vouchers" --atlas
 	)
 
 	--Joker Register/Atlas
-	SMODS.Sprite:new("ReverseBalatro_Jokers", SMODS.findModByID("ReverseBalatro").path, "ReverseBalatro_Jokers.png", 71, 95, "asset_atli"):register()
+	SMODS.Sprite:new("Ortalab_Jokers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Jokers.png", 71, 95, "asset_atli"):register()
 	jester:register()
 	generous_joker:register()
 	chastful_joker:register()
@@ -1153,7 +1153,7 @@ function SMODS.INIT.OrtalabDEMO()
 	mathmagician:register()
 
 	--Voucher register
-	SMODS.Sprite:new("ReverseBalatro_Vouchers", SMODS.findModByID("ReverseBalatro").path, "ReverseBalatro_Vouchers.png", 71, 95, "asset_atli"):register()
+	SMODS.Sprite:new("Ortalab_Vouchers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Vouchers.png", 71, 95, "asset_atli"):register()
 	shady_trading:register()
 	illegal_imports:register()
 	window_shopping:register()
