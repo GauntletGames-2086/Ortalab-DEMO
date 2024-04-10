@@ -1,14 +1,15 @@
 --- STEAMODDED HEADER
---- MOD_NAME: Ortalab
---- MOD_ID: ReverseBalatro
---- MOD_AUTHOR: [Balatro Discrd]
---- MOD_DESCRIPTION: Adds Reverse Jokers
---- DISPLAY_NAME: Ortalab
+--- MOD_NAME: Ortalab DEMO
+--- MOD_ID: OrtalabDEMO
+--- MOD_AUTHOR: [Crimson Heart, Balatro Discord]
+--- MOD_DESCRIPTION: Every action has an opposite reaction. In another world, in the nation of "Virtue", a simple indie developer created Ortalab, which so happened to be the opposite of our world's Balatro. This mod is intended to port everything from that parallel world to Balatro. Within this demo, it includes [Insert here]
+--- DISPLAY_NAME: Ortalab DEMO
+--- BADGE_COLOUR: 990000
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
-function SMODS.INIT.ReverseBalatro()
+function SMODS.INIT.OrtalabDEMO()
     local jokers_def = {
 		jester = { -- Jester
 			["name"] = "Jester",
@@ -57,7 +58,7 @@ function SMODS.INIT.ReverseBalatro()
 			["name"] = "Popcorn Bag",
 			["text"] = {
 				"{C:mult}+#1#{} Mult.",
-				"Gains {C:mult}+#2#{} Mult per round played",
+				"{C:mult}+#2#{} Mult per round played",
 				"Explodes when greater than {C:mult}+20{}",
 				"{C:inactive}(Artist: ){}"
 			}
@@ -100,7 +101,7 @@ function SMODS.INIT.ReverseBalatro()
 		triangle_joker = { -- Triangle Joker
 			["name"] = "Triangle Joker",
 			["text"] = {
-				"Gains {C:mult}+#1#{} Mult if played hand",
+				"This Joker gains {C:mult}+#1#{} Mult if played hand",
 				"has exactly {C:attention}3{} cards",
 				"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 				"{C:inactive}(Artist: ){}"
