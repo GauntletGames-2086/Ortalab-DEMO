@@ -1,9 +1,9 @@
 --- STEAMODDED HEADER
---- MOD_NAME: Ortalab DEMO
+--- MOD_NAME: Ortalab DEMO (0.8.0)
 --- MOD_ID: OrtalabDEMO
 --- MOD_AUTHOR: [Crimson Heart, Balatro Discord]
 --- MOD_DESCRIPTION: Every action has an opposite reaction. In another world, in the nation of "Virtue", a simple indie developer created Ortalab, which so happened to be the opposite of our world's Balatro. This mod is intended to port everything from that parallel world to Balatro. Within this demo, it includes [Insert here]
---- DISPLAY_NAME: Ortalab DEMO
+--- DISPLAY_NAME: Ortalab DEMO (0.8.0)
 --- BADGE_COLOUR: 990000
 
 ----------------------------------------------
