@@ -2444,7 +2444,7 @@ function SMODS.INIT.Ortalab()
 		G.P_CENTERS['j_evil_eye']['yes_pool_flag'] = 'shady_trading_redeemed']]
 
 		-- Redeems 'Shady Trading' Voucher when playing Ghost Deck
-		if arg_56_0.effect.config.spectral_rate then
+		--[[if arg_56_0.effect.config.spectral_rate then
 			G.E_MANAGER:add_event(Event({
 				func = function() 
 					G.GAME.used_vouchers['v_shady_trading'] = true
@@ -2453,7 +2453,7 @@ function SMODS.INIT.Ortalab()
 					return true 
 				end 
 			}))
-		end
+		end]]
 	end
 
 	--Voucher redeem logic
