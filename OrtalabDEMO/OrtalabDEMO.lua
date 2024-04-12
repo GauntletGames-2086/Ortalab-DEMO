@@ -177,7 +177,7 @@ function SMODS.INIT.Ortalab()
 				"is not a {C:attention}#2#{}",
 				"or {C:attention}#3#{}",
 				"Poker hands change on every payout",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: koszetrawe){}"
 			}
 		},
 		virus = { -- Virus
@@ -237,7 +237,7 @@ function SMODS.INIT.Ortalab()
 			["text"] = {
 				"Sell this card to create",
 				"two free tags",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: im_salad){}"
 			}
 		},
 		dawn = { -- Dawn
@@ -1642,7 +1642,7 @@ function SMODS.INIT.Ortalab()
 		if context.selling_self then
 			local available_tags = {}
 			for k, v in pairs(G.P_TAGS) do
-				if k ~= 'tag_orbital' or k ~= 'tag_standard' then table.insert(available_tags,k) end
+				if k ~= 'tag_orbital' then table.insert(available_tags,k) end
 			end
 			local tag_1 = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
 			local tag_2 = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
@@ -2423,7 +2423,7 @@ function SMODS.INIT.Ortalab()
 			name = center and center.name or self and self.ability.name,
 			extra = center and center.config.extra or self and self.ability.extra
 		}
-		if (center_table.name == 'Clearance Sale' or center_table.name == 'Liquidation') and nex(find_joker('Coupon')) then
+		if (center_table.name == 'Clearance Sale' or center_table.name == 'Liquidation') and next(find_joker('Coupon')) then
 			for k, v in pairs(G.jokers.cards) do
 				if v.ability.name == 'Coupon' then
 					G.GAME.discount_percent = G.GAME.discount_percent + 20
