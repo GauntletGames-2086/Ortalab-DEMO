@@ -2,12 +2,27 @@
 --- MOD_NAME: Ortalab DEMO (0.8.0)
 --- MOD_ID: OrtalabDEMO
 --- MOD_AUTHOR: [Crimson Heart, Balatro Discord]
---- MOD_DESCRIPTION: Every action has an opposite reaction. In another world, in the nation of "Virtue", a simple indie developer created Ortalab, which so happened to be the opposite of our world's Balatro. This mod is intended to port everything from that parallel world to Balatro. Within this demo, it includes [Insert here]
+--- MOD_DESCRIPTION: Every action has an opposite reaction. In another world, in the nation of "Virtue", a simple indie developer created Ortalab, which so happened to be the opposite of our world's Balatro. This mod is intended to port everything from that parallel world to Balatro. Within this demo, it includes 40 Jokers and 3 decks for you to check out.
 --- DISPLAY_NAME: Ortalab DEMO
 --- BADGE_COLOUR: 990000
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
+
+local loc_colour_ref = loc_colour
+function loc_colour(_c, _default)
+    loc_colour_ref(_c, _default) -- toss the return value, we don't need it
+    G.ARGS.LOC_COLOURS['zodiac'] = HEX('9D3B35')
+    G.ARGS.LOC_COLOURS['loteria'] = HEX('B77A91')
+    G.ARGS.LOC_COLOURS['cryptid'] = HEX('704F72')
+    return G.ARGS.LOC_COLOURS[_c] or _default or G.C.UI.TEXT_DARK -- recalculate result
+end
+
+function SMODS.INIT.OrtalabSprites()
+    local OrtalabDEMO = SMODS.findModByID("OrtalabDEMO")
+    local Ortalab_Enhancers = SMODS.Sprite:new('centers', OrtalabDEMO.path, 'Ortalab-Enhancers.png', 71, 95, 'asset_atli')
+    Ortalab_Enhancers:register()
+end
 
 function SMODS.INIT.Ortalab()
     local jokers_def = {
@@ -404,6 +419,29 @@ function SMODS.INIT.Ortalab()
 			}
 		}
 	}
+	local OrtalabDecks_def = {
+        Cyan = {
+            ["name"] = "Cyan Deck",
+            ["text"] = {
+                [1] = "{C:blue}+2{} hands",
+                [2] = "{C:red}-1{} discard",
+            }
+        },
+        Orange = {
+                ["name"] = "Orange Deck",
+                ["text"] = {
+                    [1] = "{C:red}+2{} discards",
+                [2] = "{C:blue}-1{} hand",
+            }
+        },
+        Sketched = {
+            ["name"] = "Sketched Deck",
+            ["text"] = {
+                [1] = "{C:red}-1{} Hand Size",
+                [2] = "{C:attention}+1{} Joker Slot",
+            }
+        }
+    }
 
 	--Joker config setup
     -- SMODS.Joker:new(name, slug, config, spritePos, loc_txt, rarity, cost, unlocked, discovered, blueprint_compat, eternal_compat, effect, atlas, soul_pos)
@@ -1048,6 +1086,12 @@ function SMODS.INIT.Ortalab()
 		nil --soul_pos
 	)
 
+	--Deck config
+	--SMODS.Deck:new(name, slug, config, pos, loc_txt)
+	local CyanDeck = SMODS.Deck:new("Cyan Deck", "Ortalab_Cyan", {hands = 2, discards = -1}, {x = 0, y = 5}, OrtalabDecks_def.Cyan)
+    local OrangeDeck = SMODS.Deck:new("Orange Deck", "Ortalab_Orange", {hands = -1, discards = 2}, {x = 1, y = 5}, OrtalabDecks_def.Orange)
+    local SketchedDeck = SMODS.Deck:new("Sketched Deck", "Ortalab_Sketched", {hand_size = -1, joker_slot = 1}, {x = 0, y = 6}, OrtalabDecks_def.Sketched)
+
 	--Voucher config
 	--SMODS.Voucher:new(name, slug, config, pos, loc_txt, cost, unlocked, discovered, available, requires, atlas)
 	--[[local shady_trading = SMODS.Voucher:new(
@@ -1151,6 +1195,11 @@ function SMODS.INIT.Ortalab()
 	coupon:register()
 	graffiti:register()
 	mathmagician:register()
+
+	--Deck register
+	CyanDeck:register()
+	OrangeDeck:register()
+    SketchedDeck:register()
 
 	--Voucher register
 	--[[SMODS.Sprite:new("Ortalab_Vouchers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Vouchers.png", 71, 95, "asset_atli"):register()
