@@ -1352,7 +1352,8 @@ function SMODS.INIT.Ortalab()
 				end
 			end
 			if #jokers > 0 then
-				local chosen_joker = jokers[math.random(1, #jokers)]
+				
+				local chosen_joker = pseudorandom_element(jokers, pseudoseed('chameleon'))
 				self.ability.copied_joker = chosen_joker
 			else
 				self.ability.copied_joker = nil
@@ -1361,7 +1362,7 @@ function SMODS.INIT.Ortalab()
 	end
 	SMODS.Jokers.j_taliaferro.calculate = function(self, context) --Taliaferro Logic NOTE: MUST ADD POOL FLAGS
 		if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-			if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+			if pseudorandom('taliaferro') < G.GAME.probabilities.normal/self.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('tarot1')
@@ -1399,7 +1400,7 @@ function SMODS.INIT.Ortalab()
 	SMODS.Jokers.j_royal_gala.calculate = function(self, context) --Royal Gala Logic
 		if self.ability.name == 'Royal Gala' then
 			if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-				if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+				if pseudorandom('royalgala') < G.GAME.probabilities.normal/self.ability.extra.odds then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							play_sound('tarot1')
@@ -1456,9 +1457,9 @@ function SMODS.INIT.Ortalab()
 							for k, v in pairs(G.GAME.hands) do
 								if v.visible and k ~= self.ability.extra.banlist_poker_hand_1 and k ~= self.ability.extra.banlist_poker_hand_2 then _poker_hands[#_poker_hands+1] = k end
 							end
-							self.ability.extra.banlist_poker_hand_1 = _poker_hands[math.random(1,#_poker_hands)]
+							self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed((self.area and self.area.config.type == 'title') and 'false_blacklist' or 'blacklist'))
 							_poker_hands[self.ability.extra.banlist_poker_hand_1] = nil
-							self.ability.extra.banlist_poker_hand_2 = _poker_hands[math.random(1,#_poker_hands)]
+							self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed((self.area and self.area.config.type == 'title') and 'false_blacklist' or 'blacklist'))
 							return true
 						end
 					}))
@@ -1477,7 +1478,7 @@ function SMODS.INIT.Ortalab()
 	SMODS.Jokers.j_virus.calculate = function(self, context) --Virus Logic
 		if context.first_hand_drawn and not context.blueprint then
 			local eval = function() return G.GAME.current_round.hands_played == 0 end
-			juice_card_until(card, eval, true)
+			juice_card_until(self, eval, true)
 		end
 		if not context.other_joker and not context.repetition and not context.individual and not context.end_of_round and not context.discard and not context.pre_discard then
 			if context.cardarea == G.jokers then
@@ -1490,9 +1491,9 @@ function SMODS.INIT.Ortalab()
 						end
 						self.ability.extra.joker_triggered = true
 						for i=1, self.ability.extra.duped_cards do
-							local infected_card = hand[math.random(1,#hand)]
+							local infected_card = pseudorandom_element(hand, pseudoseed('virus'))
 							while infected_card == card_to_dupe do
-								infected_card = hand[math.random(1,#hand)]
+								infected_card = pseudorandom_element(hand, pseudoseed('virus'))
 							end
 							G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
 								copy_card(card_to_dupe, infected_card)
@@ -1505,7 +1506,7 @@ function SMODS.INIT.Ortalab()
 							card = self
 						}
 					end
-				elseif context.after and not context.blueprint and context.full_hand[1] ~= nil and card.ability.extra.joker_triggered == true then
+				elseif context.after and not context.blueprint and context.full_hand[1] ~= nil and self.ability.extra.joker_triggered == true then
 					self.ability.extra.joker_triggered = false
 					G.E_MANAGER:add_event(Event({
 						trigger = 'after',
@@ -1643,8 +1644,8 @@ function SMODS.INIT.Ortalab()
 			for k, v in pairs(G.P_TAGS) do
 				if k ~= 'tag_orbital' or k ~= 'tag_standard' then table.insert(available_tags,k) end
 			end
-			local tag_1 = available_tags[math.random(1,#available_tags)]
-			local tag_2 = available_tags[math.random(1,#available_tags)]
+			local tag_1 = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
+			local tag_2 = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
 			G.E_MANAGER:add_event(Event({
 				func = (function()
 					add_tag(Tag(tag_1))
@@ -1703,7 +1704,7 @@ function SMODS.INIT.Ortalab()
 	end
 	SMODS.Jokers.j_roscharch_test.calculate = function(self, context) --Roscharch Logic
 		if context.individual and context.cardarea == G.play and (context.other_card:get_id() == 5 or context.other_card:get_id() == 2) then
-			if math.random(1,2) == 1 then
+			if pseudorandom('roscharch_test') <= 0.5 then
 				return {
 					mult = self.ability.extra.mult,
 					card = self
@@ -1738,7 +1739,7 @@ function SMODS.INIT.Ortalab()
 				card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
 			end
 			if context.end_of_round and not context.individual and not context.repetition then
-				if math.random(G.GAME.probabilities.normal,self.ability.extra.odds) == G.GAME.probabilities.normal then
+				if pseudorandom('fine_wine') < G.GAME.probabilities.normal/self.ability.extra.odds then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							play_sound('tarot1')
@@ -1769,7 +1770,7 @@ function SMODS.INIT.Ortalab()
 	SMODS.Jokers.j_monochrome.calculate = function(self, context) --Monochrome Logic
 		if not context.blueprint and context.setting_blind and not context.getting_sliced then
 			local suits = {'Spades', 'Clubs', 'Hearts', 'Diamonds'}
-			self.ability.extra.suit = suits[math.random(1,4)]
+			self.ability.extra.suit = pseudorandom_element(suits, pseudoseed('monochrome'))
 			G.GAME.current_round.monochrome.suit = self.ability.extra.suit
 		end
 	end
@@ -1809,7 +1810,7 @@ function SMODS.INIT.Ortalab()
 						end
 					end
 				end
-				local boss_blind = all_blind_configs[math.random(1,#all_blind_configs)]
+				local boss_blind = pseudorandom_element(all_blind_configs, pseudoseed('proletaire'))
 				self.ability.extra.boss_blind_applied = boss_blind
 				G.GAME.blind.dollars = G.GAME.blind.dollars*3
 
@@ -2262,19 +2263,15 @@ function SMODS.INIT.Ortalab()
 			for k, v in pairs(G.GAME.hands) do
 				if v.visible then _poker_hands[#_poker_hands+1] = k end
 			end
-			local old_hand_1 = self.ability.extra.banlist_poker_hand_1
-			local old_hand_2 = self.ability.extra.banlist_poker_hand_2
 			self.ability.extra.banlist_poker_hand_1 = nil
 			self.ability.extra.banlist_poker_hand_2 = nil
-
+			
 			while not self.ability.extra.banlist_poker_hand_1 do
-				self.ability.extra.banlist_poker_hand_1 = _poker_hands[math.random(1,#_poker_hands)]
-				if self.ability.extra.banlist_poker_hand_1 == old_hand_1 then self.ability.extra.banlist_poker_hand_1 = nil end
+				self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed('blacklist'))
 			end
 			_poker_hands[self.ability.extra.banlist_poker_hand_1] = nil
 			while not self.ability.extra.banlist_poker_hand_2 do
-				self.ability.extra.banlist_poker_hand_2 = _poker_hands[math.random(1,#_poker_hands)]
-				if self.ability.extra.banlist_poker_hand_2 == old_hand_2 then self.ability.extra.banlist_poker_hand_2 = nil end
+				self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist'))
 			end
 		end
 	end
