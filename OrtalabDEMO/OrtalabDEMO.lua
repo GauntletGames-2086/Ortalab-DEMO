@@ -309,7 +309,7 @@ function SMODS.INIT.Ortalab()
 				"All cards are considered",
 				"{V:1}#1#{} cards, changes when",
 				"blind is selected",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: im_salad){}"
 			}
 		},
 		proletaire = { -- Prolétaire
@@ -430,7 +430,7 @@ function SMODS.INIT.Ortalab()
 		{x = 6, y = 1}, --spritePos
 		jokers_def.generous_joker, --loc_txt
 		1, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -446,7 +446,7 @@ function SMODS.INIT.Ortalab()
 		{x = 7, y = 1}, --spritePos
 		jokers_def.chastful_joker, --loc_txt
 		1, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -462,7 +462,7 @@ function SMODS.INIT.Ortalab()
 		{x = 8, y = 1}, --spritePos
 		jokers_def.patient_joker, --loc_txt
 		1, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -478,7 +478,7 @@ function SMODS.INIT.Ortalab()
 		{x = 9, y = 1}, --spritePos
 		jokers_def.abstemious_joker, --loc_txt
 		1, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -587,7 +587,7 @@ function SMODS.INIT.Ortalab()
 		"Croupier", --name
 		"croupier", --slug
 		{}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 6, y = 11}, --spritePos
 		jokers_def.croupier, --loc_txt
 		2, --rarity
 		8, --cost
@@ -603,10 +603,10 @@ function SMODS.INIT.Ortalab()
 		"Chameleon Joker", --name
 		"chameleon_joker", --slug
 		{copied_joker = nil}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 1, y = 7}, --spritePos
 		jokers_def.chameleon_joker, --loc_txt
 		3, --rarity
-		10, --cost
+		8, --cost
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
@@ -622,7 +622,7 @@ function SMODS.INIT.Ortalab()
 		{x = 7, y = 6}, --spritePos
 		jokers_def.taliaferro, --loc_txt
 		1, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -638,7 +638,7 @@ function SMODS.INIT.Ortalab()
 		{x = 5,y = 11}, --spritePos
 		jokers_def.royal_gala, --loc_txt
 		1, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -651,7 +651,7 @@ function SMODS.INIT.Ortalab()
 		"Sedimentation", --name
 		"sedimentation", --slug
 		{extra = {mult_per_card = 2}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 5, y = 13}, --spritePos
 		jokers_def.sedimentation, --loc_txt
 		2, --rarity
 		6, --cost
@@ -718,7 +718,7 @@ function SMODS.INIT.Ortalab()
 		{x = 8, y = 12}, --spritePos
 		jokers_def.fuel_tank, --loc_txt
 		2, --rarity
-		8, --cost
+		6, --cost
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
@@ -782,7 +782,7 @@ function SMODS.INIT.Ortalab()
 		{x = 8, y = 14}, --spritePos
 		jokers_def.mystery_soda, --loc_txt
 		2, --rarity
-		5, --cost
+		4, --cost
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
@@ -813,7 +813,7 @@ function SMODS.INIT.Ortalab()
 		{extra = 1}, --config
 		{x = 0, y = 12}, --spritePos
 		jokers_def.slot_machine, --loc_txt
-		3, --rarity
+		2, --rarity
 		8, --cost
 		true, --unlocked
 		true, --discovered
@@ -891,7 +891,7 @@ function SMODS.INIT.Ortalab()
 		"Shrine", --name
 		"shrine", --slug
 		{extra = {xmult = 1, xmult_add = 0.25}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 9, y = 10}, --spritePos
 		jokers_def.shrine, --loc_txt
 		2, --rarity
 		8, --cost
@@ -939,7 +939,7 @@ function SMODS.INIT.Ortalab()
 		"Monochrome", --name
 		"monochrome", --slug
 		{extra = {suit = 'Spades'}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 6}, --spritePos
 		jokers_def.monochrome, --loc_txt
 		2, --rarity
 		8, --cost
@@ -955,7 +955,7 @@ function SMODS.INIT.Ortalab()
 		"Prolétaire", --name
 		"proletaire", --slug
 		{extra = {boss_blind_applied = nil}}, --config
-		{x = 0, y = 0}, --spritePos
+		{x = 4, y = 5}, --spritePos
 		jokers_def.proletaire, --loc_txt
 		2, --rarity
 		8, --cost
@@ -1050,7 +1050,7 @@ function SMODS.INIT.Ortalab()
 
 	--Voucher config
 	--SMODS.Voucher:new(name, slug, config, pos, loc_txt, cost, unlocked, discovered, available, requires, atlas)
-	local shady_trading = SMODS.Voucher:new(
+	--[[local shady_trading = SMODS.Voucher:new(
 		"Shady Trading", --name
 		"shady_trading", --slug
 		{}, --config
@@ -1101,7 +1101,7 @@ function SMODS.INIT.Ortalab()
 		false, --available
 		{'v_window_shopping'}, --requires
 		"Ortalab_Vouchers" --atlas
-	)
+	)]]
 
 	--Joker Register/Atlas
 	SMODS.Sprite:new("Ortalab_Jokers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Jokers.png", 71, 95, "asset_atli"):register()
@@ -1153,11 +1153,11 @@ function SMODS.INIT.Ortalab()
 	mathmagician:register()
 
 	--Voucher register
-	SMODS.Sprite:new("Ortalab_Vouchers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Vouchers.png", 71, 95, "asset_atli"):register()
+	--[[SMODS.Sprite:new("Ortalab_Vouchers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Vouchers.png", 71, 95, "asset_atli"):register()
 	shady_trading:register()
 	illegal_imports:register()
 	window_shopping:register()
-	infinite_scroll:register()
+	infinite_scroll:register()]]
 
 	init_localization()
 
@@ -2393,9 +2393,9 @@ function SMODS.INIT.Ortalab()
 		-- Adds Pool Flags
 		G.P_CENTERS['j_taliaferro']['no_pool_flag'] = 'taliaferro_extinct'
 		G.P_CENTERS['j_royal_gala']['yes_pool_flag'] = 'taliaferro_extinct'
-		G.P_CENTERS['j_occultist']['yes_pool_flag'] = 'shady_trading_redeemed'
+		--[[G.P_CENTERS['j_occultist']['yes_pool_flag'] = 'shady_trading_redeemed'
 		G.P_CENTERS['j_shrine']['yes_pool_flag'] = 'shady_trading_redeemed'
-		G.P_CENTERS['j_evil_eye']['yes_pool_flag'] = 'shady_trading_redeemed'
+		G.P_CENTERS['j_evil_eye']['yes_pool_flag'] = 'shady_trading_redeemed']]
 
 		-- Redeems 'Shady Trading' Voucher when playing Ghost Deck
 		if arg_56_0.effect.config.spectral_rate then
@@ -2411,7 +2411,7 @@ function SMODS.INIT.Ortalab()
 	end
 
 	--Voucher redeem logic
-	function SMODS.Vouchers.v_shady_trading.redeem(center)
+	--[[function SMODS.Vouchers.v_shady_trading.redeem(center)
 		if center.name == 'Shady Trading' then
 			if G.GAME.spectral_rate < 2 then
 				G.GAME.spectral_rate = 2
@@ -2445,7 +2445,7 @@ function SMODS.INIT.Ortalab()
 				return true 
 			end }))
 		end
-	end
+	end]]
 
 	--Joker loc_def and Joker tooltips
 	function SMODS.Jokers.j_jester.loc_def(center)
