@@ -75,7 +75,7 @@ function SMODS.INIT.Ortalab()
 				"{C:mult}+#1#{} Mult.",
 				"{C:mult}+#2#{} Mult per round played",
 				"Explodes when greater than {C:mult}+20{}",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: GoldenDiscoPig){}"
 			}
 		},
 		the_solo = { -- The Solo
@@ -119,10 +119,10 @@ function SMODS.INIT.Ortalab()
 				"This Joker gains {C:mult}+#1#{} Mult if played hand",
 				"has exactly {C:attention}3{} cards",
 				"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: im_salad){}"
 			}
 		},
-		croupier = { -- Triangle Joker
+		croupier = { -- Croupier
 			["name"] = "Croupier",
 			["text"] = {
 				"Booster packs contain",
@@ -157,7 +157,7 @@ function SMODS.INIT.Ortalab()
 				"card is destroyed",
 				"at end of round",
 				"{C:inactive}(Artists: ItsFlowwey, Grassy){}",
-				"{C:inactive}(in_salad, Flare){}"
+				"{C:inactive}(im_salad, Flare){}"
 			}
 		},
 		sedimentation = { -- Sedimentation
@@ -187,7 +187,7 @@ function SMODS.INIT.Ortalab()
 				"{C:attention}1{} card, destroy it and",
 				"convert {C:attention}#1# random cards",
 				"in hand to played card",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: GoldenDiscoPig){}"
 			}
 		},
 		inverse_midas = { -- Beyond The Mask
@@ -305,7 +305,7 @@ function SMODS.INIT.Ortalab()
 				"Earn {C:money}$#1#{} at end of round",
 				"per each unique {C:spectral}Spectral{} card {C:attention}sold",
 				"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
-				"{C:inactive}(Artist: ){}"
+				"{C:inactive}(Artist: ItsFlowwey){}"
 			}
 		},
 		fine_wine = { -- Fine Wine
@@ -640,7 +640,7 @@ function SMODS.INIT.Ortalab()
 	local chameleon_joker = SMODS.Joker:new(
 		"Chameleon Joker", --name
 		"chameleon_joker", --slug
-		{copied_joker = nil}, --config
+		{copied_joker = nil, copied_joker_pos = 1}, --config
 		{x = 1, y = 7}, --spritePos
 		jokers_def.chameleon_joker, --loc_txt
 		3, --rarity
@@ -1329,18 +1329,23 @@ function SMODS.INIT.Ortalab()
 		end
 	end
 	SMODS.Jokers.j_chameleon_joker.calculate = function(self, context) --Chameleon Joker Logic
-		local chosen_joker = self.ability.copied_joker
-		if chosen_joker ~= nil then
-			local other_joker = chosen_joker
-			if other_joker and other_joker ~= self then
-				context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-				context.blueprint_card = context.blueprint_card or self
-				if context.blueprint > #G.jokers.cards + 1 then return end
-				local other_joker_ret = other_joker:calculate_joker(context)
-				if other_joker_ret then 
-					other_joker_ret.card = context.blueprint_card or self
-					other_joker_ret.colour = G.C.RED
-					return other_joker_ret
+		if self.ability.copied_joker then
+			if type(self.ability.copied_joker) == 'string' then
+				self.ability.copied_joker = G.jokers.cards[self.ability.copied_joker_pos]
+			end
+			local chosen_joker = self.ability.copied_joker
+			if chosen_joker ~= nil then
+				local other_joker = chosen_joker
+				if other_joker and other_joker ~= self then
+					context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
+					context.blueprint_card = context.blueprint_card or self
+					if context.blueprint > #G.jokers.cards + 1 then return end
+					local other_joker_ret = other_joker:calculate_joker(context)
+					if other_joker_ret then 
+						other_joker_ret.card = context.blueprint_card or self
+						other_joker_ret.colour = G.C.RED
+						return other_joker_ret
+					end
 				end
 			end
 		end
@@ -1348,15 +1353,17 @@ function SMODS.INIT.Ortalab()
 			local jokers = {}
 			for i=1, #G.jokers.cards do 
 				if G.jokers.cards[i] ~= self and G.jokers.cards[i].config.center.blueprint_compat == true then
-					jokers[#jokers+1] = G.jokers.cards[i]
+					jokers[#jokers+1] = {G.jokers.cards[i], i}
 				end
 			end
 			if #jokers > 0 then
-				
 				local chosen_joker = pseudorandom_element(jokers, pseudoseed('chameleon'))
-				self.ability.copied_joker = chosen_joker
+				sendInfoMessage(tostring(chosen_joker[1]))
+				self.ability.copied_joker = chosen_joker[1]
+				self.ability.copied_joker_pos = chosen_joker[2]
 			else
 				self.ability.copied_joker = nil
+				self.ability.copied_joker_pos = 1
 			end	
 		end
 	end
@@ -1455,11 +1462,16 @@ function SMODS.INIT.Ortalab()
 						func = function()
 							local _poker_hands = {}
 							for k, v in pairs(G.GAME.hands) do
-								if v.visible and k ~= self.ability.extra.banlist_poker_hand_1 and k ~= self.ability.extra.banlist_poker_hand_2 then _poker_hands[#_poker_hands+1] = k end
+								if v.visible then _poker_hands[#_poker_hands+1] = k end
 							end
-							self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed((self.area and self.area.config.type == 'title') and 'false_blacklist' or 'blacklist'))
+							self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed('blacklist1'))
 							_poker_hands[self.ability.extra.banlist_poker_hand_1] = nil
-							self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed((self.area and self.area.config.type == 'title') and 'false_blacklist' or 'blacklist'))
+							self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
+							if self.ability.extra.banlist_poker_hand_1 == self.ability.extra.banlist_poker_hand_2 then
+								while self.ability.extra.banlist_poker_hand_1 == self.ability.extra.banlist_poker_hand_2 do
+									self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
+								end
+							end
 							return true
 						end
 					}))
@@ -1641,15 +1653,17 @@ function SMODS.INIT.Ortalab()
 	SMODS.Jokers.j_mystery_soda.calculate = function(self, context) --Mystery Soda Logic
 		if context.selling_self then
 			local available_tags = {}
+			local selected_tags = {}
 			for k, v in pairs(G.P_TAGS) do
-				if k ~= 'tag_orbital' then table.insert(available_tags,k) end
+				table.insert(available_tags,k)
 			end
-			local tag_1 = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
-			local tag_2 = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
+			for i = 1, 2 do
+				selected_tags[i] = pseudorandom_element(available_tags, pseudoseed('mystery_soda'))
+			end
 			G.E_MANAGER:add_event(Event({
 				func = (function()
-					add_tag(Tag(tag_1))
-					add_tag(Tag(tag_2))
+					add_tag(Tag(selected_tags[1], false, 'Big'))
+					add_tag(Tag(selected_tags[2], false, 'Big'))
 					play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
 					play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
 					return true
@@ -1877,7 +1891,6 @@ function SMODS.INIT.Ortalab()
 	end
 	SMODS.Jokers.j_instant_gratification.calculate = function(self, context) --Instant Gratification logic
 		if context.discard and context.other_card == context.full_hand[#context.full_hand] then
-			ease_dollars(self.ability.extra)
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					ease_dollars(self.ability.extra)
@@ -2263,15 +2276,13 @@ function SMODS.INIT.Ortalab()
 			for k, v in pairs(G.GAME.hands) do
 				if v.visible then _poker_hands[#_poker_hands+1] = k end
 			end
-			self.ability.extra.banlist_poker_hand_1 = nil
-			self.ability.extra.banlist_poker_hand_2 = nil
-			
-			while not self.ability.extra.banlist_poker_hand_1 do
-				self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed('blacklist'))
-			end
+			self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed('blacklist1'))
 			_poker_hands[self.ability.extra.banlist_poker_hand_1] = nil
-			while not self.ability.extra.banlist_poker_hand_2 do
-				self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist'))
+			self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
+			if self.ability.extra.banlist_poker_hand_1 == self.ability.extra.banlist_poker_hand_2 then
+				while self.ability.extra.banlist_poker_hand_1 == self.ability.extra.banlist_poker_hand_2 do
+					self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
+				end
 			end
 		end
 	end
@@ -2310,7 +2321,7 @@ function SMODS.INIT.Ortalab()
 				return G.GAME.current_round.discards_left*self.ability.extra
 			end
 		end
-		CardCalc_Dollar_Bonus(self)
+		return CardCalc_Dollar_Bonus(self)
 	end
 	
 	local mod_chips_ref = mod_chips
@@ -2531,8 +2542,11 @@ function SMODS.INIT.Ortalab()
 	end
 	function SMODS.Jokers.j_chameleon_joker.loc_def(center)
 		if center.ability.name == 'Chameleon Joker' then
-			if center.ability.copied_joker ~= nil then
-				return {localize{type = 'name_text', set = center.ability.copied_joker.config.center.set, key = center.ability.copied_joker.config.center.key, nodes = {}}}
+			if type(center.ability.copied_joker) == 'string' then
+				center.ability.copied_joker = G.jokers.cards[center.ability.copied_joker_pos]
+			end
+			if center.ability.copied_joker and type(center.ability.copied_joker) == 'table' then 
+				return {localize{type = 'name_text', set = "Joker", key = center.ability.copied_joker.config.center.key, nodes = {}}}
 			else
 				return {localize('k_na')}
 			end
