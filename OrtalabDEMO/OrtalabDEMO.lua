@@ -90,7 +90,7 @@ function SMODS.INIT.Ortalab()
 			["name"] = "The Mysterium",
 			["text"] = {
 				"{X:mult,C:white}X#1#{} Mult if played",
-				"hand is a Secret Hand",
+				"hand is a {C:attention}Secret Hand",
 				"{C:inactive}(Artist: ItsFlowwey){}"
 			}
 		},
@@ -116,8 +116,9 @@ function SMODS.INIT.Ortalab()
 		triangle_joker = { -- Triangle Joker
 			["name"] = "Triangle Joker",
 			["text"] = {
-				"This Joker gains {C:mult}+#1#{} Mult if played hand",
-				"has exactly {C:attention}3{} cards",
+				"This Joker gains {C:mult}+#1#{} Mult",
+				"if played hand has",
+				"exactly {C:attention}3 cards{}",
 				"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 				"{C:inactive}(Artist: im_salad){}"
 			}
@@ -173,10 +174,12 @@ function SMODS.INIT.Ortalab()
 		ban_list = { -- Blacklist
 			["name"] = "Blacklist",
 			["text"] = {
-				"Earn {C:money}$#1#{} if played {C:attention}poker hand{}",
+				"Earn {C:money}$#1#{} if",
+				"played {C:attention}poker hand{}",
 				"is not a {C:attention}#2#{}",
 				"or {C:attention}#3#{}",
-				"Poker hands change on every payout",
+				"Poker hands change",
+				"on every payout",
 				"{C:inactive}(Artist: koszetrawe){}"
 			}
 		},
@@ -211,7 +214,8 @@ function SMODS.INIT.Ortalab()
 		mint_condition = { -- Fuel Tank
 			["name"] = "Mint Condition",
 			["text"] = {
-				"{C:attention}Jokers{} that earn money on {C:money}payout{}",
+				"{C:attention}Jokers{} that",
+				"earn money on {C:money}payout{}",
 				"each give {X:mult,C:white}X#1#{} Mult",
 				"{C:inactive}(Artist: ){}"
 			}
@@ -235,8 +239,9 @@ function SMODS.INIT.Ortalab()
 		mystery_soda = { -- Mystery Cola
 			["name"] = "Mystery Soda",
 			["text"] = {
-				"Sell this card to create",
-				"two free tags",
+				"Sell this card",
+				"to create",
+				"two free {C:attention}tags",
 				"{C:inactive}(Artist: im_salad){}"
 			}
 		},
@@ -252,7 +257,8 @@ function SMODS.INIT.Ortalab()
 		slot_machine = { -- Slot Machine
 			["name"] = "Slot Machine",
 			["text"] = {
-				"If played hand contains three {C:attention}Lucky 7s{}",
+				"If played hand contains",
+				"three {C:attention}Lucky 7s{}",
 				"create a random {C:spectral}Spectral{} card",
 				"{C:inactive}(Artist: Flare){}"
 			}
@@ -260,8 +266,9 @@ function SMODS.INIT.Ortalab()
 		roscharch_test = { -- Roscharch Test
 			["name"] = "Roscharch Test",
 			["text"] = {
-				"For each played 2 or 5, either give",
-				"{C:chips}+#1#{} Chips or {C:mult}+#2#{} when scored",
+				"For each played 2 or 5",
+				"either give {C:chips}+#1#{} Chips",
+				"or {C:mult}+#2#{} when scored",
 				"{C:inactive}(Artist: Flare){}"
 			}
 		},
@@ -269,7 +276,7 @@ function SMODS.INIT.Ortalab()
 			["name"] = "Woo! All 1s",
 			["text"] = {
 				"Halves all {C:attention}listed{} {C:green,E:1,S:1.1}probabilities{}",
-				"{C:inactive}(ex: {C:green}1 in 4{C:inactive} -> {C:green}0 in 4{C:inactive})",
+				"{C:inactive}(ex: {C:green}2 in 4{C:inactive} -> {C:green}1 in 4{C:inactive})",
 				"{C:inactive}(Artist: Crimson Heart){}"
 			}
 		},
@@ -285,7 +292,8 @@ function SMODS.INIT.Ortalab()
 		occultist = { -- Occultist
 			["name"] = "Occultist",
 			["text"] = {
-				"All {C:spectral}Spectral{} card and {C:spectral}Spectral Packs{}",
+				"All {C:spectral}Spectral{} card",
+				"and {C:spectral}Spectral Packs{}",
 				"in the shop are free",
 				"{C:inactive}(Artist: ){}"
 			}
@@ -303,7 +311,8 @@ function SMODS.INIT.Ortalab()
 			["name"] = "Evil Eye",
 			["text"] = {
 				"Earn {C:money}$#1#{} at end of round",
-				"per each unique {C:spectral}Spectral{} card {C:attention}sold",
+				"per each unique",
+				"{C:spectral}Spectral{} card {C:attention}sold",
 				"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
 				"{C:inactive}(Artist: ItsFlowwey){}"
 			}
@@ -378,46 +387,11 @@ function SMODS.INIT.Ortalab()
 			["text"] = {
 				"Creates a random {C:tarot}Tarot{}",
 				"card if discarded hand",
-				"contains {C:attention}4 numbered cards{}",
-				"{C:inactive}(Artist: Flare){}"
-			}
-		}
-	}
-	local voucher_def = {
-		shady_trading = { -- Shady Trading
-			["name"] = "Shady Trading",
-			["text"] = {
-				"{C:spectral}Spectral{} cards can",
-				"appear in the shop",
+				"contains 2 {C:attention}odd cards",
+				"and 2 {C:attention}even cards",
 				"{C:inactive}(Artist: Flare){}"
 			}
 		},
-		illegal_imports = { -- Illegal Imports
-			["name"] = "Illegal Imports",
-			["text"] = {
-				"{C:spectral}Spectral{} cards appear",
-				"{C:attention}2X{} more frequently in the shop",
-				"{C:inactive}(Artist: Flare){}"
-			}
-		},
-		window_shopping = { -- Window Shopping
-			["name"] = "Window Shopping",
-			["text"] = {
-				"+1 free {C:green}reroll{}",
-				"per shop", 
-				"{C:green}Reroll{} price {C:red}+1${}",
-				"{C:inactive}(Artist: Flare){}"
-			}
-		},
-		infinite_scroll = { -- Infinite Scroll
-			["name"] = "Infinite Scroll",
-			["text"] = {
-				"+2 free {C:green}rerolls{}",
-				"per shop",
-				"{C:green}Reroll{} price {C:red}+2${}",
-				"{C:inactive}(Artist: Flare){}"
-			}
-		}
 	}
 	local OrtalabDecks_def = {
         Cyan = {
@@ -536,7 +510,7 @@ function SMODS.INIT.Ortalab()
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
-		true, --eternal_compat
+		false, --eternal_compat
 		'', --effect
 		"Ortalab_Jokers", --atlas
 		nil --soul_pos
@@ -664,7 +638,7 @@ function SMODS.INIT.Ortalab()
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
-		true, --eternal_compat
+		false, --eternal_compat
 		'', --effect
 		"Ortalab_Jokers", --atlas
 		nil --soul_pos
@@ -680,7 +654,7 @@ function SMODS.INIT.Ortalab()
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
-		true, --eternal_compat
+		false, --eternal_compat
 		'', --effect
 		"Ortalab_Jokers", --atlas
 		nil --soul_pos
@@ -740,7 +714,7 @@ function SMODS.INIT.Ortalab()
 		{x = 0, y = 13}, --spritePos
 		jokers_def.inverse_midas, --loc_txt
 		2, --rarity
-		8, --cost
+		6, --cost
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
@@ -760,7 +734,7 @@ function SMODS.INIT.Ortalab()
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
-		true, --eternal_compat
+		false, --eternal_compat
 		'', --effect
 		"Ortalab_Jokers", --atlas
 		nil --soul_pos
@@ -824,7 +798,7 @@ function SMODS.INIT.Ortalab()
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
-		true, --eternal_compat
+		false, --eternal_compat
 		'', --effect
 		"Ortalab_Jokers", --atlas
 		nil --soul_pos
@@ -960,15 +934,15 @@ function SMODS.INIT.Ortalab()
 	local fine_wine = SMODS.Joker:new(
 		"Fine Wine", --name
 		"fine_wine", --slug
-		{extra = {discards = 2, odds = 5}}, --config
+		{extra = {discards = 1, odds = 5}}, --config
 		{x = 4, y = 13}, --spritePos
 		jokers_def.fine_wine, --loc_txt
 		2, --rarity
-		6, --cost
+		8, --cost
 		true, --unlocked
 		true, --discovered
 		false, --blueprint_compat
-		true, --eternal_compat
+		false, --eternal_compat
 		'', --effect
 		"Ortalab_Jokers", --atlas
 		nil --soul_pos
@@ -1008,7 +982,7 @@ function SMODS.INIT.Ortalab()
 	local art_gallery = SMODS.Joker:new(
 		"Art Gallery", --name
 		"art_gallery", --slug
-		{extra = {chips_add = 20}}, --config
+		{extra = {chips_add = 15}}, --config
 		{x = 3,y = 3}, --spritePos
 		jokers_def.art_gallery, --loc_txt
 		1, --rarity
@@ -1056,7 +1030,7 @@ function SMODS.INIT.Ortalab()
 	local graffiti = SMODS.Joker:new(
 		"Graffiti", --name
 		"graffiti", --slug
-		{extra = {mult_add = 8}}, --config
+		{extra = {mult_add = 6}}, --config
 		{x = 1,y = 2}, --spritePos
 		jokers_def.graffiti, --loc_txt
 		1, --rarity
@@ -1075,8 +1049,8 @@ function SMODS.INIT.Ortalab()
 		{}, --config
 		{x = 1,y = 11}, --spritePos
 		jokers_def.mathmagician, --loc_txt
-		1, --rarity
-		6, --cost
+		2, --rarity
+		8, --cost
 		true, --unlocked
 		true, --discovered
 		true, --blueprint_compat
@@ -1092,61 +1066,6 @@ function SMODS.INIT.Ortalab()
     local OrangeDeck = SMODS.Deck:new("Orange Deck", "Ortalab_Orange", {hands = -1, discards = 2}, {x = 1, y = 5}, OrtalabDecks_def.Orange)
     local SketchedDeck = SMODS.Deck:new("Sketched Deck", "Ortalab_Sketched", {hand_size = -1, joker_slot = 1}, {x = 0, y = 6}, OrtalabDecks_def.Sketched)
 
-	--Voucher config
-	--SMODS.Voucher:new(name, slug, config, pos, loc_txt, cost, unlocked, discovered, available, requires, atlas)
-	--[[local shady_trading = SMODS.Voucher:new(
-		"Shady Trading", --name
-		"shady_trading", --slug
-		{}, --config
-		{x = 4, y = 2}, --spritePos
-		voucher_def.shady_trading, --loc_txt
-		10, --cost
-		true, --unlocked
-		true, --discovered
-		true, --available
-		{}, --requires
-		"Ortalab_Vouchers" --atlas
-	)
-	local illegal_imports = SMODS.Voucher:new(
-		"Illegal Imports", --name
-		"illegal_imports", --slug
-		{}, --config
-		{x = 4, y = 3}, --spritePos
-		voucher_def.illegal_imports, --loc_txt
-		10, --cost
-		true, --unlocked
-		true, --discovered
-		false, --available
-		{'v_shady_trading'}, --requires
-		"Ortalab_Vouchers" --atlas
-	)
-	local window_shopping = SMODS.Voucher:new(
-		"Window Shopping", --name
-		"window_shopping", --slug
-		{free_rerolls = 1}, --config
-		{x = 0, y = 2}, --spritePos
-		voucher_def.window_shopping, --loc_txt
-		10, --cost
-		true, --unlocked
-		true, --discovered
-		true, --available
-		{}, --requires
-		"Ortalab_Vouchers" --atlas
-	)
-	local infinite_scroll = SMODS.Voucher:new(
-		"Infinite Scroll", --name
-		"infinite_scroll", --slug
-		{free_rerolls = 2}, --config
-		{x = 0, y = 3}, --spritePos
-		voucher_def.infinite_scroll, --loc_txt
-		10, --cost
-		true, --unlocked
-		true, --discovered
-		false, --available
-		{'v_window_shopping'}, --requires
-		"Ortalab_Vouchers" --atlas
-	)]]
-
 	--Joker Register/Atlas
 	SMODS.Sprite:new("Ortalab_Jokers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Jokers.png", 71, 95, "asset_atli"):register()
 	jester:register()
@@ -1154,12 +1073,12 @@ function SMODS.INIT.Ortalab()
 	chastful_joker:register()
 	patient_joker:register()
 	abstemious_joker:register()
-	popcorn_bag:register()
-	G.localization.misc.dictionary.k_explode = "Exploded!" --Used for Popcorn Bag
-	collatz:register()
 	the_solo:register()
 	the_mysterium:register()
 	the_spectrum:register()
+	popcorn_bag:register()
+	G.localization.misc.dictionary.k_explode = "Exploded!" --Used for Popcorn Bag
+	collatz:register()
 	triangle_joker:register()
 	croupier:register()
 	chameleon_joker:register()
@@ -1200,13 +1119,6 @@ function SMODS.INIT.Ortalab()
 	CyanDeck:register()
 	OrangeDeck:register()
     SketchedDeck:register()
-
-	--Voucher register
-	--[[SMODS.Sprite:new("Ortalab_Vouchers", SMODS.findModByID("OrtalabDEMO").path, "Ortalab_Vouchers.png", 71, 95, "asset_atli"):register()
-	shady_trading:register()
-	illegal_imports:register()
-	window_shopping:register()
-	infinite_scroll:register()]]
 
 	init_localization()
 
@@ -1903,7 +1815,7 @@ function SMODS.INIT.Ortalab()
 	SMODS.Jokers.j_coupon.calculate = function(self, context) --Coupon Logic
 		if SMODS.end_calculate_context(context) then
 			return {
-				message = localize{type='variable',key='a_chips',vars={-self.ability.extra.minus_chips}},
+				message = localize{type='variable',key='a_chips_minus',vars={self.ability.extra.minus_chips}},
 				chip_mod = -self.ability.extra.minus_chips, 
 				colour = G.C.RED
 			}
@@ -1921,11 +1833,18 @@ function SMODS.INIT.Ortalab()
 	end
 	SMODS.Jokers.j_mathmagician.calculate = function (self, context) --Graffiti logic
 		if context.discard and context.other_card == context.full_hand[#context.full_hand] then
-			numbered_cards = 0
+			local numbered_even = 0
+			local numbered_odd = 0
 			for k, v in ipairs(context.full_hand) do
-				if not v:is_face() then numbered_cards = numbered_cards + 1 end
+				if ((v:get_id() <= 10 and v:get_id() >= 0 and v:get_id()%2 == 1) or (v:get_id() == 14)) then 
+					numbered_odd = numbered_odd + 1 
+				elseif v:get_id() <= 10 and v:get_id() >= 0 and v:get_id()%2 == 0 then 
+					numbered_even = numbered_even + 1 
+				end
 			end
-			if numbered_cards >= 4 and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			sendInfoMessage(numbered_even)
+			sendInfoMessage(numbered_odd)
+			if numbered_even >= 2 and numbered_odd >= 2 and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				G.E_MANAGER:add_event(Event({
                     func = (function()
                         G.E_MANAGER:add_event(Event({
@@ -1936,7 +1855,7 @@ function SMODS.INIT.Ortalab()
                                 G.GAME.consumeable_buffer = 0
                                 return true
                             end}))   
-                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
                         return true
                     end)}))
 			end
@@ -1992,28 +1911,29 @@ function SMODS.INIT.Ortalab()
 
 	local Blinddebuff_card_ref = Blind.debuff_card
 	function Blind.debuff_card(self, card, from_blind)
-		Blinddebuff_card_ref(self, card, from_blind)
+		local main_blind_debuff = Blinddebuff_card_ref(self, card, from_blind)
 		if next(find_joker("Prolétaire")) then
 			for k, v in pairs(G.jokers.cards) do
-				if v.ability.name == 'Prolétaire' then
-					if v.debuff and not v.disabled and card.area ~= G.jokers then
-						if v.debuff.suit and card:is_suit(v.debuff.suit, true) then
+				if v.ability.name == 'Prolétaire' and v.ability.extra.boss_blind_applied then
+					local blind = G.P_BLINDS[v.ability.extra.boss_blind_applied.key]
+					if type(blind.debuff) == 'table' and card.area ~= G.jokers then
+						if blind.debuff.suit and card:is_suit(blind.debuff.suit, true) then
 							card:set_debuff(true)
 							return
 						end
-						if v.debuff.is_face =='face' and card:is_face(true) then
+						if blind.debuff.is_face =='face' and card:is_face(true) then
 							card:set_debuff(true)
 							return
 						end
-						if v.name == 'The Pillar' and card.ability.played_this_ante then
+						if blind.name == 'The Pillar' and card.ability.played_this_ante then
 							card:set_debuff(true)
 							return
 						end
-						if v.debuff.value and v.debuff.value == card.base.value then
+						if blind.debuff.value and blind.debuff.value == card.base.value then
 							card:set_debuff(true)
 							return
 						end
-						if v.debuff.nominal and v.debuff.nominal == card.base.nominal then
+						if blind.debuff.nominal and blind.debuff.nominal == card.base.nominal then
 							card:set_debuff(true)
 							return
 						end
@@ -2021,11 +1941,11 @@ function SMODS.INIT.Ortalab()
 				end
 			end
 		end
+		return main_blind_debuff
 	end
 
 	local BlindDebuff_Hand_ref = Blind.debuff_hand
 	function Blind.debuff_hand(self, cards, hand, handname, check) --Prolétaire Logic
-		BlindDebuff_Hand_ref(self, cards, hand, handname, check)
 		if next(find_joker("Prolétaire")) then
 			for k, v in pairs(G.jokers.cards) do
 				if v.ability.name == 'Prolétaire' then
@@ -2079,6 +1999,7 @@ function SMODS.INIT.Ortalab()
 				end
 			end
 		end
+		return BlindDebuff_Hand_ref(self, cards, hand, handname, check)
 	end
 
 	local BlindStay_Flipped_ref = Blind.stay_flipped
@@ -2117,12 +2038,11 @@ function SMODS.INIT.Ortalab()
 				end
 			end
 		end
-		BlindStay_Flipped_ref(self, area, card)
+		return BlindStay_Flipped_ref(self, area, card)
 	end
 
 	local BlindPress_Play = Blind.press_play
 	function Blind.press_play(self) --Prolétaire Logic
-		BlindPress_Play(self)
 		if next(find_joker("Prolétaire")) then
 			for k, v in pairs(G.jokers.cards) do
 				if v.ability.name == 'Prolétaire' then
@@ -2163,6 +2083,7 @@ function SMODS.INIT.Ortalab()
 				end
 			end
 		end
+		return BlindPress_Play(self)
 	end
 
 	local CardOpen_ref = Card.open
@@ -2410,23 +2331,6 @@ function SMODS.INIT.Ortalab()
 		CardIs_Suit_ref(self, suit, bypass_debuff, flush_calc)
 	end
 
-	local NewRound_ref = new_round
-	function new_round() --Window Shopping & Infinite Scroll logic
-		NewRound_ref()
-		G.E_MANAGER:add_event(Event({
-			trigger = 'immediate',
-			func = function()
-		local window_shopping = 0
-		local inf_scroll = 0
-		for k, v in pairs(G.GAME.used_vouchers) do
-			if k == 'v_window_shopping' then window_shopping = 1 end
-			if k == 'v_infinite_scroll' then inf_scroll = 2 end
-		end
-		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + window_shopping + inf_scroll
-		calculate_reroll_cost(true)
-		return true end}))
-	end
-
 	local CardApply_to_run_ref = Card.apply_to_run
 	function Card.apply_to_run(self, center)
 		CardApply_to_run_ref(self, center)
@@ -2450,59 +2354,7 @@ function SMODS.INIT.Ortalab()
 		-- Adds Pool Flags
 		G.P_CENTERS['j_taliaferro']['no_pool_flag'] = 'taliaferro_extinct'
 		G.P_CENTERS['j_royal_gala']['yes_pool_flag'] = 'taliaferro_extinct'
-		--[[G.P_CENTERS['j_occultist']['yes_pool_flag'] = 'shady_trading_redeemed'
-		G.P_CENTERS['j_shrine']['yes_pool_flag'] = 'shady_trading_redeemed'
-		G.P_CENTERS['j_evil_eye']['yes_pool_flag'] = 'shady_trading_redeemed']]
-
-		-- Redeems 'Shady Trading' Voucher when playing Ghost Deck
-		--[[if arg_56_0.effect.config.spectral_rate then
-			G.E_MANAGER:add_event(Event({
-				func = function() 
-					G.GAME.used_vouchers['v_shady_trading'] = true
-					G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
-					G.GAME.pool_flags.shady_trading_redeemed = true
-					return true 
-				end 
-			}))
-		end]]
 	end
-
-	--Voucher redeem logic
-	--[[function SMODS.Vouchers.v_shady_trading.redeem(center)
-		if center.name == 'Shady Trading' then
-			if G.GAME.spectral_rate < 2 then
-				G.GAME.spectral_rate = 2
-			end
-			G.GAME.pool_flags.shady_trading_redeemed = true
-		end
-	end
-	function SMODS.Vouchers.v_illegal_imports.redeem(center)
-		if center.name == 'Illegal Imports' then
-			G.GAME.spectral_rate = 4
-		end
-	end
-	function SMODS.Vouchers.v_window_shopping.redeem(center)
-		if center.name == 'Window Shopping' then
-			G.E_MANAGER:add_event(Event({func = function()
-				G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
-				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
-				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
-				calculate_reroll_cost(true)
-				return true 
-			end }))
-		end
-	end
-	function SMODS.Vouchers.v_infinite_scroll.redeem(center)
-		if center.name == 'Infinite Scroll' then
-			G.E_MANAGER:add_event(Event({func = function()
-				G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
-				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
-				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
-				calculate_reroll_cost(true)
-				return true 
-			end }))
-		end
-	end]]
 
 	--Joker loc_def and Joker tooltips
 	function SMODS.Jokers.j_jester.loc_def(center)
