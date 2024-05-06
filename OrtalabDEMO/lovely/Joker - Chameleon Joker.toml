@@ -1,0 +1,39 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''(?<indent>[\t ]*)for k, v in pairs\(other\.ability\) do\n[\s\S]*new_card.ability\[k\] = v\n[\s][\s][\s][\s][\s][\s][\s][\s]end\n[\s][\s][\s][\s]end'''
+position = "at"
+line_prepend = "$indent"
+payload = '''
+--asdf
+if other.ability.name == "Chameleon Joker" then
+    new_card.ability.copied_joker = other.ability.copied_joker
+    new_card.ability.copied_joker_pos = other.ability.copied_joker_pos
+else
+    for k, v in pairs(other.ability) do
+        if type(v) == 'table' then 
+            new_card.ability[k] = copy_table(v)
+        else
+            new_card.ability[k] = v
+        end
+    end
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if not strip_edition then '''
+position = "before"
+payload = '''
+--Ortalab/Jokers/Chameleon Joker
+    end
+end
+'''
+match_indent = true
+overwrite = false

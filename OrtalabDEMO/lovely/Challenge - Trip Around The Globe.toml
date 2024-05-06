@@ -1,0 +1,16 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''function Blind:debuff_hand(cards, hand, handname, check)'''
+position = "after"
+payload = '''
+--Ortalab/Challenge/Trip Around The Globe
+if G.GAME.modifiers["ch_c_only_straight"] == true and not next(hand["Straight"]) then return true end
+'''
+match_indent = true
+overwrite = false
