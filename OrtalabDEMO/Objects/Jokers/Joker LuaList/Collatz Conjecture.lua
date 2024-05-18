@@ -1,0 +1,74 @@
+local joker_loc_txt = {
+	["name"] = "Collatz Conjecture",
+	["text"] = {
+		"{X:mult,C:white}X#1#{} Mult if total chips when this",
+		"joker is scored are {C:attention}odd{}",
+		"{X:mult,C:white}X#2#{} Mult if total chips when this",
+		"joker is scored are {C:attention}even{}",
+		"{C:inactive}(Artist: ItsFlowwey){}"
+	}
+}
+
+local collatz = SMODS.Joker({
+	name = "Collatz Conjecture",
+	key = "collatz",
+	config = {extra = {x_mult = 3, x_mult_reduction = 0.5, current_chips = 0}},
+	pos = {x = 1, y = 5},
+	loc_txt = joker_loc_txt,
+	rarity = 2,
+	cost = 8,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	atlas = "Ortalab_Jokers",
+	register = function(self, order)
+		if order and order == self.order then
+			SMODS.GameObject.register(self)
+		end
+	end,
+})
+
+collatz.order = 31
+
+function collatz.loc_def(center)
+	return {center.ability.extra.x_mult, center.ability.extra.x_mult_reduction}
+end
+
+collatz.calculate = function(self, context) --Collatz Logic
+	if SMODS.end_calculate_context(context) then
+		if self.ability.extra.current_chips % 2 == 0 then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult_reduction}},
+				Xmult_mod = self.ability.extra.x_mult_reduction
+			}
+		else
+			return {
+				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
+				Xmult_mod = self.ability.extra.x_mult
+			}
+		end
+	end
+end
+
+local mod_chips_ref = mod_chips
+function mod_chips(_chips) --Required for Collatz
+	if next(find_joker("Collatz Conjecture")) then
+		local curr_chips = _chips
+		for k, v in pairs(G.jokers.cards) do
+			if v.ability.name == 'Collatz Conjecture' then
+				if G.GAME.modifiers.chips_dollar_cap then
+					curr_chips = math.min(_chips, math.max(G.GAME.dollars, 0))
+				end
+				v.ability.extra.current_chips = curr_chips
+			end
+		end
+	end
+	if _chips < 0 then
+		_chips = 1
+	end
+	return mod_chips_ref(_chips)
+end
+
+return collatz
