@@ -1,0 +1,15 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.RESET_JIGGLES = true'''
+position = "after"
+payload = '''
+--Ortalab/Deck/Frozen Deck
+if G.GAME.selected_back.name == "Frozen Deck" and G.GAME.current_round.hands_played == 1 then G.GAME.blind.dollars = G.GAME.blind.dollars*2 end
+'''
+match_indent = true

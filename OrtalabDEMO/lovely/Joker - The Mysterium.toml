@@ -1,0 +1,18 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+#Inject for start up
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''boot_timer('splash prep', 'end',1)'''
+position = "after"
+payload = '''
+--Ortalab/Jokers/The Mysterium
+for k, v in pairs(G.GAME.hands) do
+    if v.visible == false then G.P_CENTERS['j_olab_the_mysterium'].config.extra.secret_hand_list[#G.P_CENTERS['j_olab_the_mysterium'].config.extra.secret_hand_list+1] = k end
+end
+'''
+match_indent = true

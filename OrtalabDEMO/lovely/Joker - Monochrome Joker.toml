@@ -1,0 +1,44 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''reset_idol_card()'''
+position = "after"
+payload = '''
+--Ortalab/Jokers/Monochrome Joker
+reset_monochrome_card()
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ancient_card = {suit = 'Spades'},'''
+position = "after"
+payload = '''
+--Ortalab/Jokers/Monochrome Joker
+monochrome_card = {suit = 'Spades'},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''function reset_idol_card()'''
+position = "before"
+payload = '''
+--Ortalab/Jokers/Monochrome Joker
+function reset_monochrome_card()
+    local monochrome_suits = {}
+    for k, v in ipairs({'Spades','Hearts','Clubs','Diamonds'}) do
+        if v ~= G.GAME.current_round.monochrome_card.suit then monochrome_suits[#monochrome_suits + 1] = v end
+    end
+    local monochrome_card = pseudorandom_element(monochrome_suits, pseudoseed('monochrome'..G.GAME.round_resets.ante))
+    G.GAME.current_round.monochrome_card.suit = monochrome_card
+end
+'''
+match_indent = true
