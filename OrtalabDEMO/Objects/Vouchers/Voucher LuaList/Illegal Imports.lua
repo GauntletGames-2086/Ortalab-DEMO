@@ -17,15 +17,18 @@ local illegal_imports = SMODS.Voucher({
 	discovered = true, --discovered
 	available = false, --available
 	requires = {'v_shady_trading'}, --requires
-	atlas = "Ortalab_Vouchers" --atlas
+	atlas = "Ortalab_Vouchers", --atlas
+	register = function(self, order)
+		if order and order == self.order then
+			SMODS.Center.register(self)
+		end
+	end,
 })
 
 illegal_imports.order = 26
 
-function illegal_imports.redeem(center)
-	if center.name == 'Illegal Imports' then
-		G.GAME.spectral_rate = 4
-	end
+function illegal_imports.redeem(self)
+	G.GAME.spectral_rate = 4
 end
 
 return illegal_imports

@@ -25,14 +25,14 @@ local art_gallery = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 art_gallery.order = 34
 
-function art_gallery.loc_def(center)
+function art_gallery.loc_vars(card, info_queue, center)
 	if center.ability.name == 'Art Gallery' then
 		local total_cards = 0
 		if G.jokers then
@@ -45,12 +45,12 @@ function art_gallery.loc_def(center)
 				if G.consumeables.cards[i] then total_cards = total_cards + 1 end
 			end
 		end
-		return {center.ability.extra.chips_add, total_cards*center.ability.extra.chips_add}
+		return {vars = {center.ability.extra.chips_add, total_cards*center.ability.extra.chips_add}}
 	end
 end
 
-art_gallery.calculate = function(self, context) --Art Gallery Logic
-	if SMODS.end_calculate_context(context) then
+art_gallery.calculate = function(self, card, context) --Art Gallery Logic
+	if context.joker_main then
 		local total_cards = 0
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].ability.set == 'Joker' then total_cards = total_cards + 1 end
@@ -59,8 +59,8 @@ art_gallery.calculate = function(self, context) --Art Gallery Logic
 			if G.consumeables.cards[i] then total_cards = total_cards + 1 end
 		end
 		return {
-			message = localize{type='variable',key='a_chips',vars={total_cards*self.ability.extra.chips_add}},
-			chip_mod = total_cards*self.ability.extra.chips_add, 
+			message = localize{type='variable',key='a_chips',vars={total_cards*card.ability.extra.chips_add}},
+			chip_mod = total_cards*card.ability.extra.chips_add, 
 			colour = G.C.CHIPS
 		}
 	end

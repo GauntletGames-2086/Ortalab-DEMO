@@ -24,7 +24,7 @@ local scenic_route = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
@@ -33,10 +33,10 @@ scenic_route.order = 69
 
 local get_straight_ref = get_straight
 function get_straight(hand)--Scenic Route Logic
-	if not next(find_joker('Scenic Route')) then return get_straight_ref(hand) end
+	if not next(SMODS.find_card("j_olab_scenic_route")) then return get_straight_ref(hand) end
 
 	local ret = {}
-	local four_fingers = next(find_joker('Four Fingers'))
+	local four_fingers = SMODS.find_card('j_four_fingers')
 	local total_cards = 0
 	local straight_pair_ids = {}
 	if #hand > 5 or #hand < (5 - (four_fingers and 1 or 0)) then return ret else
@@ -65,8 +65,8 @@ function get_straight(hand)--Scenic Route Logic
 
 		local straight_length = 0
 		local straight = false
-		local can_skip = next(find_joker('Shortcut'))
-		local can_straight_pair = next(find_joker('Scenic Route'))
+		local can_skip = next(SMODS.find_card('j_shortcut'))
+		local can_straight_pair = next(SMODS.find_card("j_olab_scenic_route"))
 		local skipped_rank = false
 		local skipped_pair = false
 		for j = 1, 14 do

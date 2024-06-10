@@ -25,7 +25,7 @@ local mathmagician = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
@@ -54,7 +54,7 @@ mathmagician.calculate = function (self, context) --Mathmagician logic
 							G.GAME.consumeable_buffer = 0
 							return true
 						end}))   
-						card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
+						card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
 					return true
 				end)}))
 		end

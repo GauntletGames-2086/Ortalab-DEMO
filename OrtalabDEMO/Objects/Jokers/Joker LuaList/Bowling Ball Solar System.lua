@@ -24,7 +24,7 @@ local bowling_ball_solar_system = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
@@ -32,7 +32,7 @@ local bowling_ball_solar_system = SMODS.Joker({
 bowling_ball_solar_system.order = 26
 
 bowling_ball_solar_system.calculate = function (self, context)
-	if SMODS.end_calculate_context(context) and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+	if context.joker_main and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 		local has_10 = false
 		for k, v in ipairs(G.hand.cards) do
 			if v:get_id() == 10 then has_10 = true end
@@ -51,7 +51,7 @@ bowling_ball_solar_system.calculate = function (self, context)
 				end)}))
 			return {
 				message = localize('k_plus_tarot'),
-				card = self
+				card = card
 			}
 		end
 	end

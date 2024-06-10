@@ -24,30 +24,30 @@ local triangle_joker = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 triangle_joker.order = 65
 
-function triangle_joker.loc_def(center)
-	return {center.ability.extra.mult_add, center.ability.extra.mult_total}
+function triangle_joker.loc_vars(self, info_queue, center)
+	return {vars = {center.ability.extra.mult_add, center.ability.extra.mult_total}}
 end
 
-triangle_joker.calculate = function(self, context) --Triangle Joker Logic
+triangle_joker.calculate = function(self, card, context) --Triangle Joker Logic
 	if context.cardarea == G.jokers and context.before and #context.full_hand == 3 and not context.blueprint then
-		self.ability.extra.mult_total = self.ability.extra.mult_total + self.ability.extra.mult_add
+		card.ability.extra.mult_total = card.ability.extra.mult_total + card.ability.extra.mult_add
 		return {
 			message = localize('k_upgrade_ex'),
 			colour = G.C.MULT,
-			card = self
+			card = card
 		}
 	end
-	if SMODS.end_calculate_context(context) then
+	if context.joker_main then
 		return {
-			message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_total}},
-			mult_mod = self.ability.extra.mult_total
+			message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult_total}},
+			mult_mod = card.ability.extra.mult_total
 		}
 	end
 end

@@ -23,23 +23,23 @@ local the_solo = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 the_solo.order = 131
 
-function the_solo.loc_def(center)
-	return {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands')}
+function the_solo.loc_vars(self, info_queue, center)
+	return {vars = {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands')}}
 end
 
-the_solo.calculate = function(self, context) --The Solo Logic
-	if SMODS.end_calculate_context(context) then
+the_solo.calculate = function(self, card, context) --The Solo Logic
+	if context.joker_main then
 		if context.scoring_name == 'High Card' then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-				Xmult_mod = self.ability.extra.x_mult
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+				Xmult_mod = card.ability.extra.x_mult
 			}
 		end
 	end

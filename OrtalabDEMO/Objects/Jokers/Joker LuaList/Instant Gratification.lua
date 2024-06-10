@@ -23,19 +23,19 @@ local instant_gratification = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 instant_gratification.order = 35
 
-instant_gratification.calculate = function(self, context) --Instant Gratification logic
+instant_gratification.calculate = function(self, card, context) --Instant Gratification logic
 	if context.discard and context.other_card == context.full_hand[#context.full_hand] then
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				ease_dollars(self.ability.extra)
-				card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('$')..self.ability.extra,colour = G.C.MONEY, delay = 0.45})
+				ease_dollars(card.ability.extra)
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('$')..card.ability.extra,colour = G.C.MONEY, delay = 0.45})
 				return true
 			end}))
 		return

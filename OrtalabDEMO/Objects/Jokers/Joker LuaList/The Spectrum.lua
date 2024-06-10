@@ -24,26 +24,26 @@ local the_spectrum = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 the_spectrum.order = 135
 
-function the_spectrum.loc_def(center)
-	return {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands')}
+function the_spectrum.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands')}}
 end
 
-the_spectrum.calculate = function(self, context) --The Spectrum Logic
-	if SMODS.end_calculate_context(context) then
+the_spectrum.calculate = function(self, card, context) --The Spectrum Logic
+	if context.joker_main then
 		if (context.scoring_name ~= 'Flush Five' or 
 		context.scoring_name ~= 'Flush House' or 
 		context.scoring_name ~= 'Straight Flush' or 
 		context.scoring_name ~= 'Flush') then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-				Xmult_mod = self.ability.extra.x_mult
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+				Xmult_mod = card.ability.extra.x_mult
 			}
 		end
 	end

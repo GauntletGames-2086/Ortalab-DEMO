@@ -24,7 +24,7 @@ local crime_scene = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
@@ -33,7 +33,7 @@ crime_scene.order = 121
 
 local CardDissolve = Card.start_dissolve --Crime Scene Logic
 function Card.start_dissolve(self)
-	if next(find_joker('Crime Scene')) and self.ability.set == 'Joker' then
+	if next(SMODS.find_card('j_olab_crime_scene')) and self.ability.set == 'Joker' then
 		self.config.center.no_pool_flag = 'crime_scene_pool_disable'
 	end
 	return CardDissolve(self)

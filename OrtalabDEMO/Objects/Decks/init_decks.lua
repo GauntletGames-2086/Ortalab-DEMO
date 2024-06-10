@@ -23,4 +23,4 @@ local init_decks = function(base_file_path)
 	--Functions to override that are used by several decks
 end
 
-return init_decks
+return {init_func = init_decks, group_config_enable = "decks_enabled"}

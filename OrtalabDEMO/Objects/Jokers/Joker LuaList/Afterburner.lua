@@ -28,7 +28,7 @@ local fuel_tank = SMODS.Joker({
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
@@ -37,27 +37,27 @@ G.localization.misc.dictionary.k_leak = "Leaked!" --Used for Fuel Tank
 G.localization.misc.dictionary.k_empty = "Empty!" --Used for Fuel Tank
 fuel_tank.order = 74
 
-function fuel_tank.loc_def(center)
-	return {center.ability.extra.money, center.ability.extra.money_loss}
+function fuel_tank.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.money, center.ability.extra.money_loss}}
 end
 
-fuel_tank.calculate = function(self, context) --Fuel Tank Logic
+fuel_tank.calculate = function(self, card, context) --Fuel Tank Logic
 	if not context.blueprint then
 		if context.end_of_round and not context.individual and not context.repetition then
 			if G.GAME.blind.boss then
-				if self.ability.extra.money - self.ability.extra.money_loss <= 0 then
+				if card.ability.extra.money - card.ability.extra.money_loss <= 0 then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							play_sound('tarot1')
-							self.T.r = -0.2
-							self:juice_up(0.3, 0.4)
-							self.states.drag.is = true
-							self.children.center.pinch.x = true
+							card.T.r = -0.2
+							card:juice_up(0.3, 0.4)
+							card.states.drag.is = true
+							card.children.center.pinch.x = true
 							G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
 								func = function()
-										G.jokers:remove_card(self)
-										self:remove()
-										self = nil
+										G.jokers:remove_card(card)
+										card:remove()
+										card = nil
 									return true; end})) 
 							return true
 						end
@@ -67,7 +67,7 @@ fuel_tank.calculate = function(self, context) --Fuel Tank Logic
 						colour = G.C.RED
 					}
 				else
-					self.ability.extra.money = self.ability.extra.money - self.ability.extra.money_loss
+					card.ability.extra.money = card.ability.extra.money - card.ability.extra.money_loss
 					return {
 						message = localize('k_leak'),
 						colour = G.C.MONEY

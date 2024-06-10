@@ -24,22 +24,22 @@ local coupon = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 coupon.order = 79
 
-function coupon.loc_def(center)
-	return {center.ability.extra.minus_chips, center.ability.extra.money_off}
+function coupon.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.minus_chips, center.ability.extra.money_off}}
 end
 
-coupon.calculate = function(self, context) --Coupon Logic
-	if SMODS.end_calculate_context(context) then
+coupon.calculate = function(self, card, context) --Coupon Logic
+	if context.joker_main then
 		return {
-			message = localize{type='variable',key='a_chips_minus',vars={self.ability.extra.minus_chips}},
-			chip_mod = -self.ability.extra.minus_chips, 
+			message = localize{type='variable',key='a_chips_minus',vars={card.ability.extra.minus_chips}},
+			chip_mod = -card.ability.extra.minus_chips, 
 			colour = G.C.RED
 		}
 	end

@@ -24,23 +24,23 @@ local graffiti = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 graffiti.order = 22
 
-function graffiti.loc_def(center)
-	return {center.ability.extra.mult_add, center.ability.extra.mult_add*G.GAME.current_round.hands_left}
+function graffiti.loc_vars(self, info_queue, center)
+	return {vars = {center.ability.extra.mult_add, center.ability.extra.mult_add*G.GAME.current_round.hands_left}}
 end
 
 graffiti.calculate = function (self, context) --Graffiti logic
-	if SMODS.end_calculate_context(context) then
-		if self.ability.extra.mult_add*G.GAME.current_round.hands_left > 0 then
+	if context.joker_main then
+		if card.ability.extra.mult_add*G.GAME.current_round.hands_left > 0 then
 			return {
-				message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult_add*G.GAME.current_round.hands_left}},
-				mult_mod = self.ability.extra.mult_add*G.GAME.current_round.hands_left
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult_add*G.GAME.current_round.hands_left}},
+				mult_mod = card.ability.extra.mult_add*G.GAME.current_round.hands_left
 			}
 		end
 	end

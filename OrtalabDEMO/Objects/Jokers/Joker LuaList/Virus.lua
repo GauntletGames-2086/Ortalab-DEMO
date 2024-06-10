@@ -30,24 +30,24 @@ local virus = SMODS.Joker({
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 virus.order = 51
 
-function virus.loc_def(center)
-	return {center.ability.extra.duped_cards}
+function virus.loc_vars(self, info_queue, center)
+	return {vars = {center.ability.extra.duped_cards}}
 end
 
-virus.calculate = function(self, context) --Virus Logic
+virus.calculate = function(self, card, context) --Virus Logic
 	if context.first_hand_drawn and not context.blueprint then
 		local eval = function() return G.GAME.current_round.hands_played == 0 end
-		juice_card_until(self, eval, true)
+		juice_card_until(card, eval, true)
 	end
-	if context.destroying_card and not context.blueprint and self.ability.extra.joker_triggered == true then
-		self.ability.extra.joker_triggered = false
+	if context.destroying_card and not context.blueprint and card.ability.extra.joker_triggered == true then
+		card.ability.extra.joker_triggered = false
 		return true
 	end
 	if not context.other_joker and not context.repetition and not context.individual and not context.end_of_round and not context.discard and not context.pre_discard then
@@ -59,7 +59,7 @@ virus.calculate = function(self, context) --Virus Logic
 					for i=1, #G.hand.cards do
 						if not (G.hand.cards[i]:get_id() == card_to_dupe:get_id() and G.hand.cards[i].ability.name == card_to_dupe.ability.name and G.hand.cards[i].edition == card_to_dupe.edition) and G.hand.cards[i].infected ~= true then hand[#hand+1] = G.hand.cards[i] end
 					end
-					self.ability.extra.joker_triggered = true
+					card.ability.extra.joker_triggered = true
 					local infected_card_1
 					local infected_card_2
 					if hand[1] ~= nil then 
@@ -90,7 +90,7 @@ virus.calculate = function(self, context) --Virus Logic
 						message = localize('k_infect'),
 						colour = G.C.CHIPS,
 						delay = 1, 
-						card = self
+						card = card
 					}
 				end
 			end

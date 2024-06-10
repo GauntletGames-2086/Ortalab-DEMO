@@ -25,28 +25,28 @@ local shrine = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 shrine.order = 55
 
-function shrine.loc_def(center)
-	return {center.ability.extra.xmult_add, center.ability.extra.xmult}
+function shrine.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.xmult_add, center.ability.extra.xmult}}
 end
 
-shrine.calculate = function(self, context) --Shrine Logic
+shrine.calculate = function(self, card, context) --Shrine Logic
 	if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Spectral' then
-		self.ability.extra.xmult = self.ability.extra.xmult + self.ability.extra.xmult_add
+		card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_add
 			G.E_MANAGER:add_event(Event({
-				func = function() card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={self.ability.extra.xmult}}}); return true
+				func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}}}); return true
 				end}))
 	end
-	if SMODS.end_calculate_context(context) and self.ability.extra.xmult > 1 then
+	if context.joker_main and card.ability.extra.xmult > 1 then
 		return {
-			message = localize{type='variable',key='a_xmult',vars={self.ability.extra.xmult}},
-			Xmult_mod = self.ability.extra.xmult
+			message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+			Xmult_mod = card.ability.extra.xmult
 		}
 	end
 end

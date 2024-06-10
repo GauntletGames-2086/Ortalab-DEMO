@@ -23,7 +23,7 @@ local croupier = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
@@ -32,7 +32,7 @@ croupier.order = 62
 
 local CardOpen_ref = Card.open
 function Card.open(self) --Required for Croupier Logic
-	if next(find_joker('Croupier')) then
+	if next(SMODS.find_card('j_olab_croupier')) then
 		if self.ability.set == "Booster" then
 			self.ability.extra = self.ability.extra + 1
 		end

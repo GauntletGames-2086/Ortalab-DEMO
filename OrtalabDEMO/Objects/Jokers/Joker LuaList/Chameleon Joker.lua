@@ -24,60 +24,60 @@ local chameleon_joker = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 chameleon_joker.order = 137
 
-function chameleon_joker.loc_def(center)
+function chameleon_joker.loc_vars(self, info_queue, center)
 	if type(center.ability.copied_joker) == 'string' then
 		center.ability.copied_joker = G.jokers.cards[center.ability.copied_joker_pos]
 	end
 	if center.ability.copied_joker and type(center.ability.copied_joker) == 'table' then
-		return {localize{type = 'name_text', set = "Joker", key = center.ability.copied_joker.config.center.key, nodes = {}}}
+		return {vars = {localize{type = 'name_text', set = "Joker", key = center.ability.copied_joker.config.center.key, nodes = {}}}}
 	else
-		return {localize('k_na')}
+		return {vars = {localize('k_na')}}
 	end
 end
 
-chameleon_joker.calculate = function(self, context) --Chameleon Joker Logic
-	if self.ability.copied_joker then
-		if type(self.ability.copied_joker) == 'string' then
-			self.ability.copied_joker = G.jokers.cards[self.ability.copied_joker_pos]
+chameleon_joker.calculate = function(self, card, context) --Chameleon Joker Logic
+	if card.ability.copied_joker then
+		if type(card.ability.copied_joker) == 'string' then
+			card.ability.copied_joker = G.jokers.cards[card.ability.copied_joker_pos]
 		end
-		local chosen_joker = self.ability.copied_joker
+		local chosen_joker = card.ability.copied_joker
 		if chosen_joker ~= nil then
 			local other_joker = chosen_joker
-			if other_joker and other_joker ~= self then
+			if other_joker and other_joker ~= card then
 				context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-				context.blueprint_card = context.blueprint_card or self
+				context.blueprint_card = context.blueprint_card or card
 				if context.blueprint > #G.jokers.cards + 1 then return end
 				local other_joker_ret = other_joker:calculate_joker(context)
 				if other_joker_ret then 
-					other_joker_ret.card = context.blueprint_card or self
+					other_joker_ret.card = context.blueprint_card or card
 					other_joker_ret.colour = G.C.RED
 					return other_joker_ret
 				end
 			end
 		end
 	end
-	if context.setting_blind and not self.getting_sliced then
+	if context.setting_blind and not card.getting_sliced then
 		local jokers = {}
 		for i=1, #G.jokers.cards do 
-			if G.jokers.cards[i] ~= self and G.jokers.cards[i].config.center.blueprint_compat == true then
+			if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.blueprint_compat == true then
 				jokers[#jokers+1] = {G.jokers.cards[i], i}
 			end
 		end
 		if #jokers > 0 then
 			local chosen_joker = pseudorandom_element(jokers, pseudoseed('chameleon'))
 			sendInfoMessage(tostring(chosen_joker[1]))
-			self.ability.copied_joker = chosen_joker[1]
-			self.ability.copied_joker_pos = chosen_joker[2]
+			card.ability.copied_joker = chosen_joker[1]
+			card.ability.copied_joker_pos = chosen_joker[2]
 		else
-			self.ability.copied_joker = nil
-			self.ability.copied_joker_pos = 1
+			card.ability.copied_joker = nil
+			card.ability.copied_joker_pos = 1
 		end	
 	end
 end

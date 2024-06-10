@@ -25,38 +25,38 @@ local fine_wine = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 fine_wine.order = 80
 
-function fine_wine.loc_def(center)
-	return {center.ability.extra.discards, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
+function fine_wine.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.discards, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 end
 
-fine_wine.calculate = function(self, context) --Fine Wine Logic
+fine_wine.calculate = function(self, card, context) --Fine Wine Logic
 	if not context.blueprint then
-		if context.setting_blind and not self.getting_sliced then
-			self.ability.extra.discards = self.ability.extra.discards + 1
-			ease_discard(self.ability.extra.discards)
-			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+		if context.setting_blind and not card.getting_sliced then
+			card.ability.extra.discards = card.ability.extra.discards + 1
+			ease_discard(card.ability.extra.discards)
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
 		end
 		if context.end_of_round and not context.individual and not context.repetition then
-			if pseudorandom('fine_wine') < G.GAME.probabilities.normal/self.ability.extra.odds then
+			if pseudorandom('fine_wine') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('tarot1')
-						self.T.r = -0.2
-						self:juice_up(0.3, 0.4)
-						self.states.drag.is = true
-						self.children.center.pinch.x = true
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
 						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
 							func = function()
-									G.jokers:remove_card(self)
-									self:remove()
-									self = nil
+									G.jokers:remove_card(card)
+									card:remove()
+									card = nil
 								return true; end})) 
 						return true
 					end

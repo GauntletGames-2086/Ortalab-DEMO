@@ -1,6 +1,7 @@
 local challenge_info = SMODS.Challenge({
     name = "Trip Around The Globe",
     key = 'trip_around_the_globe',
+    loc_txt = "Trip Around The Globe",
     rules = {
         custom = {
             {id = 'only_straight'},

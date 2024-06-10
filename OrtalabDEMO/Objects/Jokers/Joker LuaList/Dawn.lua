@@ -24,30 +24,30 @@ local dawn = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 dawn.order = 28
 
-function dawn.loc_def(center)
-	return {center.ability.extra+1}
+function dawn.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra+1}}
 end
 
-dawn.calculate = function(self, context) --Dawn Logic
+dawn.calculate = function(self, card, context) --Dawn Logic
 	if context.first_hand_drawn then
 		if not context.blueprint then
 			local eval = function() return G.GAME.current_round.hands_played == 0 end
-			juice_card_until(self, eval, true)
+			juice_card_until(card, eval, true)
 		end
 	end
 	if context.repetition and context.cardarea == G.play then
 		if G.GAME.current_round.hands_played == 0 then
 			return {
 				message = localize('k_again_ex'),
-				repetitions = self.ability.extra,
-				card = self
+				repetitions = card.ability.extra,
+				card = card
 			}
 		end
 	end

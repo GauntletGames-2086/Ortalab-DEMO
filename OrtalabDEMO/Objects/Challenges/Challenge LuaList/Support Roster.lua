@@ -83,6 +83,7 @@ local support_roster_unbanned_jokers = {
 local challenge_info = SMODS.Challenge({
     name = "Support Roster",
     key = 'support_roster',
+    loc_txt = "Support Roster",
     rules = {
         custom = {
             {id = 'only_nonscoring_jokers', unbanned_slugs = support_roster_unbanned_jokers},

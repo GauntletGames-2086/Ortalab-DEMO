@@ -1,6 +1,7 @@
 -- Config file for Ortalab
 local decks_enabled = true --Enabled/Disable Decks
 local jokers_enabled = true --Enabled/Disable Jokers
+local vouchers_enabled = true --Enabled/Disable Vouchers
 local loterias_enabled = true --Enabled/Disable Loteria
 local mythos_enabled = true --Enabled/Disable Mythos
 local zodiacs_enabled = true --Enabled/Disable Zodiac
@@ -15,6 +16,7 @@ local challenges_enabled = true --Enabled/Disable Challenges
 return {
 	decks_enabled = decks_enabled,
 	jokers_enabled = jokers_enabled,
+	vouchers_enabled = vouchers_enabled,
 	loterias_enabled = loterias_enabled,
 	mythos_enabled = mythos_enabled,
 	zodiacs_enabled = zodiacs_enabled,

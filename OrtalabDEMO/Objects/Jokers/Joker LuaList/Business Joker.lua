@@ -21,12 +21,12 @@ local business_joker = SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = false,
 	atlas = "Ortalab_Jokers",
-	loc_def = function(center)
-		return {center.ability.extra.reroll_cut}
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.reroll_cut}}
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })

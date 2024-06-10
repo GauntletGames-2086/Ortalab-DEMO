@@ -23,23 +23,23 @@ local the_mysterium = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 the_mysterium.order = 132
 
-function the_mysterium.loc_def(center)
-	return {center.ability.extra.x_mult}
+function the_mysterium.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.x_mult}}
 end
 
-the_mysterium.calculate = function(self, context) --The Mysterium Logic
-	if SMODS.end_calculate_context(context) then
-		if table.contains(self.ability.extra.secret_hand_list, context.scoring_name) then
+the_mysterium.calculate = function(self, card, context) --The Mysterium Logic
+	if context.joker_main then
+		if table.contains(card.ability.extra.secret_hand_list, context.scoring_name) then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-				Xmult_mod = self.ability.extra.x_mult
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+				Xmult_mod = card.ability.extra.x_mult
 			}
 		end
 	end

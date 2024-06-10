@@ -29,26 +29,26 @@ local proletaire = SMODS.Joker({
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 proletaire.order = 129
 
-function proletaire.loc_def(center)
+function proletaire.loc_vars(card, info_queue, center)
 	if center.ability.extra.boss_blind_applied == nil then
-		return {localize('k_na')}
+		return {vars = {localize('k_na')}}
 	else
-		return {localize{type = 'name_text', set = 'Blind', key = center.ability.extra.boss_blind_applied.key, nodes = {}}}
+		return {vars = {localize{type = 'name_text', set = 'Blind', key = center.ability.extra.boss_blind_applied.key, nodes = {}}}}
 	end
 end
 
-proletaire.calculate = function(self, context) --Prolétaire Logic
+proletaire.calculate = function(self, card, context) --Prolétaire Logic
 	if not context.blueprint then
-		if context.setting_blind and not self.getting_sliced then
+		if context.setting_blind and not card.getting_sliced then
 			local all_blind_configs = {}
-			self.ability.extra.boss_blind_applied = nil
+			card.ability.extra.boss_blind_applied = nil
 			local banned_blinds = {}
 			for i=1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.name == 'Prolétaire' then
@@ -65,12 +65,12 @@ proletaire.calculate = function(self, context) --Prolétaire Logic
 				end
 			end
 			local boss_blind = pseudorandom_element(all_blind_configs, pseudoseed('proletaire'))
-			self.ability.extra.boss_blind_applied = boss_blind
+			card.ability.extra.boss_blind_applied = boss_blind
 			G.GAME.blind.dollars = G.GAME.blind.dollars*3
 
 			--Setting Blind effects
-			if self.ability.extra.boss_blind_applied.name == 'The Eye' then
-				self.ability.extra.boss_blind_applied.hands = {
+			if card.ability.extra.boss_blind_applied.name == 'The Eye' then
+				card.ability.extra.boss_blind_applied.hands = {
 					["Flush Five"] = false,
 					["Flush House"] = false,
 					["Five of a Kind"] = false,
@@ -85,46 +85,46 @@ proletaire.calculate = function(self, context) --Prolétaire Logic
 					["High Card"] = false,
 				}
 			end
-			if self.ability.extra.boss_blind_applied.name == 'The Mouth' then
-				self.ability.extra.boss_blind_applied.only_hand = false
+			if card.ability.extra.boss_blind_applied.name == 'The Mouth' then
+				card.ability.extra.boss_blind_applied.only_hand = false
 			end
-			if self.ability.extra.boss_blind_applied.name == 'The Fish' then 
-				self.ability.extra.boss_blind_applied.prepped = nil
+			if card.ability.extra.boss_blind_applied.name == 'The Fish' then 
+				card.ability.extra.boss_blind_applied.prepped = nil
 			end
-			if self.ability.extra.boss_blind_applied.name == 'The Water' then 
-				self.ability.extra.boss_blind_applied.discards_sub = G.GAME.current_round.discards_left
-				ease_discard(-self.ability.extra.boss_blind_applied.discards_sub)
+			if card.ability.extra.boss_blind_applied.name == 'The Water' then 
+				card.ability.extra.boss_blind_applied.discards_sub = G.GAME.current_round.discards_left
+				ease_discard(-card.ability.extra.boss_blind_applied.discards_sub)
 			end
-			if self.ability.extra.boss_blind_applied.name == 'The Needle' then 
-				self.ability.extra.boss_blind_applied.hands_sub = G.GAME.round_resets.hands - 1
-				ease_hands_played(-self.ability.extra.boss_blind_applied.hands_sub)
+			if card.ability.extra.boss_blind_applied.name == 'The Needle' then 
+				card.ability.extra.boss_blind_applied.hands_sub = G.GAME.round_resets.hands - 1
+				ease_hands_played(-card.ability.extra.boss_blind_applied.hands_sub)
 			end
-			if self.ability.extra.boss_blind_applied.name == 'The Manacle' then
+			if card.ability.extra.boss_blind_applied.name == 'The Manacle' then
 				G.hand:change_size(-1)
 			end
-			if self.ability.extra.boss_blind_applied.name == 'The Wall' then
+			if card.ability.extra.boss_blind_applied.name == 'The Wall' then
 				G.GAME.blind.chips = G.GAME.blind.chips*2
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 			end
 
 			--Debuff Cards
 			for _, v in ipairs(G.playing_cards) do
-				if self.ability.extra.boss_blind_applied.debuff.suit and v:is_suit(self.ability.extra.boss_blind_applied.debuff.suit, true) then
+				if card.ability.extra.boss_blind_applied.debuff.suit and v:is_suit(card.ability.extra.boss_blind_applied.debuff.suit, true) then
 					v:set_debuff(true)
-				elseif self.ability.extra.boss_blind_applied.debuff.is_face == 'face' and v:is_face(true) then
+				elseif card.ability.extra.boss_blind_applied.debuff.is_face == 'face' and v:is_face(true) then
 					v:set_debuff(true)
-				elseif self.ability.extra.boss_blind_applied.name == 'The Pillar' and v.ability.played_this_ante then
+				elseif card.ability.extra.boss_blind_applied.name == 'The Pillar' and v.ability.played_this_ante then
 					v:set_debuff(true)
-				elseif self.ability.extra.boss_blind_applied.debuff.value and self.ability.extra.boss_blind_applied.debuff.value == v.base.value then
+				elseif card.ability.extra.boss_blind_applied.debuff.value and card.ability.extra.boss_blind_applied.debuff.value == v.base.value then
 					v:set_debuff(true)
-				elseif self.ability.extra.boss_blind_applied.debuff.nominal and self.ability.extra.boss_blind_applied.debuff.nominal == v.base.nominal then
+				elseif card.ability.extra.boss_blind_applied.debuff.nominal and card.ability.extra.boss_blind_applied.debuff.nominal == v.base.nominal then
 					v:set_debuff(true)
 				end
 			end
 		end
 	end
 	if context.end_of_round and not context.individual and not context.repetition then
-		if self.ability.extra.boss_blind_applied.name == 'The Manacle' then
+		if card.ability.extra.boss_blind_applied.name == 'The Manacle' then
 			G.hand:change_size(1)
 		end
 	end
@@ -133,7 +133,7 @@ end
 local BlindModifyHand_ref = Blind.modify_hand
 function Blind.modify_hand(self, cards, poker_hands, text, mult, hand_chips) --Prolétaire Logic
 	local proletaire_is_flint = false
-	if next(find_joker("Prolétaire")) then
+	if next(SMODS.find_card("j_olab_proletaire")) then
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Prolétaire' then
 				if v.ability.extra.boss_blind_applied.name == 'The Flint' then proletaire_is_flint = true end
@@ -148,7 +148,7 @@ end
 local GFUNCSdraw_from_deck_to_hand_ref = G.FUNCS.draw_from_deck_to_hand
 G.FUNCS.draw_from_deck_to_hand = function(e) --Prolétaire Logic
 	local proletaire_is_serpent = false
-	if next(find_joker("Prolétaire")) then
+	if next(SMODS.find_card("j_olab_proletaire")) then
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Prolétaire' then
 				if v.ability.extra.boss_blind_applied.name == 'The Serpent' then proletaire_is_serpent = true end
@@ -180,7 +180,7 @@ end
 local Blinddebuff_card_ref = Blind.debuff_card
 function Blind.debuff_card(self, card, from_blind)
 	local main_blind_debuff = Blinddebuff_card_ref(self, card, from_blind)
-	if next(find_joker("Prolétaire")) then
+	if next(SMODS.find_card("j_olab_proletaire")) then
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Prolétaire' and v.ability.extra.boss_blind_applied then
 				local blind = G.P_BLINDS[v.ability.extra.boss_blind_applied.key]
@@ -214,7 +214,7 @@ end
 
 local BlindDebuff_Hand_ref = Blind.debuff_hand
 function Blind.debuff_hand(self, cards, hand, handname, check) --Prolétaire Logic
-	if next(find_joker("Prolétaire")) then
+	if next(SMODS.find_card("j_olab_proletaire")) then
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Prolétaire' then
 				if v.ability.extra.boss_blind_applied.debuff then
@@ -288,7 +288,7 @@ function Blind.stay_flipped(self, area, card) --Prolétaire Logic
 			end
 		end
 	end
-	if next(find_joker("Prolétaire")) then
+	if next(SMODS.find_card("j_olab_proletaire")) then
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Prolétaire' and area == G.hand then
 				if v.ability.extra.boss_blind_applied.name == 'The Wheel' and pseudorandom(pseudoseed('wheel')) < G.GAME.probabilities.normal/7 then
@@ -311,7 +311,7 @@ end
 
 local BlindPress_Play = Blind.press_play
 function Blind.press_play(self) --Prolétaire Logic
-	if next(find_joker("Prolétaire")) then
+	if next(SMODS.find_card("j_olab_proletaire")) then
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Prolétaire' then
 				if v.ability.extra.boss_blind_applied.name == 'The Hook' then

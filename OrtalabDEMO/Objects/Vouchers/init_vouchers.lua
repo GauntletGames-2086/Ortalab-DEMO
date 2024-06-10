@@ -16,7 +16,7 @@ local init_vouchers = function(base_file_path)
 	local curr_voucher_order = 1
 	for _, voucher in pairs(vouchers_to_inject) do
 		sendInfoMessage("SMODS.Mods: "..tostring(SMODS.Mods))
-		vouchers_to_inject[curr_voucher_order]:register()
+		vouchers_to_inject[curr_voucher_order]:register(voucher.order)
 		sendInfoMessage("Ortalab Voucher Registered: "..voucher.name)
 		curr_voucher_order = curr_voucher_order + 1
 	end
@@ -24,4 +24,4 @@ local init_vouchers = function(base_file_path)
 	--Functions to override that are used by several vouchers
 end
 
-return init_vouchers
+return {init_func = init_vouchers, group_config_enable = "vouchers_enabled"}

@@ -28,33 +28,33 @@ local popcorn_bag = SMODS.Joker({
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 popcorn_bag.order = 97
 
-function popcorn_bag.loc_def(center)
-	return {center.ability.extra.a_mult, center.ability.extra.a_mult_add}
+function popcorn_bag.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.a_mult, center.ability.extra.a_mult_add}}
 end
 
-popcorn_bag.calculate = function(self, context) --Popcorn Bag Logic
+popcorn_bag.calculate = function(self, card, context) --Popcorn Bag Logic
 	if not context.blueprint then
 		if context.end_of_round and not context.individual and not context.repetition then
-			if self.ability.extra.a_mult + self.ability.extra.a_mult_add > 20 then
+			if card.ability.extra.a_mult + card.ability.extra.a_mult_add > 20 then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('tarot1')
-						self.T.r = -0.2
-						self:juice_up(0.3, 0.4)
-						self.states.drag.is = true
-						self.children.center.pinch.x = true
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
 						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
 							func = function()
-									G.jokers:remove_card(self)
-									self:remove()
-									self = nil
+									G.jokers:remove_card(card)
+									card:remove()
+									card = nil
 								return true; end}))
 						return true
 					end
@@ -64,19 +64,19 @@ popcorn_bag.calculate = function(self, context) --Popcorn Bag Logic
 					colour = G.C.RED
 				}
 			else
-				self.ability.extra.a_mult = self.ability.extra.a_mult + self.ability.extra.a_mult_add
+				card.ability.extra.a_mult = card.ability.extra.a_mult + card.ability.extra.a_mult_add
 				return {
-					card = self,
-					message = localize{type='variable',key='a_mult',vars={self.ability.extra.a_mult_add}}
+					card = card,
+					message = localize{type='variable',key='a_mult',vars={card.ability.extra.a_mult_add}}
 				}
 			end
 		end
 	end
-	if SMODS.end_calculate_context(context) then
-		if self.ability.extra.a_mult > 0 then
+	if context.joker_main then
+		if card.ability.extra.a_mult > 0 then
 			return {
-				message = localize{type='variable',key='a_mult',vars={self.ability.extra.a_mult}},
-				mult_mod = self.ability.extra.a_mult
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.a_mult}},
+				mult_mod = card.ability.extra.a_mult
 			}
 		end
 	end

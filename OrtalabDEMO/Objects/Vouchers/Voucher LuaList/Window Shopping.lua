@@ -18,21 +18,24 @@ local window_shopping = SMODS.Voucher({
 	unlocked = true, --unlocked
 	discovered = true, --discovered
 	available = true, --available
-	atlas = "Ortalab_Vouchers" --atlas
+	atlas = "Ortalab_Vouchers", --atlas
+	register = function(self, order)
+		if order and order == self.order then
+			SMODS.Center.register(self)
+		end
+	end,
 })
 
 window_shopping.order = 7
 
-function window_shopping.redeem(center)
-	if center.name == 'Window Shopping' then
-		G.E_MANAGER:add_event(Event({func = function()
-			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
-			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
-			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
-			calculate_reroll_cost(true)
-			return true 
-		end }))
-	end
+function window_shopping.redeem(self)
+	G.E_MANAGER:add_event(Event({func = function()
+		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
+		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
+		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
+		calculate_reroll_cost(true)
+		return true 
+	end }))
 end
 
 return window_shopping

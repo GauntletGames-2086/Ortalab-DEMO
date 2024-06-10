@@ -24,30 +24,28 @@ local inverse_midas = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 inverse_midas.order = 76
 
-function inverse_midas.loc_def(center)
-	return {center.ability.extra.dollars, center.ability.extra.dollars_add}
-end
-function inverse_midas.tooltip(card, info_queue)
+function inverse_midas.loc_vars(card, info_queue, center)
 	info_queue[#info_queue+1] = G.P_CENTERS.m_gold
+	return {vars = {center.ability.extra.dollars, center.ability.extra.dollars_add}}
 end
 
-inverse_midas.calculate = function(self, context) --Beyond The Mask Logic
+inverse_midas.calculate = function(self, card, context) --Beyond The Mask Logic
 	if context.discard and not context.blueprint and not context.other_card.debuff and
 	context.other_card.ability.name == 'Gold Card' then
-		self.ability.extra.dollars = self.ability.extra.dollars + self.ability.extra.dollars_add
+		card.ability.extra.dollars = card.ability.extra.dollars + card.ability.extra.dollars_add
 		return {
 			message = localize('k_upgrade_ex'),
 			colour = G.C.MONEY,
 			delay = 0.45, 
 			remove = true,
-			card = self
+			card = card
 		}
 	end
 end

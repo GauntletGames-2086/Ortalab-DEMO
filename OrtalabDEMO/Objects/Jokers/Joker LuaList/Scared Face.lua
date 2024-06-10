@@ -23,22 +23,22 @@ local scared_face = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 scared_face.order = 33
 
-function scared_face.loc_def(center)
-	return {center.ability.extra.chips}
+function scared_face.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.chips}}
 end
 
-scared_face.calculate = function(self, context) --Scared Face Logic
+scared_face.calculate = function(self, card, context) --Scared Face Logic
 	if context.individual and context.cardarea == G.play and not (context.other_card:get_id() == 11 or context.other_card:get_id() == 12 or context.other_card:get_id() == 13) then
 		return {
-			chips = self.ability.extra.chips,
-			card = self
+			chips = card.ability.extra.chips,
+			card = card
 		}
 	end
 end

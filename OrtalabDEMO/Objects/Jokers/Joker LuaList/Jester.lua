@@ -22,22 +22,22 @@ local jester = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 jester.order = 1
 
-function jester.loc_def(center)
-	return {center.ability.extra.chips}
+function jester.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.chips}}
 end
 
-jester.calculate = function(self, context)
-	if SMODS.end_calculate_context(context) then
+jester.calculate = function(self, card, context)
+	if context.joker_main then
 		return {
-			message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
-			chip_mod = self.ability.extra.chips, 
+			message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+			chip_mod = card.ability.extra.chips, 
 			colour = G.C.CHIPS
 		}
 	end

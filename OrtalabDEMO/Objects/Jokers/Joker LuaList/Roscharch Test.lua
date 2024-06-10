@@ -23,28 +23,28 @@ local roscharch_test = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 roscharch_test.order = 101
 
-function roscharch_test.loc_def(center)
-	return {center.ability.extra.chips, center.ability.extra.mult}
+function roscharch_test.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.chips, center.ability.extra.mult}}
 end
 
-roscharch_test.calculate = function(self, context) --Roscharch Logic
+roscharch_test.calculate = function(self, card, context) --Roscharch Logic
 	if context.individual and context.cardarea == G.play and (context.other_card:get_id() == 5 or context.other_card:get_id() == 2) then
 		if pseudorandom('roscharch_test') <= 0.5 then
 			return {
-				mult = self.ability.extra.mult,
-				card = self
+				mult = card.ability.extra.mult,
+				card = card
 			}
 		else
 			return {
-				chips = self.ability.extra.chips,
-				card = self
+				chips = card.ability.extra.chips,
+				card = card
 			}
 		end
 	end

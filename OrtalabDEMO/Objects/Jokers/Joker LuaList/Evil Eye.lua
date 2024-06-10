@@ -25,15 +25,15 @@ local evil_eye = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 evil_eye.order = 139
 
-function evil_eye.loc_def(center)
-	return {center.ability.extra.money, center.ability.extra.money*center.ability.extra.spectral_sold}
+function evil_eye.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.money, center.ability.extra.money*center.ability.extra.spectral_sold}}
 end
 
 return evil_eye

@@ -19,21 +19,24 @@ local infinite_scroll = SMODS.Voucher({
 	discovered = true, --discovered
 	available = false, --available
 	requires = {'v_window_shopping'}, --requires
-	atlas = "Ortalab_Vouchers" --atlas
+	atlas = "Ortalab_Vouchers", --atlas
+	register = function(self, order)
+		if order and order == self.order then
+			SMODS.Center.register(self)
+		end
+	end,
 })
 
 infinite_scroll.order = 8
 
-function infinite_scroll.redeem(center)
-	if center.name == 'Infinite Scroll' then
-		G.E_MANAGER:add_event(Event({func = function()
-			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
-			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
-			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
-			calculate_reroll_cost(true)
-			return true 
-		end }))
-	end
+function infinite_scroll.redeem(self)
+	G.E_MANAGER:add_event(Event({func = function()
+		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
+		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
+		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
+		calculate_reroll_cost(true)
+		return true 
+	end }))
 end
 
 return infinite_scroll

@@ -31,33 +31,33 @@ local royal_gala = SMODS.Joker({
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 royal_gala.order = 61
 
-function royal_gala.loc_def(center)
-	return {center.ability.extra.xchips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
+function royal_gala.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.xchips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 end
 
-royal_gala.calculate = function(self, context) --Royal Gala Logic
-	if self.ability.name == 'Royal Gala' then
+royal_gala.calculate = function(self, card, context) --Royal Gala Logic
+	if card.ability.name == 'Royal Gala' then
 		if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-			if pseudorandom('royalgala') < G.GAME.probabilities.normal/self.ability.extra.odds then
+			if pseudorandom('royalgala') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('tarot1')
-						self.T.r = -0.2
-						self:juice_up(0.3, 0.4)
-						self.states.drag.is = true
-						self.children.center.pinch.x = true
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
 						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
 							func = function()
-									G.jokers:remove_card(self)
-									self:remove()
-									self = nil
+									G.jokers:remove_card(card)
+									card:remove()
+									card = nil
 								return true; end})) 
 						return true
 					end
@@ -71,10 +71,10 @@ royal_gala.calculate = function(self, context) --Royal Gala Logic
 				}
 			end
 		end
-		if SMODS.end_calculate_context(context) then
+		if context.joker_main then
 			return {
-				message = localize{type='variable',key='a_xchips',vars={self.ability.extra.xchips}},
-				Xchip_mod = self.ability.extra.xchips, 
+				message = localize{type='variable',key='a_xchips',vars={card.ability.extra.xchips}},
+				Xchip_mod = card.ability.extra.xchips, 
 				colour = G.C.CHIPS
 			}
 		end

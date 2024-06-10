@@ -23,22 +23,22 @@ local frowny_face = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 frowny_face.order = 104
 
-function frowny_face.loc_def(center)
-	return {center.ability.extra.mult}
+function frowny_face.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.mult}}
 end
 
-frowny_face.calculate = function(self, context) --Frowny Face Logic
+frowny_face.calculate = function(self, card, context) --Frowny Face Logic
 	if context.individual and context.cardarea == G.play and not (context.other_card:get_id() == 11 or context.other_card:get_id() == 12 or context.other_card:get_id() == 13) then
 		return {
-			mult = self.ability.extra.mult,
-			card = self
+			mult = card.ability.extra.mult,
+			card = card
 		}
 	end
 end

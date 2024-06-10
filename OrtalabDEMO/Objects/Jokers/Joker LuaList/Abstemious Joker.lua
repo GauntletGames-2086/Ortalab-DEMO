@@ -23,22 +23,22 @@ local abstemious_joker = SMODS.Joker({
 	atlas = "Ortalab_Jokers", --atlas
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 abstemious_joker.order = 5
 
-function abstemious_joker.loc_def(center)
-	return {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}
+function abstemious_joker.loc_vars(self, info_queue, center)
+	return {vars = {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}}
 end
 
-abstemious_joker.calculate = function(self, context) --Abstemonius Joker Logic
+abstemious_joker.calculate = function(self, card, context) --Abstemonius Joker Logic
 	if context.individual and context.cardarea == G.play and context.other_card:is_suit("Clubs") then
 		return {
-			chips = self.ability.extra.chips,
-			card = self
+			chips = card.ability.extra.chips,
+			card = card
 		}
 	end
 end

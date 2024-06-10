@@ -23,14 +23,14 @@ local mystery_soda = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 mystery_soda.order = 94
 
-mystery_soda.calculate = function(self, context) --Mystery Soda Logic
+mystery_soda.calculate = function(self, card, context) --Mystery Soda Logic
 	if context.selling_self then
 		local available_tags = {}
 		local selected_tags = {}

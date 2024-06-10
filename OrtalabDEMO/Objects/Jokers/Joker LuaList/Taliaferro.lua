@@ -26,32 +26,32 @@ local taliaferro = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 taliaferro.order = 38
 
-function taliaferro.loc_def(center)
-	return {center.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
+function taliaferro.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 end
 
-taliaferro.calculate = function(self, context) --Taliaferro Logic NOTE: MUST ADD POOL FLAGS
+taliaferro.calculate = function(self, card, context) --Taliaferro Logic NOTE: MUST ADD POOL FLAGS
 	if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-		if pseudorandom('taliaferro') < G.GAME.probabilities.normal/self.ability.extra.odds then
+		if pseudorandom('taliaferro') < G.GAME.probabilities.normal/card.ability.extra.odds then
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound('tarot1')
-					self.T.r = -0.2
-					self:juice_up(0.3, 0.4)
-					self.states.drag.is = true
-					self.children.center.pinch.x = true
+					card.T.r = -0.2
+					card:juice_up(0.3, 0.4)
+					card.states.drag.is = true
+					card.children.center.pinch.x = true
 					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
 						func = function()
-								G.jokers:remove_card(self)
-								self:remove()
-								self = nil
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
 							return true; end})) 
 					return true
 				end
@@ -66,10 +66,10 @@ taliaferro.calculate = function(self, context) --Taliaferro Logic NOTE: MUST ADD
 			}
 		end
 	end
-	if SMODS.end_calculate_context(context) then
+	if context.joker_main then
 		return {
-			message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
-			chip_mod = self.ability.extra.chips, 
+			message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+			chip_mod = card.ability.extra.chips, 
 			colour = G.C.CHIPS
 		}
 	end

@@ -24,38 +24,38 @@ local skydiving = SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = false,
 	atlas = "Ortalab_Jokers",
-	loc_def = function(center)
-		return {center.ability.extra.xmult_add, center.ability.extra.curr_xmult}
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.xmult_add, center.ability.extra.curr_xmult}}
 	end,
-	calculate = function(self, context)
+	calculate = function(self, card, context)
 		if not context.blueprint and context.cardarea == G.jokers and context.before and G.GAME.hands[context.scoring_name].level ~= 1 then
 			if G.GAME.hands[context.scoring_name].level < 1 then
 				return {
-					card = self,
+					card = card,
 					level_up = true,
 					message = localize('k_level_up_ex')
 				}
 			else
 				local levels_to_remove = G.GAME.hands[context.scoring_name].level - 1
-				self.ability.extra.curr_xmult = self.ability.extra.curr_xmult + (levels_to_remove*self.ability.extra.xmult_add)
-				level_up_hand(self, context.scoring_name, nil, -levels_to_remove)
+				card.ability.extra.curr_xmult = card.ability.extra.curr_xmult + (levels_to_remove*card.ability.extra.xmult_add)
+				level_up_hand(card, context.scoring_name, nil, -levels_to_remove)
 				return {
-					card = self,
+					card = card,
 					colour = G.C.RED,
-					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.curr_xmult}}
+					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.curr_xmult}}
 				}
 			end
 		end
-		if SMODS.end_calculate_context(context) and self.ability.extra.curr_xmult > 1 then
+		if context.joker_main and card.ability.extra.curr_xmult > 1 then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.curr_xmult}},
-				Xmult_mod = self.ability.extra.curr_xmult
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.curr_xmult}},
+				Xmult_mod = card.ability.extra.curr_xmult
 			}
 		end
 	end,
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })

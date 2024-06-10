@@ -23,4 +23,4 @@ local init_challenges = function(base_file_path)
 	--Functions to override that are used by several challenges
 end
 
-return init_challenges
+return {init_func = init_challenges, group_config_enable = "challenges_enabled"}

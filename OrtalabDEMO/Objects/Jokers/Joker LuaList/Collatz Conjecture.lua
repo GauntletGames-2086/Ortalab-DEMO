@@ -25,28 +25,28 @@ local collatz = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 collatz.order = 31
 
-function collatz.loc_def(center)
-	return {center.ability.extra.x_mult, center.ability.extra.x_mult_reduction}
+function collatz.loc_vars(self, info_queue, center)
+	return {vars = {center.ability.extra.x_mult, center.ability.extra.x_mult_reduction}}
 end
 
-collatz.calculate = function(self, context) --Collatz Logic
-	if SMODS.end_calculate_context(context) then
-		if self.ability.extra.current_chips % 2 == 0 then
+collatz.calculate = function(self, card, context) --Collatz Logic
+	if context.joker_main then
+		if card.ability.extra.current_chips % 2 == 0 then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult_reduction}},
-				Xmult_mod = self.ability.extra.x_mult_reduction
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult_reduction}},
+				Xmult_mod = card.ability.extra.x_mult_reduction
 			}
 		else
 			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-				Xmult_mod = self.ability.extra.x_mult
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+				Xmult_mod = card.ability.extra.x_mult
 			}
 		end
 	end
@@ -54,7 +54,7 @@ end
 
 local mod_chips_ref = mod_chips
 function mod_chips(_chips) --Required for Collatz
-	if next(find_joker("Collatz Conjecture")) then
+	if next(SMODS.find_card("j_olab_collatz")) then
 		local curr_chips = _chips
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Collatz Conjecture' then

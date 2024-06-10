@@ -24,22 +24,22 @@ local chastful_joker = SMODS.Joker({
 	atlas = "Ortalab_Jokers",
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.GameObject.register(self)
+			SMODS.Joker.register(self)
 		end
 	end,
 })
 
 chastful_joker.order = 3
 
-function chastful_joker.loc_def(center)
-	return {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}
+function chastful_joker.loc_vars(card, info_queue, center)
+	return {vars = {center.ability.extra.chips, localize(center.ability.extra.suit, 'suits_singular')}}
 end
 
-chastful_joker.calculate = function(self, context) --Chastful Joker Logic
+chastful_joker.calculate = function(self, card, context) --Chastful Joker Logic
 	if context.individual and context.cardarea == G.play and context.other_card:is_suit("Hearts") then
 		return {
-			chips = self.ability.extra.chips,
-			card = self
+			chips = card.ability.extra.chips,
+			card = card
 		}
 	end
 end
