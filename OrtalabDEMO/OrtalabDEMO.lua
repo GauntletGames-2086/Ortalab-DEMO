@@ -15,7 +15,20 @@ function loc_colour(_c, _default)
     loc_colour_ref(_c, _default) -- toss the return value, we don't need it
     G.ARGS.LOC_COLOURS['zodiac'] = HEX('9D3B35')
     G.ARGS.LOC_COLOURS['loteria'] = HEX('B77A91')
-    G.ARGS.LOC_COLOURS['mythos'] = HEX('704F72')
+    G.ARGS.LOC_COLOURS['cryptid'] = HEX('704F72')
+
+    -- Artist Colors
+    G.ARGS.LOC_COLOURS['AlexArt'] = HEX('16db9d')
+    G.ARGS.LOC_COLOURS['CheeseArt'] = HEX('a3a616')
+    G.ARGS.LOC_COLOURS['CoroArt'] = HEX('9cb3e2')
+    G.ARGS.LOC_COLOURS['CrimsonArt'] = HEX('990000')
+    G.ARGS.LOC_COLOURS['FlareArt'] = HEX('fd5f55')
+    G.ARGS.LOC_COLOURS['FlowweyArt'] = HEX('110663')
+    G.ARGS.LOC_COLOURS['GappieArt'] = HEX('7BF2FF')
+    G.ARGS.LOC_COLOURS['GoldDiscoArt'] = HEX('e6bb12')
+    G.ARGS.LOC_COLOURS['KoszeTraweArt'] = HEX('4ecf21')
+    G.ARGS.LOC_COLOURS['LoganArt'] = HEX('ffff00')
+    G.ARGS.LOC_COLOURS['SaladArt'] = HEX('0AC400')
     return G.ARGS.LOC_COLOURS[_c] or _default or G.C.UI.TEXT_DARK -- recalculate result
 end
 

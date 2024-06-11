@@ -11,7 +11,7 @@ local joker_loc_txt = {
 local triangle_joker = SMODS.Joker({
 	name = "Triangle Joker",
 	key = "triangle_joker",
-	config = {extra = {mult_add = 0, mult_total = 3}},
+	config = {extra = {mult_add = 3, mult_total = 0}},
 	pos = {x = 9, y = 11},
 	loc_txt = joker_loc_txt,
 	rarity = 1,
