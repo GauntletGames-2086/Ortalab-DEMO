@@ -32,7 +32,7 @@ local monochrome = SMODS.Joker({
 monochrome.order = 113
 
 function monochrome.loc_vars(card, info_queue, center)
-	return {vars = {localize((G.GAME.current_round.monochrome_card.suit), 'suits_singular'), colours = {G.C.SUITS[G.GAME.current_round.monochrome_card.suit]}}}
+	return {vars = {localize((G.GAME.current_round.monochrome_card and G.GAME.current_round.monochrome_card.suit or "Spades"), 'suits_singular'), colours = {G.C.SUITS[G.GAME.current_round.monochrome_card and G.GAME.current_round.monochrome_card.suit or "Spades"]}}}
 end
 
 local CardIs_Suit_ref = Card.is_suit

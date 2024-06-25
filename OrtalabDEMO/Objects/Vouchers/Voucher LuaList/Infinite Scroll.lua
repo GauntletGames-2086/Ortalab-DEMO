@@ -18,7 +18,7 @@ local infinite_scroll = SMODS.Voucher({
 	unlocked = true, --unlocked
 	discovered = true, --discovered
 	available = false, --available
-	requires = {'v_window_shopping'}, --requires
+	requires = {'v_olab_window_shopping'}, --requires
 	atlas = "Ortalab_Vouchers", --atlas
 	register = function(self, order)
 		if order and order == self.order then
@@ -34,6 +34,7 @@ function infinite_scroll.redeem(self)
 		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 2
 		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 2
 		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 2)
+		G.GAME.current_round["olab_free_rerolls"] = G.GAME.current_round["olab_free_rerolls"] + 2
 		calculate_reroll_cost(true)
 		return true 
 	end }))

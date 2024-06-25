@@ -55,8 +55,6 @@ local function init_file_groups()
 	end
 end
 
-init_file_groups()
-
 --Helper functions
 function table.contains(table, element)
 	for _, value in pairs(table) do
@@ -69,6 +67,23 @@ end
 
 --Functions to override that are used by several different types of objects
 
+function SMODS.current_mod.reset_game_globals(first_pass)
+	if first_pass then
+		G.GAME.current_round["spectral_sold"] = 0
+		G.GAME.current_round["spectral_type_sold"] = {}
+		G.GAME.current_round["olab_free_rerolls"] = 0
+	end
+
+	--Monochrome Joker
+	local monochrome_suits = {}
+	G.GAME.current_round.monochrome_card = {}
+    for k, v in ipairs({'Spades','Hearts','Clubs','Diamonds'}) do
+        if v ~= G.GAME.current_round.monochrome_card.suit then monochrome_suits[#monochrome_suits + 1] = v end
+    end
+    local monochrome_card = pseudorandom_element(monochrome_suits, pseudoseed('monochrome'..G.GAME.round_resets.ante))
+    G.GAME.current_round.monochrome_card.suit = monochrome_card
+end
+
 local BackApply_to_run_ref = Back.apply_to_run
 function Back.apply_to_run(self)
 	BackApply_to_run_ref(self)
@@ -76,7 +91,7 @@ function Back.apply_to_run(self)
 	if self.effect.config.spectral_rate then
 		G.E_MANAGER:add_event(Event({
 			func = function() 
-				G.GAME.used_vouchers['v_shady_trading'] = true
+				G.GAME.used_vouchers['v_olab_shady_trading'] = true
 				G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
 				G.GAME.pool_flags.shady_trading_redeemed = true
 				return true 
@@ -84,6 +99,12 @@ function Back.apply_to_run(self)
 		}))
 	end
 end
+
+--[[to_big = to_big or function(num)
+	return num
+end]]
+
+init_file_groups()
 
 ----------------------------------------------
 ------------MOD CODE END----------------------

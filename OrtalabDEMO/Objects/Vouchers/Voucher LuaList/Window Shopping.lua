@@ -33,6 +33,7 @@ function window_shopping.redeem(self)
 		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
 		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + 1
 		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + 1)
+		G.GAME.current_round["olab_free_rerolls"] = G.GAME.current_round["olab_free_rerolls"] + 1
 		calculate_reroll_cost(true)
 		return true 
 	end }))

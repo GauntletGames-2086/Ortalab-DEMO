@@ -22,6 +22,9 @@ local inverse_midas = SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = false,
 	atlas = "Ortalab_Jokers",
+	calc_dollar_bonus = function(self, card)
+		return card.ability.extra.dollars
+	end,
 	register = function(self, order)
 		if order and order == self.order then
 			SMODS.Joker.register(self)

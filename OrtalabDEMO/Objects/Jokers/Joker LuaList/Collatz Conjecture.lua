@@ -38,15 +38,15 @@ end
 
 collatz.calculate = function(self, card, context) --Collatz Logic
 	if context.joker_main then
-		if card.ability.extra.current_chips % 2 == 0 then
-			return {
-				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult_reduction}},
-				Xmult_mod = card.ability.extra.x_mult_reduction
-			}
-		else
+		if math.floor(to_big(card.ability.extra.current_chips) / 2) * 2 == to_big(card.ability.extra.current_chips) then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
 				Xmult_mod = card.ability.extra.x_mult
+			}
+		else
+			return {
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult_reduction}},
+				Xmult_mod = card.ability.extra.x_mult_reduction
 			}
 		end
 	end
@@ -58,15 +58,9 @@ function mod_chips(_chips) --Required for Collatz
 		local curr_chips = _chips
 		for k, v in pairs(G.jokers.cards) do
 			if v.ability.name == 'Collatz Conjecture' then
-				if G.GAME.modifiers.chips_dollar_cap then
-					curr_chips = math.min(_chips, math.max(G.GAME.dollars, 0))
-				end
 				v.ability.extra.current_chips = curr_chips
 			end
 		end
-	end
-	if _chips < 0 then
-		_chips = 1
 	end
 	return mod_chips_ref(_chips)
 end

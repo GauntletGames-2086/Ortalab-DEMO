@@ -1,7 +1,7 @@
 local joker_loc_txt = {
 	["name"] = "Royal Gala",
 	["text"] = {
-		"{X:chips,C:white}X#1#{} Chips",
+		"{C:chips}+#1#{} Chips",
 		"{C:green}#2# in #3#{} chance this",
 		"card is destroyed",
 		"at end of round",
@@ -13,7 +13,7 @@ local joker_loc_txt = {
 local royal_gala = SMODS.Joker({
 	name = "Royal Gala",
 	key = "royal_gala",
-	config = {extra = {xchips = 3, odds = 1000}},
+	config = {extra = {chips = 300, odds = 1000}},
 	pos = {x = 5,y = 11},
 	loc_txt = joker_loc_txt,
 	rarity = 1,
@@ -39,7 +39,7 @@ local royal_gala = SMODS.Joker({
 royal_gala.order = 61
 
 function royal_gala.loc_vars(card, info_queue, center)
-	return {vars = {center.ability.extra.xchips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
+	return {vars = {center.ability.extra.chips, ''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 end
 
 royal_gala.calculate = function(self, card, context) --Royal Gala Logic
@@ -73,8 +73,8 @@ royal_gala.calculate = function(self, card, context) --Royal Gala Logic
 		end
 		if context.joker_main then
 			return {
-				message = localize{type='variable',key='a_xchips',vars={card.ability.extra.xchips}},
-				Xchip_mod = card.ability.extra.xchips, 
+				message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+				Xchip_mod = card.ability.extra.chips, 
 				colour = G.C.CHIPS
 			}
 		end

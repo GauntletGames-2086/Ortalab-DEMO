@@ -23,6 +23,9 @@ local evil_eye = SMODS.Joker({
 	perishable_compat = true,
 	yes_pool_flag = 'shady_trading_redeemed',
 	atlas = "Ortalab_Jokers",
+	calc_dollar_bonus = function(self, card)
+		return center.ability.extra.money*(G.GAME.current_round.spectral_sold or 0)
+	end,
 	register = function(self, order)
 		if order and order == self.order then
 			SMODS.Joker.register(self)
@@ -33,7 +36,7 @@ local evil_eye = SMODS.Joker({
 evil_eye.order = 139
 
 function evil_eye.loc_vars(card, info_queue, center)
-	return {vars = {center.ability.extra.money, center.ability.extra.money*center.ability.extra.spectral_sold}}
+	return {vars = {center.ability.extra.money, center.ability.extra.money*(G.GAME.current_round.spectral_sold or 0)}}
 end
 
 return evil_eye

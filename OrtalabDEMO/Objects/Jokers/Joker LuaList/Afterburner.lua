@@ -26,6 +26,9 @@ local fuel_tank = SMODS.Joker({
 		SMODS.process_loc_text(G.localization.misc.dictionary, 'k_leak', "Leaked!")
 		SMODS.process_loc_text(G.localization.misc.dictionary, 'k_empty', "Empty!")
 	end,
+	calc_dollar_bonus = function(self, card)
+		return card.ability.extra.money
+	end,
 	register = function(self, order)
 		if order and order == self.order then
 			SMODS.Joker.register(self)
@@ -33,8 +36,6 @@ local fuel_tank = SMODS.Joker({
 	end,
 })
 
-G.localization.misc.dictionary.k_leak = "Leaked!" --Used for Fuel Tank
-G.localization.misc.dictionary.k_empty = "Empty!" --Used for Fuel Tank
 fuel_tank.order = 74
 
 function fuel_tank.loc_vars(card, info_queue, center)

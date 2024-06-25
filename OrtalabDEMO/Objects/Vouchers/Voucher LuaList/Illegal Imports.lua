@@ -16,7 +16,7 @@ local illegal_imports = SMODS.Voucher({
 	unlocked = true, --unlocked
 	discovered = true, --discovered
 	available = false, --available
-	requires = {'v_shady_trading'}, --requires
+	requires = {'v_olab_shady_trading'}, --requires
 	atlas = "Ortalab_Vouchers", --atlas
 	register = function(self, order)
 		if order and order == self.order then

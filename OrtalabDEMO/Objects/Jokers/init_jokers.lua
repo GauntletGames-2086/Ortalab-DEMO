@@ -21,6 +21,7 @@ local init_jokers = function(base_file_path)
 	end
 
 	--Functions to override that are used by several jokers
+
 	local CardAdd_to_deck_ref = Card.add_to_deck
 	function Card.add_to_deck(self, from_debuff) --Crime Scene, Woo! All 1s, and Monochrome Logic
 		if self.ability.name == 'Crime Scene' then
@@ -38,7 +39,7 @@ local init_jokers = function(base_file_path)
 			if self.ability.name == 'Woo! All 1s' then
 				self.added_to_deck = true
 				for k, v in pairs(G.GAME.probabilities) do 
-					if G.GAME.probabilities[k] == 1 and not next(find_joker('Oops! All 6s')) then
+					if G.GAME.probabilities[k] == 1 and not next(SMODS.find_card('j_oops')) then
 						G.GAME.probabilities[k] = 0
 					else
 						G.GAME.probabilities[k] = v/2
@@ -88,7 +89,7 @@ local init_jokers = function(base_file_path)
 				for k, v in pairs(G.GAME.probabilities) do 
 					if G.GAME.probabilities[k] == 0 then
 						G.GAME.probabilities[k] = 1
-						if next(find_joker('Oops! All 6s')) then
+						if next(SMODS.find_card('j_oops')) then
 							for kk, vv in pairs(G.jokers.cards) do
 								if vv.ability.name == 'Oops! All 6s' then
 									G.GAME.probabilities[k] = v*2
@@ -129,34 +130,17 @@ local init_jokers = function(base_file_path)
 		end
 	end
 
-	local CardCalc_Dollar_Bonus = Card.calculate_dollar_bonus --Money Joker Logic
-	function Card:calculate_dollar_bonus() --Money Jokers
-		if self.debuff then return end
-		if self.ability.set == "Joker" then
-			if self.ability.name == "Beyond The Mask" then
-				return self.ability.extra.dollars
-			end
-			if self.ability.name == "Afterburner" then
-				return self.ability.extra.money
-			end
-			if self.ability.name == "Evil Eye" then
-				return self.ability.extra.money*self.ability.extra.spectral_sold
-			end
-		end
-		return CardCalc_Dollar_Bonus(self)
-	end
-
 	local CardSell_Card = Card.sell_card --Crime Scene and Evil Eye Logic
 	function Card.sell_card(self)
-		if next(find_joker('Crime Scene')) and self.ability.set == 'Joker' then
+		if next(SMODS.find_card('j_olab_crime_scene')) and self.ability.set == 'Joker' then
 			self.config.center.no_pool_flag = 'crime_scene_pool_disable'
 		end
-		if next(find_joker('Evil Eye')) and self.ability.set == 'Spectral' then
+		if next(SMODS.find_card('j_olab_evil_eye')) and self.ability.set == 'Spectral' then
 			for k, v in pairs(G.jokers.cards) do
 				if v.ability.name == 'Evil Eye' then
-					if v.ability.extra.spectral_type_sold[self.config.center.key] ~= true then
-						v.ability.extra.spectral_sold = v.ability.extra.spectral_sold + 1
-						v.ability.extra.spectral_type_sold[self.config.center.key] = true
+					if G.GAME.current_round.spectral_type_sold[self.config.center.key] ~= true then
+						G.GAME.current_round.spectral_sold = G.GAME.current_round.spectral_sold + 1
+						G.GAME.current_round.spectral_type_sold[self.config.center.key] = true
 					end
 				end
 			end

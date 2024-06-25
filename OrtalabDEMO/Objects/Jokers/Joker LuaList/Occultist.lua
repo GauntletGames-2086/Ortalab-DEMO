@@ -34,7 +34,7 @@ occultist.order = 143
 local CardSet_cost = Card.set_cost --Oculstist Logic
 function Card.set_cost(self)
 	CardSet_cost(self)
-	if (self.ability.set == 'Spectral' or (self.ability.set == 'Booster' and self.ability.name:find('Spectral'))) and #find_joker('Occultist') > 0 then 
+	if (self.ability.set == 'Spectral' or (self.ability.set == 'Booster' and self.ability.name:find('Spectral'))) and #SMODS.find_card('j_olab_occultist') > 0 then 
 		self.cost = 0 
 	end
 end
