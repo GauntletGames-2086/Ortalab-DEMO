@@ -100,9 +100,9 @@ function Back.apply_to_run(self)
 	end
 end
 
---[[to_big = to_big or function(num)
+to_big = to_big or function(num)
 	return num
-end]]
+end
 
 init_file_groups()
 
