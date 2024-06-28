@@ -36,7 +36,7 @@ function get_straight(hand)--Scenic Route Logic
 	if not next(SMODS.find_card("j_olab_scenic_route")) then return get_straight_ref(hand) end
 
 	local ret = {}
-	local four_fingers = SMODS.find_card('j_four_fingers')
+	local four_fingers = next(SMODS.find_card('j_four_fingers'))
 	local total_cards = 0
 	local straight_pair_ids = {}
 	if #hand > 5 or #hand < (5 - (four_fingers and 1 or 0)) then return ret else
