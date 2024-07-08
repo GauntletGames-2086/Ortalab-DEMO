@@ -112,7 +112,6 @@ local init_jokers = function(base_file_path)
 
 	local CardSet_Ability_ref = Card.set_ability 
 	function Card.set_ability(self, center, initial, delay_sprites) --Blacklist Logic
-		local center_name = center.name
 		CardSet_Ability_ref(self, center, initial, delay_sprites)
 		if self.ability.name == 'Blacklist' then
 			local _poker_hands = {}
