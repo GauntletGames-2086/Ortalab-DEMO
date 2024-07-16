@@ -15,7 +15,7 @@ local init_challenges = function(base_file_path)
 
 	local curr_challenge_order = 1
 	for _, challenge in pairs(challenges_to_inject) do
-		challenges_to_inject[curr_challenge_order][1]:register()
+		challenges_to_inject[curr_challenge_order][1]:register(challenge.order)
 		sendInfoMessage("Ortalab Challenge Registered: "..challenges_to_inject[curr_challenge_order][1].name)
 		curr_challenge_order = curr_challenge_order + 1
 	end

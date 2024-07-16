@@ -11,7 +11,12 @@ local OrangeDeck = SMODS.Back({
 	config = {hands = -1, discards = 2, atlas = "Ortalab-Enhancers"}, 
 	pos = {x = 1, y = 0}, 
 	loc_txt = deck_loc_txt,
-	atlas = "Ortalab_Enhancers"
+	atlas = "Ortalab_Enhancers",
+	register = function(self, order)
+        if order then
+            self.super.register(self)
+        end
+    end
 })
 
 OrangeDeck.order = 1

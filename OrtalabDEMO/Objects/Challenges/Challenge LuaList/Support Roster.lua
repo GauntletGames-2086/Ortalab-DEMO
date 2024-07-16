@@ -96,6 +96,12 @@ local challenge_info = SMODS.Challenge({
     process_loc_text = function(self)
         SMODS.Challenge.process_loc_text(self)
         SMODS.process_loc_text(G.localization.misc.v_text, 'ch_c_only_nonscoring_jokers', {"All {C:attention}Jokers{} that contribute to scoring are banned"})
+    end,
+    order = 1,
+    register = function(self, order)
+        if order then
+            SMODS.Challenge.register(self)
+        end
     end
 })
 

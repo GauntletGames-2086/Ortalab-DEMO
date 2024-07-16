@@ -14,6 +14,12 @@ local challenge_info = SMODS.Challenge({
     process_loc_text = function(self)
         SMODS.Challenge.process_loc_text(self)
         SMODS.process_loc_text(G.localization.misc.v_text, 'ch_c_only_straight', {"Played hands that do not contain a straight are {C:attention}debuffed{}"})
+    end,
+    order = 2,
+    register = function(self, order)
+        if order then
+            SMODS.Challenge.register(self)
+        end
     end
 })
 

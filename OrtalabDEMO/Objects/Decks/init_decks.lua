@@ -15,7 +15,7 @@ local init_decks = function(base_file_path)
 
 	local curr_deck_order = 1
 	for _, deck in pairs(decks_to_inject) do
-		decks_to_inject[curr_deck_order]:register()
+		decks_to_inject[curr_deck_order]:register(deck.order)
 		sendInfoMessage("Ortalab Deck Registered: "..deck.name)
 		curr_deck_order = curr_deck_order + 1
 	end

@@ -20,7 +20,7 @@ local illegal_imports = SMODS.Voucher({
 	atlas = "Ortalab_Vouchers", --atlas
 	register = function(self, order)
 		if order and order == self.order then
-			SMODS.Center.register(self)
+			self.super.register(self)
 		end
 	end,
 })
