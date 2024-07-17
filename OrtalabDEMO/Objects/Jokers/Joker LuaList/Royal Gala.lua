@@ -74,7 +74,7 @@ royal_gala.calculate = function(self, card, context) --Royal Gala Logic
 		if context.joker_main then
 			return {
 				message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-				Xchip_mod = card.ability.extra.chips, 
+				chip_mod = card.ability.extra.chips, 
 				colour = G.C.CHIPS
 			}
 		end
