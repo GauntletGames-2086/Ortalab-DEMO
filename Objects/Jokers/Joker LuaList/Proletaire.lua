@@ -57,7 +57,7 @@ proletaire.calculate = function(self, card, context) --Prolétaire Logic
 			end
 			for k, v in pairs(G.P_BLINDS) do
 				if v ~= G.P_BLINDS.bl_small and v ~= G.P_BLINDS.bl_big then
-					if v ~= G.P_BLINDS.bl_final_leaf and v ~= G.P_BLINDS.bl_final_acorn and v ~= G.P_BLINDS.bl_final_bell and v ~= G.P_BLINDS.bl_final_heart and v ~= G.P_BLINDS.bl_final_vessel then
+					if not v.boss.showdown then
 						if banned_blinds[v] == nil and v ~= G.GAME.blind then 
 							table.insert(all_blind_configs,G.P_BLINDS[k]) 
 						end

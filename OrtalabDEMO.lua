@@ -104,6 +104,11 @@ to_big = to_big or function(num)
 	return num
 end
 
+-- JokerDisplay mod support
+if _G["JokerDisplay"] then
+	NFS.load(mod_path .. "jokerdisplay_definitions.lua")()
+end
+
 init_file_groups()
 
 ----------------------------------------------
