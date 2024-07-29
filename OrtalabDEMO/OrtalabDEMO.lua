@@ -2542,6 +2542,11 @@ function SMODS.INIT.Ortalab()
 			return {center.ability.extra.mult_add, center.ability.extra.mult_add*G.GAME.current_round.hands_left}
 		end
 	end
+
+	-- JokerDisplay mod support
+    if _G["JokerDisplay"] then
+        NFS.load(SMODS.findModByID("OrtalabDEMO").path .. "jokerdisplay_definitions.lua")()
+    end
 end
 
 ----------------------------------------------
