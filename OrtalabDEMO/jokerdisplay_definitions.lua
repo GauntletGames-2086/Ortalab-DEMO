@@ -593,7 +593,7 @@ jd_def["j_proletaire"] = { -- Prolétaire
     extra = {
         {
             { text = "(" },
-            { ref_table = "card.joker_display_values", ref_value = "localized_text_boss" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text_boss", colour = G.C.ORANGE },
             { text = ")" },
         }
     },
