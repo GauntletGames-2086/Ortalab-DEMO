@@ -28,6 +28,20 @@ local ban_list = SMODS.Joker({
 			SMODS.Joker.register(self)
 		end
 	end,
+	set_ability = function(self, card, initial, delay_sprites)
+		local _poker_hands = {}
+		for k, v in pairs(G.GAME.hands) do
+			if v.visible then _poker_hands[#_poker_hands+1] = k end
+		end
+		card.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed('blacklist1'))
+		_poker_hands[card.ability.extra.banlist_poker_hand_1] = nil
+		card.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
+		if card.ability.extra.banlist_poker_hand_1 == card.ability.extra.banlist_poker_hand_2 then
+			while card.ability.extra.banlist_poker_hand_1 == card.ability.extra.banlist_poker_hand_2 do
+				card.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
+			end
+		end
+	end,
 })
 
 ban_list.order = 60

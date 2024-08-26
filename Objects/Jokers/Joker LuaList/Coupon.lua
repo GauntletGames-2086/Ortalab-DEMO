@@ -27,6 +27,24 @@ local coupon = SMODS.Joker({
 			SMODS.Joker.register(self)
 		end
 	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.GAME.discount_percent = G.GAME.discount_percent + 20
+		G.E_MANAGER:add_event(Event({func = function()
+			for k, v in pairs(G.I.CARD) do
+				if v.set_cost then v:set_cost() end
+			end
+			return true end 
+		}))
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.GAME.discount_percent = G.GAME.discount_percent - 20
+		G.E_MANAGER:add_event(Event({func = function()
+			for k, v in pairs(G.I.CARD) do
+				if v.set_cost then v:set_cost() end
+			end
+			return true end 
+		}))
+	end,
 })
 
 coupon.order = 79

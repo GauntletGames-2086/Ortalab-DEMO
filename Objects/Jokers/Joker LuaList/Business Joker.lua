@@ -29,6 +29,19 @@ local business_joker = SMODS.Joker({
 			SMODS.Joker.register(self)
 		end
 	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.E_MANAGER:add_event(Event({func = function()
+			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - card.ability.extra.reroll_cut
+			G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - card.ability.extra.reroll_cut)
+			return true end 
+		}))
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.E_MANAGER:add_event(Event({func = function()
+			G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + card.ability.extra.reroll_cut
+			return true end 
+		}))
+	end,
 })
 
 business_joker.order = 30

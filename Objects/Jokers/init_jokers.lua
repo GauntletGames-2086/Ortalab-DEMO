@@ -23,18 +23,8 @@ local init_jokers = function(base_file_path)
 	--Functions to override that are used by several jokers
 
 	local CardAdd_to_deck_ref = Card.add_to_deck
-	function Card.add_to_deck(self, from_debuff) --Crime Scene, Woo! All 1s, and Monochrome Logic
-		if self.ability.name == 'Crime Scene' then
-			G.GAME.pool_flags['crime_scene_pool_disable'] = true
-		end
-		if self.ability.name == 'Black Friday' then
-			G.GAME.discount_percent = G.GAME.discount_percent + 20
-			G.E_MANAGER:add_event(Event({func = function()
-				for k, v in pairs(G.I.CARD) do
-					if v.set_cost then v:set_cost() end
-				end
-				return true end }))
-		end
+	function Card.add_to_deck(self, from_debuff)
+		-- This whole joker needs redone logic, too lazy to bother
 		if not self.added_to_deck then
 			if self.ability.name == 'Woo! All 1s' then
 				self.added_to_deck = true
@@ -68,22 +58,6 @@ local init_jokers = function(base_file_path)
 	local CardRemove_from_deck_ref = Card.remove_from_deck
 	function Card.remove_from_deck(self, from_debuff)
 		if self.added_to_deck then 
-			if self.ability.name == 'Crime Scene' then
-				G.GAME.pool_flags['crime_scene_pool_disable'] = nil
-				for k, v in pairs(G.P_CENTERS) do
-					if v.no_pool_flag and (v.no_pool_flag == 'crime_scene_pool_disable') then
-						v.no_pool_flag = nil
-					end
-				end
-			end
-			if self.ability.name == 'Black Friday' then
-				G.GAME.discount_percent = G.GAME.discount_percent - 20
-				G.E_MANAGER:add_event(Event({func = function()
-					for k, v in pairs(G.I.CARD) do
-						if v.set_cost then v:set_cost() end
-					end
-					return true end }))
-			end
 			if self.ability.name == 'Woo! All 1s' then
 				self.added_to_deck = false
 				for k, v in pairs(G.GAME.probabilities) do 
@@ -101,38 +75,14 @@ local init_jokers = function(base_file_path)
 					end
 				end
 			end
-			if self.ability.name == 'Business Joker' then
-				G.E_MANAGER:add_event(Event({func = function()
-					G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra.reroll_cut
-					return true end }))
-			end
 		end
 		CardRemove_from_deck_ref(self, from_debuff)
-	end
-
-	local CardSet_Ability_ref = Card.set_ability 
-	function Card.set_ability(self, center, initial, delay_sprites) --Blacklist Logic
-		CardSet_Ability_ref(self, center, initial, delay_sprites)
-		if self.ability.name == 'Blacklist' then
-			local _poker_hands = {}
-			for k, v in pairs(G.GAME.hands) do
-				if v.visible then _poker_hands[#_poker_hands+1] = k end
-			end
-			self.ability.extra.banlist_poker_hand_1 = pseudorandom_element(_poker_hands, pseudoseed('blacklist1'))
-			_poker_hands[self.ability.extra.banlist_poker_hand_1] = nil
-			self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
-			if self.ability.extra.banlist_poker_hand_1 == self.ability.extra.banlist_poker_hand_2 then
-				while self.ability.extra.banlist_poker_hand_1 == self.ability.extra.banlist_poker_hand_2 do
-					self.ability.extra.banlist_poker_hand_2 = pseudorandom_element(_poker_hands, pseudoseed('blacklist2'))
-				end
-			end
-		end
 	end
 
 	local CardSell_Card = Card.sell_card --Crime Scene and Evil Eye Logic
 	function Card.sell_card(self)
 		if next(SMODS.find_card('j_olab_crime_scene')) and self.ability.set == 'Joker' then
-			self.config.center.no_pool_flag = 'crime_scene_pool_disable'
+			G.GAME.banned_keys[self.config.center.key] = true
 		end
 		if next(SMODS.find_card('j_olab_evil_eye')) and self.ability.set == 'Spectral' then
 			for k, v in pairs(G.jokers.cards) do
